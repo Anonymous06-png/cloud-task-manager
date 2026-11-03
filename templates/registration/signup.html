@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Create account" %} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="auth-shell">
+        <div class="auth-card">
+            <p class="eyebrow">{% translate "A fresh start" %}</p>
+            <h1>{% translate "Create your account" %}</h1>
+            <p class="version">{% translate "Set up a private workspace for the tasks you want to move forward." %}</p>
+
+            <form method="post" action="{% url 'tasks:register' %}" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">{% translate "Create account" %}</button>
+            </form>
+
+            <p class="auth-links">
+                {% translate "Already have an account?" %} <a href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

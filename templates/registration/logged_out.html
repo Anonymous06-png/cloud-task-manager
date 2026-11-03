@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Signed out" %} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="auth-shell">
+        <div class="auth-card">
+            <p class="eyebrow">{% translate "See you soon" %}</p>
+            <h1>{% translate "Signed out safely." %}</h1>
+            <p class="version">{% translate "Your session has been closed. Your workspace will be here when you are ready to return." %}</p>
+            <div class="hero-actions">
+                <a class="btn" href="{% url 'tasks:login' %}">{% translate "Log in again" %}</a>
+                <a class="btn secondary" href="{% url 'tasks:home' %}">{% translate "Back to home" %}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

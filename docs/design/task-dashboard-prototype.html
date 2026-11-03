@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f3">
+  <title>Cloud Task Manager — Bảng điều khiển</title>
+  <style>
+    :root {
+      --ink: #16251f;
+      --ink-soft: #486057;
+      --muted: #7b8d86;
+      --line: #dfe8e2;
+      --line-strong: #c9d8cf;
+      --canvas: #f4f6f3;
+      --surface: #ffffff;
+      --surface-alt: #f8fbf8;
+      --navy: #18372f;
+      --navy-2: #234c40;
+      --mint: #d9f2df;
+      --mint-strong: #2c8a60;
+      --lime: #c9ee75;
+      --coral: #f06b55;
+      --coral-soft: #fff0ec;
+      --amber: #d99534;
+      --amber-soft: #fff5df;
+      --blue: #4c79d8;
+      --blue-soft: #edf2ff;
+      --shadow-sm: 0 2px 12px rgba(21, 49, 38, .06);
+      --shadow-md: 0 16px 38px rgba(21, 49, 38, .10);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --sidebar-w: 252px;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--canvas); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 83% -10%, rgba(201, 238, 117, .25), transparent 31rem),
+        var(--canvas);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { border: 0; cursor: pointer; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid rgba(76, 121, 216, .52); outline-offset: 3px; }
+
+    .app-shell { display: flex; min-height: 100vh; }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      padding: 28px 18px 20px;
+      color: #e8f4ed;
+      background: var(--navy);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 0 12px 30px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 11px 11px 11px 4px;
+      color: var(--navy);
+      background: var(--lime);
+      font-size: .93rem;
+      font-weight: 900;
+      box-shadow: 0 0 0 5px rgba(201, 238, 117, .10);
+    }
+    .eyebrow {
+      margin: 0;
+      color: var(--muted);
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .sidebar .eyebrow { padding: 0 12px; color: #89a69a; }
+    .nav-list { display: grid; gap: 5px; margin: 12px 0 30px; padding: 0; list-style: none; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 43px;
+      padding: 10px 12px;
+      border-radius: 11px;
+      color: #b4c9bf;
+      text-decoration: none;
+      font-size: .9rem;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255,255,255,.08); transform: translateX(2px); }
+    .nav-link.active { color: var(--navy); background: var(--lime); font-weight: 800; }
+    .nav-icon { width: 18px; text-align: center; font-size: 1.03rem; }
+    .nav-count { margin-left: auto; color: #8aa99a; font-size: .75rem; }
+    .nav-link.active .nav-count { color: var(--navy); }
+    .sidebar-spacer { flex: 1; }
+    .focus-card {
+      margin: 18px 6px 20px;
+      padding: 17px;
+      border: 1px solid rgba(201, 238, 117, .23);
+      border-radius: var(--radius-md);
+      background: linear-gradient(145deg, rgba(201,238,117,.14), rgba(255,255,255,.04));
+    }
+    .focus-card strong { display: block; margin: 8px 0 4px; color: #fff; font-size: .94rem; }
+    .focus-card p { margin: 0; color: #a8c0b4; font-size: .78rem; }
+    .progress-track { height: 5px; margin-top: 14px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.14); }
+    .progress-value { width: 68%; height: 100%; border-radius: inherit; background: var(--lime); }
+    .sidebar-bottom { display: grid; gap: 6px; }
+    .sidebar-action {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 11px;
+      color: #b4c9bf;
+      background: transparent;
+      text-align: left;
+      font-size: .86rem;
+      text-decoration: none;
+      transition: color .18s ease, background .18s ease;
+    }
+    .sidebar-action:hover { color: #fff; background: rgba(255,255,255,.08); }
+
+    .main { flex: 1; min-width: 0; padding: 27px clamp(22px, 4vw, 58px) 48px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 38px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .8rem; }
+    .breadcrumb strong { color: var(--ink-soft); font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .icon-button, .avatar-button {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-soft);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+    .icon-button:hover, .avatar-button:hover { border-color: var(--line-strong); background: var(--surface-alt); transform: translateY(-1px); }
+    .avatar-button { border: 0; color: #fff; background: var(--coral); font-size: .75rem; font-weight: 800; box-shadow: none; }
+    .language-control { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+    .language-control button { padding: 6px 8px; border-radius: 7px; color: var(--muted); background: transparent; font-size: .69rem; font-weight: 800; }
+    .language-control button[aria-pressed="true"] { color: var(--navy); background: var(--mint); }
+
+    .welcome { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; margin-bottom: 28px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { letter-spacing: -.045em; line-height: 1.13; }
+    h1 { max-width: 650px; margin-bottom: 9px; font-size: clamp(2rem, 4vw, 3.45rem); font-weight: 800; }
+    h2 { margin-bottom: 6px; font-size: 1.25rem; }
+    h3 { margin-bottom: 5px; font-size: 1rem; }
+    .welcome-copy { color: var(--muted); font-size: .92rem; }
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 11px 17px;
+      border-radius: 12px;
+      color: var(--navy);
+      background: var(--lime);
+      box-shadow: 0 8px 19px rgba(142, 187, 50, .20);
+      font-size: .84rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .primary-button:hover { color: var(--navy); filter: saturate(1.06); transform: translateY(-2px); box-shadow: 0 12px 25px rgba(142,187,50,.26); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin-bottom: 28px; }
+    .stat-card { position: relative; min-height: 135px; padding: 19px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-sm); }
+    .stat-card::after { position: absolute; right: -27px; bottom: -38px; width: 105px; height: 105px; content: ""; border: 16px solid var(--mint); border-radius: 50%; opacity: .7; }
+    .stat-card.accent::after { border-color: #ffe1d9; }
+    .stat-label { color: var(--muted); font-size: .76rem; font-weight: 700; }
+    .stat-number { display: block; margin-top: 7px; color: var(--navy); font-size: 2.1rem; font-weight: 900; letter-spacing: -.07em; }
+    .stat-trend { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; color: var(--mint-strong); font-size: .71rem; font-weight: 800; }
+    .stat-card.accent .stat-trend { color: var(--coral); }
+
+    .content-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(245px, .7fr); gap: 20px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); }
+    .tasks-panel { min-width: 0; padding: 23px; }
+    .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 19px; }
+    .panel-subtitle { margin: 0; color: var(--muted); font-size: .78rem; }
+    .more-button { width: 31px; height: 31px; border-radius: 8px; color: var(--muted); background: transparent; font-size: 1.15rem; }
+    .more-button:hover { color: var(--ink); background: var(--surface-alt); }
+    .filters { display: flex; align-items: center; gap: 5px; margin-bottom: 18px; padding: 4px; overflow-x: auto; border-radius: 11px; background: var(--surface-alt); }
+    .filter-button { flex: 0 0 auto; padding: 8px 11px; border-radius: 8px; color: var(--muted); background: transparent; font-size: .76rem; font-weight: 700; white-space: nowrap; transition: color .18s ease, background .18s ease, box-shadow .18s ease; }
+    .filter-button:hover { color: var(--ink-soft); }
+    .filter-button.active { color: var(--navy); background: var(--surface); box-shadow: 0 2px 7px rgba(21,49,38,.08); }
+    .task-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+    .task-row { display: grid; grid-template-columns: 23px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 72px; padding: 12px 10px; border: 1px solid transparent; border-radius: 13px; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+    .task-row:hover { border-color: var(--line); background: var(--surface-alt); transform: translateX(2px); }
+    .task-check { display: grid; place-items: center; width: 21px; height: 21px; border: 1.5px solid var(--line-strong); border-radius: 7px; color: #fff; background: transparent; font-size: .72rem; font-weight: 900; }
+    .task-row.done .task-check { border-color: var(--mint-strong); background: var(--mint-strong); }
+    .task-copy { min-width: 0; }
+    .task-title { display: block; overflow: hidden; color: var(--ink); font-size: .88rem; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+    .task-row.done .task-title { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+    .task-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 5px; color: var(--muted); font-size: .7rem; }
+    .status { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 99px; font-size: .65rem; font-weight: 800; }
+    .status::before { width: 5px; height: 5px; content: ""; border-radius: 50%; background: currentColor; }
+    .status.pending { color: #a97017; background: var(--amber-soft); }
+    .status.completed { color: var(--mint-strong); background: var(--mint); }
+    .status.today { color: var(--coral); background: var(--coral-soft); }
+    .task-actions { display: flex; align-items: center; gap: 5px; }
+    .task-action { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; color: var(--muted); background: transparent; font-size: .83rem; transition: color .18s ease, background .18s ease; }
+    .task-action:hover { color: var(--ink); background: var(--line); }
+    .task-action.delete:hover { color: var(--coral); background: var(--coral-soft); }
+    .empty-note { padding: 28px 10px 7px; color: var(--muted); text-align: center; font-size: .83rem; }
+    .hidden { display: none !important; }
+
+    .side-stack { display: grid; gap: 20px; }
+    .week-panel { padding: 21px; }
+    .week-visual { display: grid; grid-template-columns: repeat(7, 1fr); align-items: end; gap: 7px; height: 112px; margin-top: 19px; padding-top: 8px; border-bottom: 1px solid var(--line); }
+    .day-bar { display: grid; gap: 7px; justify-items: center; height: 100%; }
+    .bar { align-self: end; width: 100%; max-width: 17px; min-height: 10px; border-radius: 5px 5px 3px 3px; background: var(--mint); }
+    .bar.current { background: var(--coral); }
+    .day-label { color: var(--muted); font-size: .63rem; }
+    .week-legend { display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; color: var(--muted); font-size: .7rem; }
+    .week-legend strong { color: var(--ink); font-size: .86rem; }
+    .shortcut-panel { padding: 19px; background: var(--navy); }
+    .shortcut-panel h2 { color: #fff; font-size: 1.05rem; }
+    .shortcut-panel p { color: #a9c0b5; font-size: .75rem; }
+    .shortcut-link { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-top: 1px solid rgba(255,255,255,.11); color: #dcece2; font-size: .77rem; text-decoration: none; }
+    .shortcut-link span:last-child { color: var(--lime); font-size: 1rem; }
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 4; max-width: 320px; padding: 13px 16px; border: 1px solid #bce1ca; border-radius: 12px; color: #226447; background: #effaf1; box-shadow: var(--shadow-md); font-size: .8rem; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .page-reveal { animation: rise-in .48s ease both; }
+    .page-reveal:nth-child(2) { animation-delay: .06s; }
+    .page-reveal:nth-child(3) { animation-delay: .12s; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 1050px) {
+      :root { --sidebar-w: 220px; }
+      .main { padding-inline: 28px; }
+      .content-grid { grid-template-columns: minmax(0, 1fr); }
+      .side-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .app-shell { display: block; }
+      .sidebar { position: static; display: block; min-height: auto; padding: 15px 16px 13px; }
+      .brand { display: inline-flex; padding: 0; }
+      .sidebar .eyebrow, .focus-card, .sidebar-bottom { display: none; }
+      .nav-list { display: flex; gap: 4px; margin: 14px 0 0; overflow-x: auto; }
+      .nav-link { min-height: 38px; padding: 8px 10px; white-space: nowrap; }
+      .nav-link:not(.active) .nav-count { display: none; }
+      .nav-icon { display: none; }
+      .main { padding: 20px 16px 35px; }
+      .topbar { margin-bottom: 28px; }
+      .breadcrumb { font-size: .74rem; }
+      .top-actions { gap: 6px; }
+      .icon-button, .avatar-button { width: 36px; height: 36px; }
+      .language-control button { padding: 5px 6px; }
+      .welcome { display: block; margin-bottom: 23px; }
+      .welcome .primary-button { width: 100%; margin-top: 17px; }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 18px; }
+      .stat-card { min-height: 119px; padding: 15px; }
+      .stat-number { font-size: 1.8rem; }
+      .tasks-panel { padding: 17px 13px; border-radius: 19px; }
+      .side-stack { grid-template-columns: 1fr; }
+      .task-row { grid-template-columns: 23px minmax(0, 1fr); padding-inline: 5px; }
+      .task-actions { grid-column: 2; justify-content: flex-start; }
+      .task-action { width: auto; height: 29px; padding: 0 9px; background: var(--surface-alt); font-size: .7rem; }
+      .task-action::after { margin-left: 4px; font-weight: 700; }
+      .task-action.edit::after { content: "Sửa"; }
+      .task-action.delete::after { content: "Xoá"; }
+      .toast { right: 14px; bottom: 14px; left: 14px; max-width: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Điều hướng chính">
+      <a class="brand" href="#top" aria-label="Cloud Task Manager, trang tổng quan">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span>Cloud Task Manager</span>
+      </a>
+      <p class="eyebrow">Không gian của bạn</p>
+      <nav aria-label="Điều hướng chính">
+        <ul class="nav-list">
+          <li><a class="nav-link active" href="#dashboard"><span class="nav-icon" aria-hidden="true">⌂</span><span data-i18n="navDashboard">Tổng quan</span></a></li>
+          <li><a class="nav-link" href="#tasks"><span class="nav-icon" aria-hidden="true">✓</span><span data-i18n="navTasks">Công việc</span><span class="nav-count">8</span></a></li>
+          <li><a class="nav-link" href="#completed"><span class="nav-icon" aria-hidden="true">◴</span><span data-i18n="navCompleted">Đã hoàn thành</span></a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <section class="focus-card" aria-label="Tiến độ tuần">
+        <span class="eyebrow">Tuần này</span>
+        <strong>Giữ nhịp ổn định</strong>
+        <p>6 trên 9 công việc đã xong.</p>
+        <div class="progress-track" aria-label="Tiến độ 68 phần trăm"><div class="progress-value"></div></div>
+      </section>
+      <div class="sidebar-bottom">
+        <a class="sidebar-action" href="#settings"><span aria-hidden="true">⚙</span><span data-i18n="settings">Cài đặt</span></a>
+        <button class="sidebar-action" type="button" id="helpButton"><span aria-hidden="true">?</span><span data-i18n="help">Trợ giúp & phím tắt</span></button>
+      </div>
+    </aside>
+
+    <main class="main" id="top">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Cloud Task Manager</span><span aria-hidden="true">/</span><strong data-i18n="breadcrumb">Tổng quan</strong></div>
+        <div class="top-actions">
+          <div class="language-control" aria-label="Ngôn ngữ">
+            <button type="button" data-lang="vi" aria-pressed="true">VI</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <button class="icon-button" type="button" aria-label="Tìm kiếm" title="Tìm kiếm">⌕</button>
+          <button class="icon-button" type="button" aria-label="Thông báo" title="Thông báo">♢</button>
+          <button class="avatar-button" type="button" aria-label="Mở hồ sơ của Minh Anh">MA</button>
+        </div>
+      </header>
+
+      <section class="welcome page-reveal" id="dashboard" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow" data-i18n="eyebrow">Thứ tư, 04 tháng 11, 2026</p>
+          <h1 id="page-title" data-i18n="title">Chào buổi sáng, Minh Anh.</h1>
+          <p class="welcome-copy" data-i18n="intro">Một việc rõ ràng tiếp theo sẽ giúp ngày hôm nay nhẹ hơn.</p>
+        </div>
+        <a class="primary-button" href="#new-task"><span aria-hidden="true">＋</span><span data-i18n="newTask">Tạo công việc mới</span></a>
+      </section>
+
+      <section class="stats-grid page-reveal" aria-label="Tổng quan công việc">
+        <article class="stat-card"><span class="stat-label" data-i18n="statAll">Tổng công việc</span><strong class="stat-number">12</strong><span class="stat-trend">↑ 3 tuần này</span></article>
+        <article class="stat-card accent"><span class="stat-label" data-i18n="statOpen">Đang thực hiện</span><strong class="stat-number">08</strong><span class="stat-trend">2 đến hạn hôm nay</span></article>
+        <article class="stat-card"><span class="stat-label" data-i18n="statDone">Đã hoàn thành</span><strong class="stat-number">04</strong><span class="stat-trend">↑ 18% so với tuần trước</span></article>
+        <article class="stat-card accent"><span class="stat-label" data-i18n="statDue">Sắp đến hạn</span><strong class="stat-number">03</strong><span class="stat-trend">Trong 7 ngày tới</span></article>
+      </section>
+
+      <div class="content-grid page-reveal">
+        <section class="panel tasks-panel" id="tasks" aria-labelledby="task-heading">
+          <div class="panel-header">
+            <div><h2 id="task-heading" data-i18n="taskHeading">Công việc của bạn</h2><p class="panel-subtitle" data-i18n="taskSubtitle">Tập trung vào điều đang chuyển động.</p></div>
+            <button class="more-button" type="button" aria-label="Thêm lựa chọn" title="Thêm lựa chọn">•••</button>
+          </div>
+          <div class="filters" role="group" aria-label="Lọc công việc">
+            <button class="filter-button active" type="button" data-filter="all" data-i18n="filterAll">Tất cả <span>12</span></button>
+            <button class="filter-button" type="button" data-filter="pending" data-i18n="filterPending">Chưa hoàn thành <span>8</span></button>
+            <button class="filter-button" type="button" data-filter="completed" data-i18n="filterCompleted">Đã xong <span>4</span></button>
+          </div>
+          <ul class="task-list" aria-label="Danh sách công việc">
+            <li class="task-row" data-status="pending">
+              <button class="task-check" type="button" aria-label="Đánh dấu hoàn thành: Chuẩn bị báo cáo quý 4"> </button>
+              <div class="task-copy"><span class="task-title">Chuẩn bị báo cáo quý 4</span><div class="task-meta"><span class="status today">Hôm nay</span><span>Hạn 16:00</span></div></div>
+              <div class="task-actions"><button class="task-action edit" type="button" aria-label="Sửa Chuẩn bị báo cáo quý 4" title="Sửa">✎</button><button class="task-action delete" type="button" aria-label="Xoá Chuẩn bị báo cáo quý 4" title="Xoá">×</button></div>
+            </li>
+            <li class="task-row" data-status="pending">
+              <button class="task-check" type="button" aria-label="Đánh dấu hoàn thành: Gửi bản tóm tắt cho đội sản phẩm"> </button>
+              <div class="task-copy"><span class="task-title">Gửi bản tóm tắt cho đội sản phẩm</span><div class="task-meta"><span class="status pending">Đang làm</span><span>Ngày mai</span></div></div>
+              <div class="task-actions"><button class="task-action edit" type="button" aria-label="Sửa Gửi bản tóm tắt cho đội sản phẩm" title="Sửa">✎</button><button class="task-action delete" type="button" aria-label="Xoá Gửi bản tóm tắt cho đội sản phẩm" title="Xoá">×</button></div>
+            </li>
+            <li class="task-row done" data-status="completed">
+              <button class="task-check" type="button" aria-label="Bỏ đánh dấu hoàn thành: Dọn hộp thư tuần này">✓</button>
+              <div class="task-copy"><span class="task-title">Dọn hộp thư tuần này</span><div class="task-meta"><span class="status completed">Đã xong</span><span>Hôm qua</span></div></div>
+              <div class="task-actions"><button class="task-action edit" type="button" aria-label="Sửa Dọn hộp thư tuần này" title="Sửa">✎</button><button class="task-action delete" type="button" aria-label="Xoá Dọn hộp thư tuần này" title="Xoá">×</button></div>
+            </li>
+            <li class="task-row" data-status="pending">
+              <button class="task-check" type="button" aria-label="Đánh dấu hoàn thành: Chốt lịch phỏng vấn người dùng"> </button>
+              <div class="task-copy"><span class="task-title">Chốt lịch phỏng vấn người dùng</span><div class="task-meta"><span class="status pending">Chưa bắt đầu</span><span>Thứ sáu, 06/11</span></div></div>
+              <div class="task-actions"><button class="task-action edit" type="button" aria-label="Sửa Chốt lịch phỏng vấn người dùng" title="Sửa">✎</button><button class="task-action delete" type="button" aria-label="Xoá Chốt lịch phỏng vấn người dùng" title="Xoá">×</button></div>
+            </li>
+            <li class="task-row done" data-status="completed">
+              <button class="task-check" type="button" aria-label="Bỏ đánh dấu hoàn thành: Cập nhật tài liệu onboarding">✓</button>
+              <div class="task-copy"><span class="task-title">Cập nhật tài liệu onboarding</span><div class="task-meta"><span class="status completed">Đã xong</span><span>Thứ ba, 03/11</span></div></div>
+              <div class="task-actions"><button class="task-action edit" type="button" aria-label="Sửa Cập nhật tài liệu onboarding" title="Sửa">✎</button><button class="task-action delete" type="button" aria-label="Xoá Cập nhật tài liệu onboarding" title="Xoá">×</button></div>
+            </li>
+          </ul>
+          <p class="empty-note hidden" id="emptyNote">Không có công việc nào trong bộ lọc này.</p>
+        </section>
+
+        <aside class="side-stack" aria-label="Thông tin bổ sung">
+          <section class="panel week-panel" aria-labelledby="week-heading">
+            <div class="panel-header"><div><h2 id="week-heading">Nhịp tuần này</h2><p class="panel-subtitle">Công việc đã hoàn thành</p></div><span class="status completed">+18%</span></div>
+            <div class="week-visual" aria-label="Biểu đồ hoạt động từ thứ hai đến chủ nhật">
+              <div class="day-bar"><span class="bar" style="height:42%"></span><span class="day-label">T2</span></div><div class="day-bar"><span class="bar" style="height:70%"></span><span class="day-label">T3</span></div><div class="day-bar"><span class="bar current" style="height:88%"></span><span class="day-label">T4</span></div><div class="day-bar"><span class="bar" style="height:54%"></span><span class="day-label">T5</span></div><div class="day-bar"><span class="bar" style="height:68%"></span><span class="day-label">T6</span></div><div class="day-bar"><span class="bar" style="height:21%"></span><span class="day-label">T7</span></div><div class="day-bar"><span class="bar" style="height:14%"></span><span class="day-label">CN</span></div>
+            </div>
+            <div class="week-legend"><span><strong>6</strong> việc đã xong</span><span>Mục tiêu <strong>9</strong></span></div>
+          </section>
+          <section class="panel shortcut-panel" id="settings" aria-labelledby="shortcut-heading">
+            <h2 id="shortcut-heading">Lối tắt</h2><p>Đi nhanh đến các thao tác thường dùng.</p>
+            <a class="shortcut-link" href="#new-task"><span>Tạo công việc</span><span>＋</span></a>
+            <a class="shortcut-link" href="#filters"><span>Xem việc sắp đến hạn</span><span>→</span></a>
+            <a class="shortcut-link" href="#language"><span>Đổi ngôn ngữ</span><span>⌘</span></a>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite">Bản thử nghiệm: thao tác đã được ghi nhận.</div>
+  <script>
+    (() => {
+      const toast = document.getElementById('toast');
+      let toastTimer;
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2300);
+      };
+      const translations = {
+        vi: { navDashboard: 'Tổng quan', navTasks: 'Công việc', navCompleted: 'Đã hoàn thành', settings: 'Cài đặt', help: 'Trợ giúp & phím tắt', breadcrumb: 'Tổng quan', eyebrow: 'Thứ tư, 04 tháng 11, 2026', title: 'Chào buổi sáng, Minh Anh.', intro: 'Một việc rõ ràng tiếp theo sẽ giúp ngày hôm nay nhẹ hơn.', newTask: 'Tạo công việc mới', statAll: 'Tổng công việc', statOpen: 'Đang thực hiện', statDone: 'Đã hoàn thành', statDue: 'Sắp đến hạn', taskHeading: 'Công việc của bạn', taskSubtitle: 'Tập trung vào điều đang chuyển động.', filterAll: 'Tất cả 12', filterPending: 'Chưa hoàn thành 8', filterCompleted: 'Đã xong 4' },
+        en: { navDashboard: 'Overview', navTasks: 'Tasks', navCompleted: 'Completed', settings: 'Settings', help: 'Help & shortcuts', breadcrumb: 'Overview', eyebrow: 'Wednesday, November 4, 2026', title: 'Good morning, Minh Anh.', intro: 'One clear next step will make today feel lighter.', newTask: 'Create new task', statAll: 'All tasks', statOpen: 'In progress', statDone: 'Completed', statDue: 'Due soon', taskHeading: 'Your tasks', taskSubtitle: 'Keep your attention on what is moving.', filterAll: 'All 12', filterPending: 'Open 8', filterCompleted: 'Done 4' }
+      };
+      document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => {
+        const lang = button.dataset.lang;
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-lang]').forEach((item) => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+        document.querySelectorAll('[data-i18n]').forEach((item) => { if (translations[lang][item.dataset.i18n]) item.textContent = translations[lang][item.dataset.i18n]; });
+        showToast(lang === 'vi' ? 'Đã chuyển sang Tiếng Việt.' : 'Switched to English.');
+      }));
+      document.querySelectorAll('.filter-button').forEach((button) => button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-button').forEach((item) => item.classList.toggle('active', item === button));
+        const filter = button.dataset.filter;
+        let visible = 0;
+        document.querySelectorAll('.task-row').forEach((row) => { const show = filter === 'all' || row.dataset.status === filter; row.classList.toggle('hidden', !show); if (show) visible += 1; });
+        document.getElementById('emptyNote').classList.toggle('hidden', visible !== 0);
+      }));
+      document.querySelectorAll('.task-check').forEach((button) => button.addEventListener('click', () => {
+        const row = button.closest('.task-row');
+        const done = row.classList.toggle('done');
+        row.dataset.status = done ? 'completed' : 'pending';
+        button.textContent = done ? '✓' : '';
+        button.setAttribute('aria-label', done ? 'Bỏ đánh dấu hoàn thành' : 'Đánh dấu hoàn thành');
+        showToast(done ? 'Công việc đã hoàn thành.' : 'Công việc được mở lại.');
+      }));
+      document.querySelectorAll('.task-action').forEach((button) => button.addEventListener('click', () => showToast(button.classList.contains('delete') ? 'Bản thử nghiệm: xoá công việc.' : 'Bản thử nghiệm: mở chỉnh sửa.')));
+      document.getElementById('helpButton').addEventListener('click', () => showToast('Phím tắt: N để tạo việc mới · F để lọc danh sách.'));
+      document.querySelector('.avatar-button').addEventListener('click', () => showToast('Bản thử nghiệm: mở hồ sơ.'));
+    })();
+  </script>
+</body>
+</html>

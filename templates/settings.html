@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Settings" %} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="form-card">
+        <p class="eyebrow">{% translate "Your preferences" %}</p>
+        <h1>{% translate "Settings" %}</h1>
+        <p class="lede">{% translate "Choose your preferred language." %}</p>
+
+        <form method="post" action="{% url 'set_language' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'tasks:settings' %}">
+            <fieldset>
+                <legend>{% translate "Language" %}</legend>
+                {% get_available_languages as available_languages %}
+                {% get_language_info_list for available_languages as languages %}
+                {% get_current_language as current_language %}
+                {% for language in languages %}
+                    <p class="language-option">
+                        <label>
+                            <input type="radio" name="language" value="{{ language.code }}"
+                                   {% if language.code == current_language %}checked{% endif %}>
+                            {{ language.name_local|capfirst }} ({{ language.code }})
+                        </label>
+                    </p>
+                {% endfor %}
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit">{% translate "Apply" %}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

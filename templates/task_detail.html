@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ task.title }} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="detail-card">
+        <div class="detail-header">
+            <div>
+                <p class="eyebrow">{% translate "Task detail" %}</p>
+                <h1>{{ task.title }}</h1>
+            </div>
+            <span class="badge {% if task.status == 'completed' %}completed{% else %}pending{% endif %}">{{ task.get_status_display }}</span>
+        </div>
+
+        <div class="detail-meta">
+            <div>
+                <strong>{% translate "Status" %}</strong>
+                {{ task.get_status_display }}
+            </div>
+            <div>
+                <strong>{% translate "Due date" %}</strong>
+                {% if task.due_date %}{{ task.due_date|date:"M j, Y" }}{% else %}{% translate "No due date" %}{% endif %}
+            </div>
+        </div>
+
+        {% if task.description %}
+            <div class="description">
+                <p class="eyebrow">{% translate "Notes" %}</p>
+                <p>{{ task.description|linebreaksbr }}</p>
+            </div>
+        {% else %}
+            <div class="description">
+                <p class="eyebrow">{% translate "Notes" %}</p>
+                <p class="version">{% translate "No notes added yet." %}</p>
+            </div>
+        {% endif %}
+
+        <div class="detail-actions">
+            <a class="btn" href="{% url 'tasks:task_update' task.pk %}">{% translate "Edit task" %}</a>
+            <a class="btn secondary" href="{% url 'tasks:dashboard' %}">{% translate "Back to tasks" %}</a>
+            <a class="btn danger" href="{% url 'tasks:task_delete' task.pk %}">{% translate "Delete" %}</a>
+        </div>
+    </div>
+{% endblock %}

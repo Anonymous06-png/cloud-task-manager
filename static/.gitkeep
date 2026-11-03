@@ -1,0 +1,2 @@
+# Keep this directory in Git so the Docker build (COPY static/) and
+# STATICFILES_DIRS work on a fresh clone. Do not remove.

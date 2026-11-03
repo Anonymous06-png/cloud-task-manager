@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Log in" %} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="auth-shell">
+        <div class="auth-card">
+            <p class="eyebrow">{% translate "Welcome back" %}</p>
+            <h1>{% translate "Log in" %}</h1>
+            <p class="version">{% translate "Pick up where you left off and keep your next steps moving." %}</p>
+
+            <form method="post" action="{% url 'tasks:login' %}" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="next" value="{{ next }}">
+                <button type="submit">{% translate "Log in" %}</button>
+            </form>
+
+            <p class="auth-links">
+                {% translate "New here?" %} <a href="{% url 'tasks:register' %}">{% translate "Create your account" %}</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

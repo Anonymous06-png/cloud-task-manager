@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
+.tox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Secrets & Keys
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+# Backups
+backups/
+*.dump
+*.sql
+
+# Node.js legacy (archived, not active)
+backend/node_modules/
+backend/package-lock.json
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Local tooling & agent state
+.mimosa/
+.zcode/
+pgpass.conf
+*.pgpass

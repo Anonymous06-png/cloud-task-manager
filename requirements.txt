@@ -1,0 +1,24 @@
+# Python Dependencies for Cloud Task Manager
+# Django Stack - Production Ready
+
+# Core Framework
+# Django 5.2 LTS, latest patch as of 2026-10-19 (supports Python 3.10-3.14).
+# Source: https://www.djangoproject.com/download/  (5.2 LTS -> 5.2.18)
+Django==5.2.18
+
+# Database
+psycopg2-binary==2.9.10
+dj-database-url==2.2.0
+
+# Production WSGI Server
+gunicorn==23.0.0
+
+# Environment Variables
+python-decouple==3.8
+
+# Security & Performance
+whitenoise==6.8.2
+
+# Development/Testing (optional)
+# pytest-django==4.9.0
+# coverage==7.6.9

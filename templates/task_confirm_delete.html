@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Delete task" %} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="danger-card">
+        <p class="eyebrow">{% translate "This cannot be undone" %}</p>
+        <h1>{% translate "Delete this task?" %}</h1>
+        <p class="warning-copy">{% blocktranslate with task_title=task.title %}You are about to permanently remove <strong>“{{ task_title }}”</strong> from your workspace.{% endblocktranslate %}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button class="danger" type="submit">{% translate "Delete task" %}</button>
+                <a class="btn secondary" href="{% url 'tasks:task_detail' task.pk %}">{% translate "Keep task" %}</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

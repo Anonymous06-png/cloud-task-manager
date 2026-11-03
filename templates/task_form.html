@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | Cloud Task Manager{% endblock %}
+
+{% block content %}
+    <div class="form-card">
+        <p class="eyebrow">{% translate "Make the next step visible" %}</p>
+        <h1>{{ title }}</h1>
+        <p class="lede">{% translate "Add enough detail to make this task easy to pick up again." %}</p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+                <button type="submit">{% translate "Save task" %}</button>
+                <a class="btn secondary" href="{% url 'tasks:dashboard' %}">{% translate "Cancel" %}</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

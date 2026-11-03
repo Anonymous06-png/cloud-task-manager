@@ -1,0 +1,304 @@
+# Vietnamese translations for Cloud Task Manager.
+# This catalog was authored manually (no gettext toolchain on the host).
+msgid ""
+msgstr ""
+"Project-Id-Version: Cloud Task Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# --- settings.py (language names) ---
+msgid "Vietnamese"
+msgstr "Tiếng Việt"
+
+msgid "English"
+msgstr "Tiếng Anh"
+
+# --- tasks/models.py (display labels only; DB values stay 'pending'/'completed') ---
+msgid "Not Completed"
+msgstr "Chưa hoàn thành"
+
+msgid "Completed"
+msgstr "Đã xong"
+
+# --- tasks/forms.py ---
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Due date"
+msgstr "Hạn chót"
+
+msgid "Status"
+msgstr "Trạng thái"
+
+msgid "Optional. Used only to identify your account."
+msgstr "Không bắt buộc. Chỉ dùng để định danh tài khoản của bạn."
+
+# --- tasks/views.py ---
+msgid "Account created. You are now signed in."
+msgstr "Tài khoản đã được tạo. Bạn đã được đăng nhập."
+
+msgid "Task created."
+msgstr "Đã tạo công việc."
+
+msgid "Task updated."
+msgstr "Đã cập nhật công việc."
+
+msgid "Task deleted."
+msgstr "Đã xóa công việc."
+
+msgid "Create task"
+msgstr "Tạo công việc"
+
+msgid "Edit task"
+msgstr "Sửa công việc"
+
+# --- templates/base.html ---
+msgid "Main navigation"
+msgstr "Điều hướng chính"
+
+msgid "Dashboard"
+msgstr "Bảng điều khiển"
+
+msgid "Hi, %(username)s"
+msgstr "Xin chào, %(username)s"
+
+msgid "Log out"
+msgstr "Đăng xuất"
+
+msgid "Log in"
+msgstr "Đăng nhập"
+
+msgid "Create account"
+msgstr "Tạo tài khoản"
+
+msgid "Settings"
+msgstr "Cài đặt"
+
+# --- templates/home.html ---
+msgid "A calmer way to get things done"
+msgstr "Một cách nhẹ nhàng hơn để hoàn thành công việc"
+
+msgid "Make room for the work that matters."
+msgstr "Chừa không gian cho những việc thực sự quan trọng."
+
+msgid "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence."
+msgstr "Cloud Task Manager lưu trữ rõ ràng từng việc tiếp theo của bạn, để bạn nắm chi tiết, giữ đà và hoàn thành một cách tự tin."
+
+msgid "Open your workspace"
+msgstr "Mở không gian làm việc"
+
+msgid "Create your workspace"
+msgstr "Tạo không gian làm việc"
+
+msgid "Small steps, visible progress"
+msgstr "Bước nhỏ, tiến bộ thấy rõ"
+
+msgid "Keep the signal."
+msgstr "Giữ trọng tâm."
+
+msgid "Everything you need for a focused task list."
+msgstr "Mọi thứ bạn cần cho một danh sách việc tập trung."
+
+msgid "Capture quickly"
+msgstr "Ghi lại nhanh chóng"
+
+msgid "Add a task with the context, due date, and status you need to move forward."
+msgstr "Thêm công việc kèm ngữ cảnh, hạn chót và trạng thái để tiến lên phía trước."
+
+msgid "See what is next"
+msgstr "Xem việc tiếp theo"
+
+msgid "Use clear pending and completed views to keep today’s priorities in reach."
+msgstr "Dùng chế độ đang làm và đã hoàn thành rõ ràng để luôn nắm được việc ưu tiên hôm nay."
+
+msgid "Own your space"
+msgstr "Làm chủ không gian của bạn"
+
+msgid "Your workspace is private to your account, with simple session-based access."
+msgstr "Không gian làm việc chỉ thuộc về tài khoản của bạn, truy cập đơn giản qua phiên đăng nhập."
+
+msgid "Built for reliability."
+msgstr "Xây dựng để đáng tin cậy."
+
+msgid "Simple foundations for a dependable demo."
+msgstr "Nền tảng đơn giản cho một bản demo ổn định."
+
+msgid "Technology stack"
+msgstr "Công nghệ sử dụng"
+
+msgid "Docker-ready"
+msgstr "Sẵn sàng với Docker"
+
+msgid "Session security"
+msgstr "Bảo mật phiên"
+
+msgid "Service health"
+msgstr "Tình trạng dịch vụ"
+
+# --- templates/registration/login.html ---
+msgid "Welcome back"
+msgstr "Chào mừng trở lại"
+
+msgid "Pick up where you left off and keep your next steps moving."
+msgstr "Tiếp tục từ nơi bạn dừng lại và giữ cho mọi việc tiến triển."
+
+msgid "New here?"
+msgstr "Bạn mới đến?"
+
+# --- templates/registration/signup.html ---
+msgid "A fresh start"
+msgstr "Một khởi đầu mới"
+
+msgid "Create your account"
+msgstr "Tạo tài khoản của bạn"
+
+msgid "Set up a private workspace for the tasks you want to move forward."
+msgstr "Thiết lập không gian làm việc riêng cho những việc bạn muốn tiến hành."
+
+msgid "Already have an account?"
+msgstr "Đã có tài khoản?"
+
+# --- templates/registration/logged_out.html ---
+msgid "Signed out"
+msgstr "Đã đăng xuất"
+
+msgid "See you soon"
+msgstr "Hẹn gặp lại"
+
+msgid "Signed out safely."
+msgstr "Bạn đã đăng xuất an toàn."
+
+msgid "Your session has been closed. Your workspace will be here when you are ready to return."
+msgstr "Phiên làm việc đã kết thúc. Không gian làm việc vẫn ở đây khi bạn sẵn sàng quay lại."
+
+msgid "Log in again"
+msgstr "Đăng nhập lại"
+
+msgid "Back to home"
+msgstr "Về trang chủ"
+
+# --- templates/dashboard.html ---
+msgid "Your private workspace"
+msgstr "Không gian làm việc riêng của bạn"
+
+msgid "A clear view of what is moving, waiting, and done."
+msgstr "Bức tranh rõ ràng về việc đang làm, đang chờ và đã hoàn thành."
+
+msgid "+ New task"
+msgstr "+ Việc mới"
+
+msgid "Your tasks"
+msgstr "Công việc của bạn"
+
+msgid "Filter by progress"
+msgstr "Lọc theo tiến độ"
+
+msgid "Show"
+msgstr "Hiện"
+
+msgid "All tasks"
+msgstr "Tất cả công việc"
+
+msgid "Incomplete"
+msgstr "Đang làm"
+
+msgid "Task status filter"
+msgstr "Bộ lọc trạng thái công việc"
+
+msgid "Apply"
+msgstr "Áp dụng"
+
+msgid "Due %(due)s"
+msgstr "Hạn %(due)s"
+
+msgid "No due date"
+msgstr "Không có hạn chót"
+
+msgid "Edit"
+msgstr "Sửa"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "No completed tasks yet."
+msgstr "Chưa có công việc nào hoàn thành."
+
+msgid "Finish a task and it will appear here as a record of your progress."
+msgstr "Hoàn thành một công việc và nó sẽ xuất hiện ở đây như dấu ấn tiến trình của bạn."
+
+msgid "Your list is clear."
+msgstr "Danh sách của bạn đang trống."
+
+msgid "There are no incomplete tasks right now. Add the next thing you want to move forward."
+msgstr "Hiện không có công việc nào đang làm. Hãy thêm việc tiếp theo bạn muốn tiến hành."
+
+msgid "Start with one clear next step."
+msgstr "Bắt đầu bằng một bước tiếp theo rõ ràng."
+
+msgid "Your task list is ready for its first item."
+msgstr "Danh sách công việc sẵn sàng cho mục đầu tiên."
+
+msgid "Create a task"
+msgstr "Tạo một công việc"
+
+msgid "← Back to home"
+msgstr "← Về trang chủ"
+
+# --- templates/task_form.html ---
+msgid "Make the next step visible"
+msgstr "Làm rõ bước tiếp theo"
+
+msgid "Add enough detail to make this task easy to pick up again."
+msgstr "Thêm đủ chi tiết để dễ dàng quay lại công việc này."
+
+msgid "Save task"
+msgstr "Lưu công việc"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+# --- templates/task_detail.html ---
+msgid "Task detail"
+msgstr "Chi tiết công việc"
+
+msgid "Notes"
+msgstr "Ghi chú"
+
+msgid "No notes added yet."
+msgstr "Chưa có ghi chú nào."
+
+msgid "Back to tasks"
+msgstr "Về danh sách công việc"
+
+# --- templates/task_confirm_delete.html ---
+msgid "This cannot be undone"
+msgstr "Thao tác này không thể hoàn tác"
+
+msgid "Delete this task?"
+msgstr "Xóa công việc này?"
+
+msgid "You are about to permanently remove <strong>“%(task_title)s”</strong> from your workspace."
+msgstr "Bạn sắp xóa vĩnh viễn <strong>“%(task_title)s”</strong> khỏi không gian làm việc của mình."
+
+msgid "Delete task"
+msgstr "Xóa công việc"
+
+msgid "Keep task"
+msgstr "Giữ lại công việc"
+
+# --- templates/settings.html ---
+msgid "Your preferences"
+msgstr "Tùy chọn của bạn"
+
+msgid "Choose your preferred language."
+msgstr "Chọn ngôn ngữ bạn muốn sử dụng."
+
+msgid "Language"
+msgstr "Ngôn ngữ"
