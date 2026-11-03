@@ -9,8 +9,9 @@
 
 ## GitHub Repository
 - URL: https://github.com/Anonymous06-png/cloud-task-manager
-- Visibility: **private** (verified via API response `"private": true` at creation, HTTP 201)
+- Visibility: **public** (user explicitly approved the change from private to public; set via `PATCH /repos/...` HTTP 200 with `"private": false`, then verified unauthenticated)
 - Created via GitHub REST API `POST /user/repos` (no `gh` CLI available). Name-conflict check first: `GET /repos/Anonymous06-png/cloud-task-manager` returned 404 (name free).
+- Publication sequence: created private (HTTP 201, `"private": true`), source pushed, full-history security re-check completed, only then switched to public.
 
 ## Files / Configuration Changed
 1. `.gitignore` — appended a section:
@@ -37,8 +38,19 @@
 | `git remote add origin ...` + `git push -u origin main` | exit 0, new branch `main` pushed |
 | `git ls-remote origin main` | `cb81a69…` matches local HEAD |
 | `git status` | working tree clean |
+| history scan across all commits (`git grep` over `git rev-list --all`) | benign matches only (placeholders/regex text) |
+| `PATCH /repos/...` `{"private": false}` (user-approved) | HTTP 200, `"private": false` |
+| unauthenticated `GET https://api.github.com/repos/...` | HTTP 200 |
+| unauthenticated `GET https://github.com/Anonymous06-png/cloud-task-manager` | HTTP 200 |
+| unauthenticated raw README fetch | HTTP 200 |
 
-## Security Checks (sanitized evidence; no secret values printed)
+## Pre-Public Security Re-Check (for the private → public change; sanitized evidence)
+- Full Git history scanned: history contains **only the two commits created in this task** (`cb81a69`, `20f0134`) — no pre-existing history exists. `git grep` across all commits for secret patterns (key literals, `PGPASSWORD=`, PEM/OpenSSH blocks, `ghp_`/`github_pat_`/`AKIA…`/Slack tokens): only benign matches — placeholder strings in reports (`temporary-system-check-only`, `local-04l-agent-check-only`), this report's own regex text, and test fixtures (runtime-generated since the gate fix).
+- Tracked filenames swept for sensitive types (`.env`, `pgpass*`, `*.sqlite3`, `*.pem/key`, `*.sql/dump`, backups): none. Files matching names like `backend/db.js` read `DATABASE_URL` from environment only — no embedded credentials.
+- All `postgresql://user:password@` connection strings in history verified placeholder-only. The 22-character password segment in `step-04k-c-launcher-import-fix.md:72` was compared exactly and confirmed to be the literal template text `<PASSWORD_URL_ENCODED>`, not a real value (also does not match the live local pgpass credential).
+- No blocker found; publication to public proceeded.
+
+## Security Checks (initial, before first push; sanitized evidence; no secret values printed)
 - Credential fill test: stored GitHub credential found for `Anonymous06-png`; value never printed or written to any file.
 - Repo-existence check before creation: HTTP 404 — no overwrite/conflict.
 - File-type sweep: no `.env`, `pgpass*`, `*.sqlite3`, `*.pem/key`, `*.sql/dump`, `db.sqlite3`, `node_modules`, `__pycache__`, or `*.pyc` among staged files (`grep` exit 1 = none found).
@@ -61,13 +73,14 @@
 - Working tree clean; nothing staged; `main` in sync with `origin/main`.
 
 ## Status
-**PASS** — with two honest caveats:
+**PASS** — repository is public, fully verified, with two honest caveats:
 1. Test credential fixtures were changed to runtime-generated values to pass the security gate; the user halted the test-suite re-verification before completion (5 failures observed mid-run were not diagnosed; per user instruction this investigation was stopped — likely pre-existing, unrelated to publication). Re-verification of the fixture edits: **NOT RUN**.
 2. No full Mimosa deep scan was run; the pre-commit hook itself reported incomplete coverage and does not attest project security.
 
 ## Remaining Risks and Next Allowed Step
 - Risks:
   - 5 test failures observed before the halt (names recorded in session evidence; not diagnosed per user instruction).
-  - Repository is private but visibility should be re-checked in the GitHub UI before adding collaborators/Codex Cloud access.
+  - Repository is now **public**: any future push is externally visible. The pre-push secret scan habit must continue; consider enabling GitHub secret scanning / push protection.
+  - QA usernames (e.g., `qa-user-a/b`) and local DB names appear in reports — names only, no credentials.
   - Codex Cloud will need the repo's secrets configured (e.g., `SECRET_KEY`, `DATABASE_URL`) outside Git, as intended by `.env.example`.
-- Next allowed step (per plan): Codex Cloud onboarding of the published private repository, or Figma UI implementation — as separately authorized tasks.
+- Next allowed step (per plan): Codex Cloud onboarding of the published repository, or Figma UI implementation — as separately authorized tasks.
