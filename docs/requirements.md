@@ -1,162 +1,52 @@
-# Project Requirements Documentation
+# Cloud Task Manager — Requirements and evidence
 
-## Assignment Requirements (from PDF)
+**Source of authority:** [Project-Cloud-Computing.pdf](Project-Cloud-Computing.pdf), six pages. This document is an implementation tracker, not a replacement for the assignment.
 
-Source: `docs/Project-Cloud-Computing.pdf` (6 pages, Vietnamese)
+**Snapshot:** 2026-11-04. "Present in source" and historical agent-reported passes do not imply a verified live cloud deployment.
 
-### Mandatory Application Features
+## Mandatory application scope
 
-1. ✅ User account creation and login
-2. ✅ Add new tasks
-3. ✅ View task list
-4. ✅ Update task (name, description, deadline, status)
-5. ✅ Delete tasks
-6. ✅ Filter by status: "Not completed" and "Completed"
-7. ✅ Persistent database storage
+| Requirement from PDF | Source / evidence status |
+| --- | --- |
+| Account registration and login | Implemented in Django, covered by earlier local browser/test reports |
+| Create, view, edit, delete tasks | Implemented; earlier local CRUD/browser reports available |
+| Task name, description, due date and status | Present in Django forms/model |
+| Filter pending vs completed | Implemented; PR #1 also adds task-list search |
+| Database persistence | PostgreSQL runtime and restart behavior reported in local tests; **cloud persistence not verified** |
+| Server-rendered web UI | Present; refreshed UI on PR #1, not yet merged into main |
+| Health endpoint | /health/ exists; public-cloud check not verified |
+| Demo account and sample data | Final grading-ready demo data not verified |
 
-### Mandatory Technical Components
+Django, PostgreSQL and Docker Compose are project choices. The PDF allows alternative stacks but the team has selected the existing Django implementation.
 
-**Application**:
-- Web interface with server-side processing
-- Any language/framework allowed ✅
-- Health check endpoint (e.g., `/health`) ✅
-- Sample data for testing
+## Cloud, security and documentation requirements
 
-**Docker**:
-- Dockerfile for containerization ✅
-- Image must build and run on other machines
-- No secrets in Git ✅
-- Encouraged: .dockerignore, versioned tags
+- Dockerfile and reproducible image on a second machine.
+- Public URL at grading time (or reliable redeployment when turned off).
+- Compute, database, application logs and at least one metric/monitoring view.
+- Environment-variable/secret management; no real credentials in Git.
+- Minimal exposed ports, appropriate permissions and MFA where applicable.
+- Budget monitoring/alert or equivalent cost evidence, one-month estimate with assumptions, resource cleanup steps.
+- Documentation of architecture, deployment, verification, team assignments and contribution percentages.
 
-**Cloud Infrastructure**:
-| Component | Requirement | Our Implementation |
-|-----------|-------------|-------------------|
-| Compute | VM/container/PaaS | Azure Ubuntu VM (planned) |
-| Database | PostgreSQL/MySQL/MongoDB | PostgreSQL ✅ |
-| Observability | Logs + ≥1 metric | Planned |
+**Deployment decision:** Azure Ubuntu VM/Caddy was previously planned. A later handoff explored VPS NAT + Cloudflare Tunnel. This repository alone does not prove a final cloud architecture or successful deployment. Update the architecture and README only when the team confirms and verifies its target.
 
-**Security**:
-- Only expose necessary ports ✅
-- Secrets via environment variables ✅
-- MFA enabled on cloud account (user responsibility)
-- Budget alerts/cost monitoring (planned)
-- Non-root operations where possible ✅
+## Required post-deployment checks
 
-### Deliverables
+| Case | Expected evidence | Current cloud status |
+| --- | --- | --- |
+| T1 | Public app URL works | NOT RUN / not evidenced |
+| T2 | Registration and login work | NOT RUN / not evidenced |
+| T3 | CRUD changes PostgreSQL records correctly | NOT RUN / not evidenced |
+| T4 | Restart app without losing task data | NOT RUN / not evidenced |
+| T5 | /health/ succeeds | NOT RUN / not evidenced |
+| T6 | Invalid input is rejected without crashing app | NOT RUN / not evidenced |
+| T7 | Request or trial error appears in logs | NOT RUN / not evidenced |
 
-1. Git repository link
-2. Live application URL (public)
-3. PDF report (10-20 pages)
-4. Presentation slides
-5. Demo video (5-7 minutes)
-6. Task distribution table
+Historical local testing does not change these production statuses. As recorded in [Task 05E report](reports/step-05e-complete-ui-integration.md) on the PR branch: Chromium browser smoke was reported 19/19 PASS; Django suite 55 run / 51 pass / 4 fail. These are agent-reported PR results, not a new execution.
 
-### Validation Tests (Section 5, Page 3)
+## Required final submissions
 
-| ID | Scenario | Expected |
-|----|----------|----------|
-| T1 | Access public URL | Page displays normally |
-| T2 | Register and login | User accesses personal features |
-| T3 | Add/edit/delete task | Data changes in database |
-| T4 | Restart application | Data persists |
-| T5 | Call `/health` | Returns success status |
-| T6 | Send invalid data | Error handled appropriately |
-| T7 | View logs | Find test requests/errors |
+Git repository; live URL; PDF report (10–20 pages); slides; demo video (5–7 minutes); team assignment and contribution table; an accurate README, architecture diagram and test evidence.
 
-### Bonus Points (Max total: 10/10)
-
-- CI/CD pipeline: +0.5
-- HTTPS + custom domain: +0.25
-- Database backup/recovery: +0.25
-- Infrastructure as Code (Terraform): +0.5
-- Load testing: +0.25
-
----
-
-## Our Implementation Decisions
-
-### Selected Stack
-
-**Decision Date**: 2026-10-17
-
-| Component | Choice | Rationale |
-|-----------|--------|-----------|
-| Language | Python | Team familiarity, Django ecosystem |
-| Framework | Django 5.2 LTS | Built-in admin, ORM, auth, templates |
-| Database | PostgreSQL 16 | Required by assignment |
-| Container | Docker Compose | Local dev + production consistency |
-| Web server | Gunicorn | Production-ready WSGI server |
-| Reverse proxy | Caddy | Automatic HTTPS |
-| Cloud | Azure | Single Ubuntu VM for compute |
-
-### Excluded Options
-
-- ❌ Node.js/Express - Initial implementation, replaced with Django
-- ❌ JWT manual auth - Use Django sessions instead
-- ❌ React/Vue - Assignment emphasizes deployment, not complex frontend
-- ❌ Kubernetes - Over-engineered for single-VM requirement
-- ❌ Microservices - Monolith appropriate for this scale
-
-### Implementation Status
-
-**Completed**:
-- ✅ Repository structure
-- ✅ Git initialized with proper .gitignore
-- ✅ Node.js implementation archived
-- ✅ CLAUDE.md contract established
-- ✅ Django project foundation (files present, syntax-valid; runtime
-  verification pending — see `docs/reports/step-02b-foundation-verification.md`)
-- ✅ User authentication (register / login / logout, Django sessions,
-  CSRF protected forms, protected personal area) — see
-  `docs/reports/step-03-authentication.md`
-
-**Not Started**:
-- ⏳ Task CRUD operations (Task 4)
-- ⏳ Frontend templates (Task 5)
-- ⏳ Cloud deployment (Task 6)
-- ⏳ Observability setup (Task 7)
-- ⏳ Validation tests T1-T7 (Task 8)
-
-**Known Issues**:
-- Frontend folder currently empty
-- No sample data yet
-- Architecture diagram not created
-- Deployment documentation incomplete
-- Docker/PostgreSQL runtime verification blocked (daemon unavailable) — see `docs/reports/step-02b-foundation-verification.md`
-- Local Python is 3.14.3; container Python 3.11 is compatible with Django 5.2 LTS. Use the container for runtime checks
-
-### Assumptions & Constraints
-
-**Assumptions**:
-1. Single-user prototype acceptable for grading
-2. Basic auth (username/password) sufficient
-3. Simple HTML/CSS UI acceptable (not polished design)
-4. Manual deployment acceptable (CI/CD is bonus)
-
-**Constraints**:
-1. Must be accessible via public URL at grading time
-2. Budget monitoring required
-3. No secrets in repository
-4. Must document cost estimates
-
-### Validation Strategy
-
-Each task will verify:
-1. Python syntax via `python -m py_compile`
-2. Django checks via `python manage.py check`
-3. Docker build success
-4. Container health checks
-5. HTTP endpoints respond correctly
-
-**Never claim**:
-- Tests passed without execution logs
-- Build succeeded without exit code 0
-- Database migrated without `showmigrations` output
-
----
-
-## References
-
-- Assignment PDF: `docs/Project-Cloud-Computing.pdf`
-- Legacy Node.js: `docs/archive/legacy-node/`
-- Task reports: `docs/reports/`
+For history, see docs/reports/. Older reports describe individual tasks at their original dates, not the latest runtime state.
