@@ -1,0 +1,51 @@
+{
+  "schema": "design-notes/1",
+  "notes": [
+    {
+      "id": "note_today_deadline",
+      "scope": "section",
+      "section": "Overview",
+      "decision": "Give today one quiet focal point",
+      "did": "Put the nearest task inside the pale green today panel.",
+      "why": "A personal task manager should make the next deadline easy to find.",
+      "traded": "The deadline appears twice: in priorities and today.",
+      "instead": "A productivity chart would add an unsupported metric.",
+      "basis": "plan",
+      "when": "build",
+      "confidence": "medium",
+      "anchor": {
+        "file": "index.html",
+        "selector": ".today-panel"
+      },
+      "cites": [
+        {
+          "kind": "plan",
+          "ref": "bold_moment"
+        }
+      ]
+    },
+    {
+      "id": "note_compact_summary",
+      "scope": "section",
+      "section": "Overview",
+      "decision": "Keep task totals in one band",
+      "did": "Group incomplete, upcoming and completed task counts in one summary.",
+      "why": "The priority list deserves more attention than the totals.",
+      "traded": "Each count has less independent emphasis.",
+      "instead": "Three separate metric cards would add borders and consume space.",
+      "basis": "plan",
+      "when": "build",
+      "confidence": "medium",
+      "anchor": {
+        "file": "index.html",
+        "selector": ".summary"
+      },
+      "cites": [
+        {
+          "kind": "plan",
+          "ref": "job"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+/* design-kit components. Every value comes from tokens.css. Copy the HTML from recipes/components.html. */
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--control-md); padding: 0 var(--space-5);
+  border-radius: var(--radius-md); border: 1px solid transparent;
+  font-family: var(--font-ui); font-weight: 600; font-size: var(--step-0); line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--color-accent); color: var(--color-on-accent); box-shadow: var(--shadow-1); }
+.btn-primary:hover { background: var(--accent-700); }
+.btn-secondary { background: transparent; color: var(--color-text); border-color: var(--color-border); }
+.btn-secondary:hover { background: var(--color-surface); }
+.btn-ghost { background: transparent; color: var(--color-accent-text); padding-inline: var(--space-3); }
+.btn-ghost:hover { background: var(--color-accent-soft); }
+.btn-danger { background: var(--color-danger); color: var(--color-on-danger); }
+.btn-sm { min-height: var(--control-sm); padding: 0 var(--space-4); font-size: var(--step-n1); }
+.btn-lg { min-height: var(--control-lg); padding: 0 var(--space-6); font-size: var(--step-1); }
+.btn-icon { width: var(--control-md); padding: 0; }
+
+/* ---------- forms ---------- */
+.field { display: grid; gap: var(--space-2); }
+.label { font-family: var(--font-ui); font-weight: 600; font-size: var(--step-n1); }
+.hint { font-size: var(--step-n1); color: var(--color-muted); }
+.error-text { font-size: var(--step-n1); color: var(--color-danger); }
+.input, .select, .textarea {
+  width: 100%; min-height: var(--control-md); padding: 0 var(--space-3);
+  background: var(--color-bg); color: var(--color-text);
+  border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.textarea { padding: var(--space-3); min-height: 120px; resize: vertical; }
+.input::placeholder { color: var(--color-muted); opacity: 0.8; }
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.input[aria-invalid="true"] { border-color: var(--color-danger); }
+.check { display: flex; gap: var(--space-2); align-items: center; min-height: 32px; }
+.check input { width: 18px; height: 18px; accent-color: var(--color-accent); }
+@media (max-width: 639px), (pointer: coarse) {
+  .btn, .input, .select { min-height: 44px; }
+  .btn-icon { width: 44px; }
+  .check { min-height: 44px; }
+  /* <16px controls trigger iOS focus zoom (input.zoom) */
+  .input, .select, textarea.input, .field textarea { font-size: 16px; }
+}
+
+/* ---------- navigation ---------- */
+/* Brand left, links, one CTA right. At narrow the links collapse behind
+   .nav-toggle — a real disclosure, wired by the small script in
+   components.html. The toggle and the collapsed state appear ONLY when the
+   script has marked the nav [data-enhanced]: with JS off (or the script not
+   copied) the links simply stay visible and wrap — CSS alone never traps the
+   navigation. Priority+ variant: sites with 5+ links may keep the one or two
+   most-used links visible in the bar at narrow (outside .nav-links) and fold
+   the rest into the panel. */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); min-height: 64px; }
+.nav-links { display: flex; flex-wrap: wrap; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: var(--color-text); text-decoration: none; font-family: var(--font-ui); font-weight: 500; }
+.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--color-accent-text); }
+.brand { display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-heading); font-weight: 700; font-size: var(--step-1); color: var(--color-text); text-decoration: none; min-height: 44px; }
+.nav-toggle {
+  display: none; /* shown in the narrow band only on a [data-enhanced] nav */
+  align-items: center; gap: var(--space-2);
+  min-height: 44px; padding: 0 var(--space-4);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-surface); color: var(--color-text);
+  font-family: var(--font-ui); font-weight: 600; font-size: var(--step-0);
+  cursor: pointer;
+}
+.nav-toggle-icon { position: relative; width: 16px; height: 2px; background: currentColor; border-radius: 1px; }
+.nav-toggle-icon::before, .nav-toggle-icon::after { content: ""; position: absolute; left: 0; width: 16px; height: 2px; background: currentColor; border-radius: 1px; }
+.nav-toggle-icon::before { top: -5px; }
+.nav-toggle-icon::after { top: 5px; }
+/* At medium the full nav stays out — tighten the rhythm so brand + links +
+   CTA hold one row down to 640px, and never let .nav-links wrap internally. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .nav { gap: var(--space-3); }
+  .nav-links { flex-wrap: nowrap; gap: var(--space-4); }
+}
+/* The no-JS <details> toggle exists only at narrow — at medium/wide the
+   sibling .nav-links renders in the bar like any other nav. */
+.nav-details { display: none; }
+@media (max-width: 639px) {
+  .nav { flex-wrap: wrap; gap: var(--space-3); }
+  /* margin pushes the toggle (and the CTA after it) to the right edge */
+  .nav[data-enhanced] .nav-toggle { display: inline-flex; margin-inline-start: auto; }
+  /* The open state: .nav-links becomes a stacked row under the bar.
+     Closed = display:none, which also keeps the links out of the tab order
+     and the accessibility tree until they can be seen. */
+  .nav[data-enhanced] .nav-links {
+    order: 5; flex-basis: 100%; flex-wrap: nowrap;
+    flex-direction: column; align-items: stretch; gap: 0;
+    margin-top: var(--space-2); padding-block: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+  .nav[data-enhanced] .nav-links:not([data-open]) { display: none; }
+  .nav[data-enhanced] .nav-links a { display: flex; align-items: center; min-height: 44px; padding-inline: var(--space-3); border-radius: var(--radius-sm); }
+  .nav[data-enhanced] .nav-links a:hover { background: var(--color-surface); }
+
+  /* No-JS variant: a bare <details> toggle (its only child is the Menu
+     summary) — :has([open]) reveals the sibling .nav-links the same way the
+     enhanced variant does. Native disclosure, never dead, zero script. */
+  .nav-details { display: block; margin-inline-start: auto; }
+  .nav-details .nav-toggle { display: inline-flex; }
+  .nav-summary { list-style: none; }
+  .nav-summary::-webkit-details-marker { display: none; }
+  .nav:has(> .nav-details) .nav-links {
+    order: 5; flex-basis: 100%; flex-wrap: nowrap;
+    flex-direction: column; align-items: stretch; gap: 0;
+    margin-top: var(--space-2); padding-block: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    display: none;
+  }
+  .nav:has(> .nav-details[open]) .nav-links { display: flex; }
+  .nav:has(> .nav-details) .nav-links a { display: flex; align-items: center; min-height: 44px; padding-inline: var(--space-3); border-radius: var(--radius-sm); }
+  .nav:has(> .nav-details) .nav-links a:hover { background: var(--color-surface); }
+}
+
+/* ---------- hero patterns (pick ONE per page) ---------- */
+.hero { padding-block: var(--space-9) var(--space-8); }
+.hero h1 { max-width: 16ch; }
+.hero .lead { margin-top: var(--space-5); max-width: 48ch; }
+/* mark the CTA group .cta-row (base.css), not bare .cluster — it stacks
+   full-width at narrow instead of wrapping into a ragged pair */
+.hero .actions { margin-top: var(--space-6); }
+.hero-visual { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-surface); }
+.hero-type h1 { font-size: clamp(var(--step-5), 11vw, 10rem); max-width: none; line-height: 0.92; }
+
+/* ---------- surfaces ---------- */
+.panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.panel-plain { padding: var(--space-5) 0; border-top: 1px solid var(--color-border); }  /* use instead of cards for lists of features */
+.divider-list > * + * { border-top: 1px solid var(--color-border); }
+
+/* ---------- data ---------- */
+.stat { display: grid; gap: var(--space-1); }
+.stat-value { font-family: var(--font-heading); font-size: clamp(var(--step-2), 7vw, var(--step-4)); font-weight: var(--weight-heading); font-variant-numeric: tabular-nums; line-height: 1; }
+.stat-label { color: var(--color-muted); font-size: var(--step-n1); }
+.delta-up { color: var(--color-success); font-variant-numeric: tabular-nums; }
+.delta-down { color: var(--color-danger); font-variant-numeric: tabular-nums; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: var(--step-n1); }
+.table th, .table td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.table th { font-weight: 600; color: var(--color-muted); background: var(--color-surface); position: sticky; top: 0; }
+.table td.num, .table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table tbody tr:hover { background: var(--color-surface); }
+.table tbody tr:last-child td { border-bottom: 0; }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px var(--space-2); border-radius: var(--radius-pill); font-family: var(--font-ui); font-size: var(--step-n1); font-weight: 600; background: var(--color-surface); color: var(--color-muted); border: 1px solid var(--color-border); }
+.badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.badge-success { color: var(--color-success); }
+.badge-warning { color: var(--color-warning); }
+.badge-danger { color: var(--color-danger); }
+.badge-accent { color: var(--color-accent-text); background: var(--color-accent-soft); border-color: transparent; }
+
+.bars { display: grid; gap: var(--space-3); }
+.bar-row { display: grid; grid-template-columns: 8rem 1fr 4rem; gap: var(--space-3); align-items: center; font-size: var(--step-n1); }
+.bar-track { height: 12px; background: var(--color-surface); border-radius: var(--radius-pill); overflow: hidden; }
+.bar-fill { height: 100%; background: var(--color-muted); border-radius: inherit; }
+.bar-row.hi .bar-fill { background: var(--color-accent); }
+.bar-row .num { text-align: right; }
+
+/* ---------- feedback ---------- */
+.alert { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); border-left: 3px solid var(--color-accent); background: var(--color-accent-soft); }
+.alert-danger { border-left-color: var(--color-danger); background: color-mix(in oklab, var(--color-danger) 8%, var(--color-bg)); }
+.alert-success { border-left-color: var(--color-success); background: color-mix(in oklab, var(--color-success) 8%, var(--color-bg)); }
+.empty { display: grid; justify-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8) var(--space-5); border: 1px dashed var(--color-border); border-radius: var(--radius-lg); }
+.empty p { color: var(--color-muted); max-width: 40ch; }
+.skeleton { background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-border) 50%, var(--color-surface) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: var(--radius-sm); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.toast { position: fixed; right: var(--space-5); bottom: var(--space-5); padding: var(--space-3) var(--space-4); background: var(--color-text); color: var(--color-bg); border-radius: var(--radius-md); box-shadow: var(--shadow-2); }
+
+/* ---------- tabs ---------- */
+.tabs { display: flex; gap: var(--space-1); border-bottom: 1px solid var(--color-border); }
+.tab { padding: var(--space-3) var(--space-4); border: 0; background: none; color: var(--color-muted); font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--color-text); border-bottom-color: var(--color-accent); }
+
+/* ---------- dialog ---------- */
+.dialog { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); max-width: 480px; width: calc(100% - 2 * var(--space-5)); background: var(--color-bg); color: var(--color-text); box-shadow: var(--shadow-2); }
+.dialog::backdrop { background: rgb(0 0 0 / 0.4); }
+
+/* ---------- code ---------- */
+.code { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); overflow-x: auto; font-size: max(0.875rem, var(--step-n1)); line-height: 1.6; }
+kbd { border: 1px solid var(--color-border); border-bottom-width: 2px; border-radius: 4px; padding: 0 6px; font-size: 0.85em; }
+
+/* ---------- quote / footer ---------- */
+.quote { font-family: var(--font-heading); font-size: var(--step-3); line-height: 1.2; max-width: 28ch; margin: 0; }
+.quote-cite { margin-top: var(--space-4); color: var(--color-muted); font-style: normal; display: block; }
+.footer { border-top: 1px solid var(--color-border); padding-block: var(--space-7); color: var(--color-muted); font-size: var(--step-n1); }
+.footer a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; }

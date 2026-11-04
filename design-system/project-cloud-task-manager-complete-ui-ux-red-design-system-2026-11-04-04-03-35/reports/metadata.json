@@ -1,0 +1,16 @@
+{
+  "schema": "design-evidence/capture/1",
+  "kind": "file",
+  "source": "index.html",
+  "capture_id": "cap-20261104t040335z-3878",
+  "viewport": "1440x900",
+  "state": "default",
+  "ready_state": "complete",
+  "captured_at": "2026-11-04T04:03:38.261Z",
+  "final_url": "http://127.0.0.1:50134/index.html",
+  "theme": "light",
+  "screenshot": "thumbnail.png",
+  "measurement": "reports/dna.json",
+  "capture_sha256": "5b5a380812151541ab5ebac314993d0a336cd8aa3cb53a9315eb45048fd88f21",
+  "measured_sha256": "32b60dc9423111295fc300fc28c32d0e9ec0048ce02a3d61a681bccdac8884c2"
+}

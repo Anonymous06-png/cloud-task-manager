@@ -2,24 +2,39 @@
 {% load i18n %}
 
 {% block title %}{% translate "Log in" %} | Cloud Task Manager{% endblock %}
+{% block breadcrumb %}{% translate "Log in" %}{% endblock %}
 
 {% block content %}
-    <div class="auth-shell">
-        <div class="auth-card">
-            <p class="eyebrow">{% translate "Welcome back" %}</p>
-            <h1>{% translate "Log in" %}</h1>
-            <p class="version">{% translate "Pick up where you left off and keep your next steps moving." %}</p>
+    <div class="workspace-login">
+        <section class="login-form-panel" aria-labelledby="login-title">
+            <div class="login-form-content">
+                <p class="login-welcome">
+                    <span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+                    {% translate "Welcome back" %}
+                </p>
+                <h1 id="login-title">{% translate "Log in to your workspace" %}</h1>
+                <p class="login-description" id="login-description">{% translate "Pick up where you left off and keep your next steps moving." %}</p>
 
-            <form method="post" action="{% url 'tasks:login' %}" novalidate>
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="next" value="{{ next }}">
-                <button type="submit">{% translate "Log in" %}</button>
-            </form>
+                <form class="login-form" method="post" action="{% url 'tasks:login' %}" aria-describedby="login-description" novalidate>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <button class="login-submit" type="submit">
+                        {% translate "Log in" %}
+                        <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+                    </button>
+                </form>
 
-            <p class="auth-links">
-                {% translate "New here?" %} <a href="{% url 'tasks:register' %}">{% translate "Create your account" %}</a>.
-            </p>
-        </div>
+                <p class="login-register">
+                    {% translate "New here?" %} <a href="{% url 'tasks:register' %}">{% translate "Create your account" %}</a>
+                </p>
+            </div>
+            <a class="login-home" href="{% url 'tasks:home' %}">
+                <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
+                {% translate "Back to home" %}
+            </a>
+        </section>
+
+        {% include "includes/workspace_preview.html" %}
     </div>
 {% endblock %}

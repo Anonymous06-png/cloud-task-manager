@@ -1,0 +1,50 @@
+{
+  "schema": "design-evidence/task/1",
+  "task_id": "personal-tasks-redesign",
+  "mode": "artifact",
+  "task_type": "mockup",
+  "subject_kind": "sample",
+  "copy_touched": true,
+  "meaning_touched": true,
+  "evidence_root": "design-evidence/",
+  "project_root": "..",
+  "scope": {
+    "paths": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "tokens.css",
+      "tokens.json",
+      "assets/",
+      "HANDOFF.md",
+      "design-system/",
+      "screens/"
+    ],
+    "exclusions": [
+      ".agents/",
+      "Django",
+      "PostgreSQL",
+      "Docker"
+    ]
+  },
+  "materials": {
+    "expected": [
+      "mat_mw1k4ht5-dashboard-collapsed-dark",
+      "mat_mw1k4htn-dashboard-dark",
+      "mat_mw1k4hu6-dashboard-light",
+      "mat_mw1k4hum-settings-light",
+      "mat_mw1k4hux-task-list-light",
+      "mat_figma",
+      "mat_approved_dashboard_05j"
+    ],
+    "manifest": "design-evidence/materials.json"
+  },
+  "capture": {
+    "status": "exception",
+    "reason": "User prohibits screenshots and browser/backend tests; host preview review pending."
+  },
+  "claims": {
+    "table": "design-evidence/claims.json",
+    "dispositions": "design-evidence/content-dispositions.json"
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "schema": "design-evidence/materials/1",
+  "generated_at": "2026-11-04T03:29:17.519Z",
+  "items": [
+    {
+      "id": "mat_mw1k4ht5-dashboard-collapsed-dark",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": "mw1k4ht5-dashboard-collapsed-dark.png"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied as design reference",
+        "limits": "No screenshot pixels shipped in the interface."
+      },
+      "capture": {
+        "path": "materials/mat_mw1k4ht5-dashboard-collapsed-dark/mw1k4ht5-dashboard-collapsed-dark.png",
+        "sha256": "29decaab8027ae225651fdb33ae1f83d8ee93eb6e3f384eaedfb91959a5db113",
+        "bytes": 192524
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "image-header",
+        "extracted": "2880x1800px — dimensions only; palette/type are inference, never exact tokens; reference layout, labels and approximate green-neutral palette inspected in user attachments; hidden behavior is unknown.",
+        "confidence": "medium",
+        "governs": [
+          "style",
+          "content"
+        ]
+      }
+    },
+    {
+      "id": "mat_mw1k4htn-dashboard-dark",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": "mw1k4htn-dashboard-dark.png"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied as design reference",
+        "limits": "No screenshot pixels shipped in the interface."
+      },
+      "capture": {
+        "path": "materials/mat_mw1k4htn-dashboard-dark/mw1k4htn-dashboard-dark.png",
+        "sha256": "598d79924c7c04dc31df49e0e511e293aa00bfd44fd9409885a06a53594597c5",
+        "bytes": 212504
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "image-header",
+        "extracted": "2880x1800px — dimensions only; palette/type are inference, never exact tokens; reference layout, labels and approximate green-neutral palette inspected in user attachments; hidden behavior is unknown.",
+        "confidence": "medium",
+        "governs": [
+          "style",
+          "content"
+        ]
+      }
+    },
+    {
+      "id": "mat_mw1k4hu6-dashboard-light",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": "mw1k4hu6-dashboard-light.png"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied as design reference",
+        "limits": "No screenshot pixels shipped in the interface."
+      },
+      "capture": {
+        "path": "materials/mat_mw1k4hu6-dashboard-light/mw1k4hu6-dashboard-light.png",
+        "sha256": "45da3dc08bfcea67bd572e7b76ba3d1cff21e7025d2239cbebaa0a3098dbf9cf",
+        "bytes": 211163
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "image-header",
+        "extracted": "2880x1800px — dimensions only; palette/type are inference, never exact tokens; reference layout, labels and approximate green-neutral palette inspected in user attachments; hidden behavior is unknown.",
+        "confidence": "medium",
+        "governs": [
+          "style",
+          "content"
+        ]
+      }
+    },
+    {
+      "id": "mat_mw1k4hum-settings-light",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": "mw1k4hum-settings-light.png"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied as design reference",
+        "limits": "No screenshot pixels shipped in the interface."
+      },
+      "capture": {
+        "path": "materials/mat_mw1k4hum-settings-light/mw1k4hum-settings-light.png",
+        "sha256": "d9b9e1f2d08eeb32dc5a69a2dddeaa95d9f6509cef0b63d039152cbb0062650b",
+        "bytes": 169871
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "image-header",
+        "extracted": "2880x1800px — dimensions only; palette/type are inference, never exact tokens; reference layout, labels and approximate green-neutral palette inspected in user attachments; hidden behavior is unknown.",
+        "confidence": "medium",
+        "governs": [
+          "style",
+          "content"
+        ]
+      }
+    },
+    {
+      "id": "mat_mw1k4hux-task-list-light",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": "mw1k4hux-task-list-light.png"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied as design reference",
+        "limits": "No screenshot pixels shipped in the interface."
+      },
+      "capture": {
+        "path": "materials/mat_mw1k4hux-task-list-light/mw1k4hux-task-list-light.png",
+        "sha256": "13a37b55888aa4816d49cf6e4da77a29c7d1705014ac5d4e3d073efc70d56ffb",
+        "bytes": 191427
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "image-header",
+        "extracted": "2880x1800px — dimensions only; palette/type are inference, never exact tokens; reference layout, labels and approximate green-neutral palette inspected in user attachments; hidden behavior is unknown.",
+        "confidence": "medium",
+        "governs": [
+          "style",
+          "content"
+        ]
+      }
+    },
+    {
+      "id": "mat_figma",
+      "kind": "url",
+      "source": {
+        "kind": "url",
+        "url": "https://www.figma.com/design/yet2aySuPAwhOU1fCc2JSE"
+      },
+      "roles": [
+        "current-state"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "user supplied",
+        "limits": "Reference only"
+      },
+      "extraction": {
+        "status": "not-captured",
+        "tool": "none",
+        "extracted": "Supplied screenshot references used instead; no Figma file inspection or export claimed.",
+        "confidence": "low",
+        "governs": [
+          "none"
+        ]
+      }
+    },
+    {
+      "id": "mat_approved_dashboard_05j",
+      "kind": "image",
+      "source": {
+        "kind": "file",
+        "path": ".1design/attachments/mw1lm3ol-thumbnail.png"
+      },
+      "roles": [
+        "current-state",
+        "style-owned"
+      ],
+      "rights": "reference-only",
+      "permission": {
+        "basis": "User identifies this as the approved Dashboard",
+        "limits": "Use its layout and design language; do not redesign it."
+      },
+      "extraction": {
+        "status": "ok",
+        "tool": "conversation-image",
+        "extracted": "Approved compact green-neutral overview with fixed sidebar, breadcrumb/header, summary band, task/deadline panels and recent completion panel.",
+        "confidence": "high",
+        "governs": [
+          "style",
+          "constraints"
+        ]
+      }
+    }
+  ]
+}

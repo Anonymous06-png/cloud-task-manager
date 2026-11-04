@@ -1,68 +1,26 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{{ project_name }}{% endblock %}
+{% block title %}{% translate "Workspace" %} | {{ project_name }}{% endblock %}
+{% block breadcrumb %}{% translate "Home" %}{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <div class="hero-copy">
-            <p class="eyebrow">{% translate "A calmer way to get things done" %}</p>
-            <h1>{% translate "Make room for the work that matters." %}</h1>
-            <p class="lede">{% translate "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence." %}</p>
-            <div class="hero-actions">
-                {% if user.is_authenticated %}
-                    <a class="btn" href="{% url 'tasks:dashboard' %}">{% translate "Open your workspace" %}</a>
-                {% else %}
+    <div class="workspace-login">
+        <section class="login-form-panel" aria-labelledby="home-title">
+            <div class="login-form-content">
+                <p class="login-welcome">
+                    <span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+                    {% translate "Workspace" %}
+                </p>
+                <h1 id="home-title">{% translate "Make room for your best work." %}</h1>
+                <p class="login-description">{% translate "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence." %}</p>
+                <div class="hero-actions">
                     <a class="btn" href="{% url 'tasks:register' %}">{% translate "Create your workspace" %}</a>
                     <a class="btn secondary" href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>
-                {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="hero-mark" aria-label="Task workspace preview">
-            <strong>01<br>→<br>done</strong>
-            <span>{% translate "Small steps, visible progress" %}</span>
-        </div>
-    </section>
+        </section>
 
-    <section aria-labelledby="capabilities-heading">
-        <div class="section-heading">
-            <h2 id="capabilities-heading">{% translate "Keep the signal." %}</h2>
-            <p>{% translate "Everything you need for a focused task list." %}</p>
-        </div>
-        <div class="feature-grid">
-            <article class="feature-card">
-                <span class="feature-number">01</span>
-                <h3>{% translate "Capture quickly" %}</h3>
-                <p>{% translate "Add a task with the context, due date, and status you need to move forward." %}</p>
-            </article>
-            <article class="feature-card">
-                <span class="feature-number">02</span>
-                <h3>{% translate "See what is next" %}</h3>
-                <p>{% translate "Use clear pending and completed views to keep today’s priorities in reach." %}</p>
-            </article>
-            <article class="feature-card">
-                <span class="feature-number">03</span>
-                <h3>{% translate "Own your space" %}</h3>
-                <p>{% translate "Your workspace is private to your account, with simple session-based access." %}</p>
-            </article>
-        </div>
-    </section>
-
-    <section aria-labelledby="stack-heading">
-        <div class="section-heading">
-            <h2 id="stack-heading">{% translate "Built for reliability." %}</h2>
-            <p>{% translate "Simple foundations for a dependable demo." %}</p>
-        </div>
-        <div class="tech-stack" aria-label="{% translate 'Technology stack' %}">
-            <span class="tech-badge">Django 5.2</span>
-            <span class="tech-badge">PostgreSQL</span>
-            <span class="tech-badge">{% translate "Docker-ready" %}</span>
-            <span class="tech-badge">{% translate "Session security" %}</span>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <p>{{ version }} · Cloud Task Manager</p>
-        <p><a href="/health/">{% translate "Service health" %}</a></p>
-    </footer>
+        {% include "includes/workspace_preview.html" %}
+    </div>
 {% endblock %}

@@ -22,17 +22,11 @@ from .models import Task
 
 
 def home(request):
-    """Public landing page with basic project information."""
-    context = {
-        'project_name': 'Cloud Task Manager',
-        'version': '1.1.0-auth',
-        'features': [
-            'User registration and login (session based)',
-            'Task management (coming soon)',
-            'Cloud deployment',
-        ],
-    }
-    return render(request, 'home.html', context)
+    """Show the public workspace entry or resume the signed-in workspace."""
+    if request.user.is_authenticated:
+        return redirect('tasks:dashboard')
+
+    return render(request, 'home.html', {'project_name': 'Cloud Task Manager'})
 
 
 def language_settings(request):

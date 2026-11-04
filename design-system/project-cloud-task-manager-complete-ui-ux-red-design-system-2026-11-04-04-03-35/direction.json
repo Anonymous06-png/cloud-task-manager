@@ -1,0 +1,54 @@
+{
+  "id": "project-cloud-task-manager-complete-ui-ux-red",
+  "name": "PROJECT: Cloud Task Manager — Complete UI/UX Red…",
+  "status": "user-directed",
+  "review": "user-directed",
+  "learned_from": "index.html",
+  "learned_on": "2026-11-04",
+  "use_for": [
+    "the design this was extracted from",
+    "follow-up pieces in the same family"
+  ],
+  "avoid_for": [
+    "other subjects — this records one measured design, not a brand strategy"
+  ],
+  "mood": "compact light hairline",
+  "mode": "light",
+  "colors": {
+    "bg": "#FAFBF9",
+    "surface": "#FFFFFF",
+    "text": "#242E2A",
+    "muted": "#637067",
+    "border": "#E3E8E2",
+    "accent": "#25765B",
+    "success": "#15803D",
+    "warning": "#A16207",
+    "danger": "#B91C1C"
+  },
+  "fonts": {
+    "heading": "Inter",
+    "body": "Inter",
+    "ui": "Inter",
+    "mono": "JetBrains Mono"
+  },
+  "fallbacks": {
+    "serif": "Georgia, 'Times New Roman', serif",
+    "sans": "system-ui, -apple-system, 'Segoe UI', sans-serif"
+  },
+  "type": {
+    "base": 13,
+    "ratio": 1.174,
+    "heading_weight": 650,
+    "heading_tracking": "-0.035em",
+    "body_line": 1.5
+  },
+  "radius": {
+    "sm": 6,
+    "md": 8,
+    "lg": 12
+  },
+  "shadow": "hairline",
+  "density": "compact",
+  "motion": "minimal",
+  "signature": "Measured from index.html: a light page on #FAFBF9 with #242E2A text and #25765B accent, body 13px on a 1.174 scale, corners 6/8/12px, and 5 shadowed and 29 bordered elements."
+}
