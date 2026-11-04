@@ -1,0 +1,43 @@
+{% load i18n %}
+<li class="task-row {% if row_detail %}list-row{% endif %} {% if task.status == 'completed' %}is-complete completed{% endif %}">
+  <form method="post" action="{% url 'tasks:task_toggle' task.pk %}" class="toggle-form">
+    {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <button type="submit" class="check-button task-checkbox" aria-label="{% if task.status == 'completed' %}{% translate 'Mark incomplete' %}{% else %}{% translate 'Mark completed' %}{% endif %}" aria-pressed="{% if task.status == 'completed' %}true{% else %}false{% endif %}">
+      <span class="check-box"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+    </button>
+  </form>
+  <div class="task-info task-row-main">
+    <a class="task-title" href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a>
+    {% if row_detail %}
+      <p class="description-preview">{{ task.description|default:_('No notes added yet.') }}</p>
+      <small class="mobile-task-meta">{{ task.get_status_display }} · {% if task.due_date %}{{ task.due_date|date:'d/m/Y' }}{% else %}{% translate 'No due date' %}{% endif %}</small>
+    {% else %}
+      <div class="task-meta">
+        <span class="date-chip {% if task.due_date and today and task.due_date < today and task.status != 'completed' %}overdue{% endif %}">
+          <svg class="icon" aria-hidden="true"><use href="{% if task.due_date and today and task.due_date < today and task.status != 'completed' %}#i-circle-alert{% else %}#i-calendar{% endif %}"/></svg>
+          {% if task.due_date %}<small>{{ task.due_date|date:'d/m/Y' }}</small>{% elif task.status == 'completed' %}<small>{% translate 'Completed' %}</small>{% else %}<small>{% translate 'No due date' %}</small>{% endif %}
+        </span>
+      </div>
+    {% endif %}
+  </div>
+  {% if row_detail %}
+    <span class="badge {% if task.status == 'completed' %}green completed{% else %}pending{% endif %}">
+      <svg class="icon" aria-hidden="true"><use href="{% if task.status == 'completed' %}#i-circle-check{% else %}#i-circle-dashed{% endif %}"/></svg>
+      {{ task.get_status_display }}
+    </span>
+    <span class="row-due list-date {% if task.due_date and today and task.due_date < today and task.status != 'completed' %}overdue{% endif %}">
+      <svg class="icon" aria-hidden="true"><use href="{% if task.due_date %}#i-calendar{% else %}#i-minus{% endif %}"/></svg>
+      <span>{% if task.due_date %}{{ task.due_date|date:'d/m/Y' }}{% else %}{% translate 'No due date' %}{% endif %}</span>
+    </span>
+  {% endif %}
+  <details class="task-menu">
+    <summary class="icon-button" aria-label="{% translate 'Task actions' %}" title="{% translate 'Task actions' %}">
+      <svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg>
+    </summary>
+    <div class="task-menu-pop">
+      <a href="{% url 'tasks:task_detail' task.pk %}">{% translate 'View' %}</a>
+      <a href="{% url 'tasks:task_update' task.pk %}">{% translate 'Edit' %}</a>
+      <a class="destructive" href="{% url 'tasks:task_delete' task.pk %}">{% translate 'Delete' %}</a>
+    </div>
+  </details>
+</li>

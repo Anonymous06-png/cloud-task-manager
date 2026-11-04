@@ -1,0 +1,74 @@
+{% load i18n %}
+        <figure class="login-preview" aria-labelledby="login-preview-title" aria-describedby="login-preview-caption">
+            <div class="login-preview-intro">
+                <p class="login-preview-eyebrow">{% translate "A little focus. A lot of progress." %}</p>
+                <h2 id="login-preview-title">{% translate "Make room for your best work." %}</h2>
+                <p>{% translate "Your tasks, your priorities, a clearer day ahead." %}</p>
+            </div>
+
+            <div class="login-preview-board">
+                <div class="login-preview-brand">
+                    <span class="login-preview-wordmark">
+                        <span class="login-preview-logo"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+                        {% translate "Workspace" %}
+                    </span>
+                    <span class="login-preview-sample">{% translate "Sample workspace" %}</span>
+                </div>
+
+                <div class="login-preview-heading">
+                    <div>
+                        <h3>{% translate "Your task overview" %}</h3>
+                    </div>
+                    <span class="login-preview-calendar" aria-hidden="true"><svg class="icon"><use href="#i-calendar"/></svg></span>
+                </div>
+
+                <div class="login-preview-progress">
+                    <div class="login-preview-progress-heading">
+                        <div>
+                            <p id="login-progress-label">{% translate "Task progress" %}</p>
+                            <p class="login-preview-progress-detail">{% translate "2 of 3 tasks completed" %}</p>
+                        </div>
+                        <strong>67<span>%</span></strong>
+                    </div>
+                    <progress class="login-preview-meter" max="3" value="2" aria-labelledby="login-progress-label">67%</progress>
+                    <div class="login-preview-legend">
+                        <span><span class="login-preview-dot login-preview-dot-complete" aria-hidden="true"></span>{% translate "Completed" %} <strong>02</strong></span>
+                        <span><span class="login-preview-dot" aria-hidden="true"></span>{% translate "Pending" %} <strong>01</strong></span>
+                    </div>
+                </div>
+
+                <p class="login-preview-list-label">{% translate "A clear plan for today" %}</p>
+                <ul class="login-preview-tasks">
+                    <li class="login-preview-task">
+                        <span class="login-preview-task-icon login-preview-task-pending" aria-hidden="true"><svg class="icon"><use href="#i-circle-dashed"/></svg></span>
+                        <div class="login-preview-task-copy">
+                            <p>{% translate "Review the launch checklist" %}</p>
+                            <span>{% translate "Check the final details before launch." %}</span>
+                        </div>
+                        <span class="login-preview-status login-preview-status-pending">{% translate "Pending" %}</span>
+                    </li>
+                    <li class="login-preview-task login-preview-task-complete">
+                        <span class="login-preview-task-icon" aria-hidden="true"><svg class="icon"><use href="#i-circle-check"/></svg></span>
+                        <div class="login-preview-task-copy">
+                            <p>{% translate "Prepare the project brief" %}</p>
+                            <span>{% translate "Goals, scope and next steps, all in place." %}</span>
+                        </div>
+                        <span class="login-preview-status">{% translate "Completed" %}</span>
+                    </li>
+                    <li class="login-preview-task login-preview-task-complete">
+                        <span class="login-preview-task-icon" aria-hidden="true"><svg class="icon"><use href="#i-circle-check"/></svg></span>
+                        <div class="login-preview-task-copy">
+                            <p>{% translate "Plan the week ahead" %}</p>
+                            <span>{% translate "A little structure for what comes next." %}</span>
+                        </div>
+                        <span class="login-preview-status">{% translate "Completed" %}</span>
+                    </li>
+                </ul>
+                <div class="login-preview-note">
+                    <svg class="icon" aria-hidden="true"><use href="#i-list-check"/></svg>
+                    <span>{% translate "Small steps, visible progress" %}</span>
+                </div>
+            </div>
+
+            <figcaption id="login-preview-caption">{% translate "Illustrative preview with sample tasks, not your account data." %}</figcaption>
+        </figure>

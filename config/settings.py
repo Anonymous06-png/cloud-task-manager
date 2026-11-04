@@ -167,7 +167,6 @@ if not DEBUG:
 
 # Login URLs
 LOGIN_URL = '/login/'
-# Successful login lands on the personal area, logout returns to the public
-# home page.
+# Successful login lands on the personal area, logout returns to the login page.
 LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'

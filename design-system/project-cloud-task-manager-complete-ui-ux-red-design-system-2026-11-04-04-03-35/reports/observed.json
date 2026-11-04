@@ -1,0 +1,146 @@
+{
+  "schema": "1design/design-system-observed/1",
+  "generatedAt": "2026-11-04T04:03:38.648Z",
+  "page": "index.html",
+  "note": "Structure observed in the rendered source page. Not a component inventory.",
+  "title": "Tổng quan · Không gian làm việc",
+  "landmarks": {
+    "header": 1,
+    "nav": 2,
+    "main": 1,
+    "aside": 2,
+    "footer": 1,
+    "section": 5
+  },
+  "heading_levels": {
+    "h1": 1,
+    "h2": 4
+  },
+  "elements": {
+    "buttons": 34,
+    "links": 2,
+    "images": 39
+  },
+  "repeated_classes": [
+    {
+      "class": "icon",
+      "count": 39
+    },
+    {
+      "class": "task-title",
+      "count": 10
+    },
+    {
+      "class": "icon-button",
+      "count": 8
+    },
+    {
+      "class": "check-box",
+      "count": 5
+    },
+    {
+      "class": "check-button",
+      "count": 5
+    },
+    {
+      "class": "date-chip",
+      "count": 5
+    },
+    {
+      "class": "nav-item",
+      "count": 5
+    },
+    {
+      "class": "nav-label",
+      "count": 5
+    },
+    {
+      "class": "task-info",
+      "count": 5
+    },
+    {
+      "class": "task-meta",
+      "count": 5
+    },
+    {
+      "class": "task-row",
+      "count": 5
+    },
+    {
+      "class": "badge",
+      "count": 3
+    },
+    {
+      "class": "deadline",
+      "count": 3
+    },
+    {
+      "class": "deadline-copy",
+      "count": 3
+    },
+    {
+      "class": "deadline-date",
+      "count": 3
+    },
+    {
+      "class": "metric",
+      "count": 3
+    },
+    {
+      "class": "metric-label",
+      "count": 3
+    },
+    {
+      "class": "metric-sub",
+      "count": 3
+    },
+    {
+      "class": "metric-value",
+      "count": 3
+    },
+    {
+      "class": "panel",
+      "count": 3
+    },
+    {
+      "class": "panel-heading",
+      "count": 3
+    },
+    {
+      "class": "row",
+      "count": 3
+    },
+    {
+      "class": "text-button",
+      "count": 3
+    },
+    {
+      "class": "avatar",
+      "count": 2
+    },
+    {
+      "class": "eyebrow",
+      "count": 2
+    },
+    {
+      "class": "nav-count",
+      "count": 2
+    },
+    {
+      "class": "nav-items",
+      "count": 2
+    },
+    {
+      "class": "priority-label",
+      "count": 2
+    },
+    {
+      "class": "recent-item",
+      "count": 2
+    },
+    {
+      "class": "red",
+      "count": 2
+    }
+  ]
+}

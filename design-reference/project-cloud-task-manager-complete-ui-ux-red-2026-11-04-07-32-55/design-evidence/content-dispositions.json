@@ -1,0 +1,15 @@
+{
+  "scope": "New standalone design artifact; no application source copy was edited.",
+  "dispositions": [
+    {
+      "source": "Supplied screenshots",
+      "action": "adapted",
+      "reason": "Preserved task names and settings concepts; tightened Vietnamese microcopy and supplied matching English design copy."
+    },
+    {
+      "source": "Task counts",
+      "action": "recomputed",
+      "reason": "Counts derive from the twelve explicit demonstration tasks in app.js, including four deadlines within seven days."
+    }
+  ]
+}

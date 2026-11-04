@@ -1,0 +1,111 @@
+{
+  "schema": "1design/design-system-export/1",
+  "generatedAt": "2026-11-04T04:03:38.648Z",
+  "ok": true,
+  "page": "index.html",
+  "system": {
+    "id": "project-cloud-task-manager-complete-ui-ux-red",
+    "name": "PROJECT: Cloud Task Manager — Complete UI/UX Red…",
+    "mode": "light",
+    "colors": {
+      "bg": "#FAFBF9",
+      "surface": "#FFFFFF",
+      "text": "#242E2A",
+      "muted": "#637067",
+      "border": "#E3E8E2",
+      "accent": "#25765B"
+    },
+    "fonts": {
+      "heading": "Inter",
+      "body": "Inter",
+      "ui": "Inter",
+      "mono": "JetBrains Mono"
+    },
+    "swatches": [
+      "#FAFBF9",
+      "#FFFFFF",
+      "#242E2A",
+      "#637067",
+      "#E3E8E2",
+      "#25765B",
+      "#15803D",
+      "#A16207",
+      "#B91C1C",
+      "#F0F9F5",
+      "#DEF0E8",
+      "#BFE0D2",
+      "#97CBB5",
+      "#6EB297",
+      "#4A977B",
+      "#337F64",
+      "#22664F",
+      "#154E3B",
+      "#0B3628"
+    ],
+    "radius": {
+      "sm": 6,
+      "md": 8,
+      "lg": 12
+    },
+    "tokenCount": 64,
+    "contrastFixes": []
+  },
+  "files": [
+    {
+      "file": "design-system.json",
+      "status": "written",
+      "bytes": 731
+    },
+    {
+      "file": "tokens.css",
+      "status": "written",
+      "bytes": 2927
+    },
+    {
+      "file": "tokens.json",
+      "status": "written",
+      "bytes": 2069
+    },
+    {
+      "file": "direction.json",
+      "status": "written",
+      "bytes": 1451
+    },
+    {
+      "file": "DESIGN.md",
+      "status": "written",
+      "bytes": 5450
+    },
+    {
+      "file": "components.html",
+      "status": "written",
+      "bytes": 12999
+    },
+    {
+      "file": "thumbnail.png",
+      "status": "written",
+      "bytes": 140263
+    },
+    {
+      "file": "reports/dna.json",
+      "status": "written",
+      "bytes": 2246
+    },
+    {
+      "file": "reports/observed.json",
+      "status": "written",
+      "bytes": 2271
+    },
+    {
+      "file": "reports/metadata.json",
+      "status": "written",
+      "bytes": 573
+    }
+  ],
+  "notes": [
+    "Editorial fields (name, mood, signature, use_for, avoid_for) are descriptions of the measurements, not brand strategy — rewrite them before publishing this as a brand system.",
+    "No component inventory: components.html records the structure observed in the source page, and the package ships no components.json because an honest component spec cannot be read off rendered output.",
+    "Feedback colors (success, warning, danger), the motion posture and the mono font are kit defaults for this mode, not measurements."
+  ],
+  "importable": true
+}

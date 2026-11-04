@@ -8,6 +8,7 @@ import secrets
 
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
+from django.utils.translation import gettext as _
 from django.urls import reverse
 
 # Test-only fixtures, generated at runtime so that no credential literals
@@ -53,7 +54,7 @@ class RegistrationTests(TestCase):
         self.assertFormError(
             response.context['form'],
             'username',
-            'A user with that username already exists.',
+            _('A user with that username already exists.'),
         )
         self.assertEqual(User.objects.filter(username='taken').count(), 1)
         self.assertNotIn('_auth_user_id', self.client.session)
@@ -112,9 +113,10 @@ class LoginTests(TestCase):
         })
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            'Please enter a correct username and password',
+        self.assertTrue(response.context['form'].non_field_errors())
+        self.assertEqual(
+            response.context['form'].errors.as_data()['__all__'][0].code,
+            'invalid_login',
         )
         self.assertNotIn('_auth_user_id', self.client.session)
 
@@ -142,7 +144,7 @@ class LogoutTests(TestCase):
 
         response = self.client.post(reverse('tasks:logout'))
 
-        self.assertRedirects(response, reverse('tasks:home'))
+        self.assertRedirects(response, reverse('tasks:login'))
         self.assertNotIn('_auth_user_id', self.client.session)
 
     def test_logout_requires_post(self):
@@ -210,7 +212,8 @@ class ProtectedAreaTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'alice')
-        self.assertContains(response, 'Dashboard')
+        self.assertTemplateUsed(response, 'dashboard.html')
+        self.assertContains(response, _('Overview'))
 
 
 class PublicEndpointTests(TestCase):
@@ -228,3 +231,63 @@ class PublicEndpointTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Cloud Task Manager')
+        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, 'includes/workspace_preview.html')
+        self.assertContains(response, 'class="workspace-login"')
+        self.assertNotContains(response, 'class="tech-stack"')
+        for name in ('login', 'register'):
+            url = reverse(f'tasks:{name}')
+            self.assertContains(response, f'href="{url}"')
+            self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_authenticated_entry_pages_redirect_to_dashboard(self):
+        user = User.objects.create_user(username='entry-user', password=VALID_PASSWORD)
+        self.client.force_login(user)
+        for name in ('home', 'login', 'register'):
+            with self.subTest(page=name):
+                response = self.client.get(reverse(f'tasks:{name}'), follow=True)
+                self.assertEqual(response.redirect_chain, [('/dashboard/', 302)])
+                self.assertTemplateUsed(response, 'dashboard.html')
+
+    def test_login_logout_entry_journey(self):
+        user = User.objects.create_user(username='journey-user', password=VALID_PASSWORD)
+        self.assertEqual(self.client.get('/').status_code, 200)
+        response = self.client.post('/login/', {
+            'username': user.username, 'password': VALID_PASSWORD,
+        }, follow=True)
+        self.assertEqual(response.redirect_chain, [('/dashboard/', 302)])
+        self.assertTemplateUsed(response, 'dashboard.html')
+        response = self.client.post('/logout/', follow=True)
+        self.assertEqual(response.redirect_chain, [('/login/', 302)])
+        self.assertTemplateUsed(response, 'registration/login.html')
+        self.assertTemplateUsed(response, 'includes/workspace_preview.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
+        self.assertRedirects(self.client.get('/dashboard/'), '/login/?next=/dashboard/')
+        self.assertTemplateUsed(self.client.get('/'), 'home.html')
+
+    def test_protected_task_routes_still_require_login(self):
+        routes = [
+            ('task_list', ()), ('task_create', ()), ('task_detail', (1,)),
+            ('task_update', (1,)), ('task_delete', (1,)), ('task_toggle', (1,)),
+        ]
+        for name, args in routes:
+            with self.subTest(page=name):
+                url = reverse(f'tasks:{name}', args=args)
+                response = self.client.post(url) if name == 'task_toggle' else self.client.get(url)
+                self.assertRedirects(response, f'/login/?next={url}')
+
+    def test_logout_without_csrf_keeps_session(self):
+        user = User.objects.create_user(username='csrf-user', password=VALID_PASSWORD)
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(user)
+        response = client.post('/logout/')
+        self.assertEqual(response.status_code, 403)
+        self.assertIn('_auth_user_id', client.session)
+
+    def test_login_rejects_external_next(self):
+        user = User.objects.create_user(username='redirect-user', password=VALID_PASSWORD)
+        response = self.client.post('/login/', {
+            'username': user.username, 'password': VALID_PASSWORD,
+            'next': 'https://untrusted.example/other/',
+        })
+        self.assertRedirects(response, '/dashboard/')

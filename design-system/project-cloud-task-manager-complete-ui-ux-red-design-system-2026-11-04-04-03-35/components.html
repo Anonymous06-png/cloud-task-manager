@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROJECT: Cloud Task Manager — Complete UI/UX Red… — tokens and observed structure</title>
+<link rel="stylesheet" href="tokens.css">
+<!-- The measured families, so the specimens below show the real typefaces. Drop this line
+     and the page still renders correctly on the fallback stacks in tokens.css. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap">
+<style>
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); font-size: var(--step-0); line-height: var(--leading-body); }
+  main { max-width: 1040px; margin: 0 auto; padding: var(--space-7) var(--space-5) var(--space-9); }
+  h1, h2, h3 { font-family: var(--font-heading); font-weight: var(--weight-heading); letter-spacing: var(--tracking-heading); line-height: var(--leading-heading); }
+  h1 { font-size: var(--step-4); margin: 0 0 var(--space-3); }
+  h2 { font-size: var(--step-2); margin: var(--space-8) 0 var(--space-4); }
+  h3 { font-size: var(--step-1); margin: var(--space-6) 0 var(--space-3); }
+  p { max-width: var(--measure); }
+  .lede, .note { color: var(--color-muted); }
+  .note { font-size: var(--step-n1); }
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .sw { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+  .sw .chip { height: 72px; }
+  .sw .meta { padding: var(--space-3); font-family: var(--font-mono); font-size: var(--step-n2); }
+  .sw .meta b { display: block; font-family: var(--font-ui); font-size: var(--step-n1); font-weight: 600; margin-bottom: 2px; }
+  .ramp { display: grid; grid-template-columns: repeat(10, 1fr); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+  .ramp div { padding: var(--space-4) var(--space-2); font-family: var(--font-mono); font-size: 10px; text-align: center; }
+  table { border-collapse: collapse; width: 100%; font-size: var(--step-n1); }
+  th, td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border); }
+  th { font-family: var(--font-ui); color: var(--color-muted); font-weight: 600; }
+  td.n { font-family: var(--font-mono); }
+  .specimen { margin: var(--space-3) 0; font-family: var(--font-heading); line-height: var(--leading-heading); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .samples { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+  .samples figure { margin: 0; }
+  .samples .box { width: 132px; height: 84px; background: var(--color-surface); border: 1px solid var(--color-border); }
+  .samples figcaption { margin-top: var(--space-2); font-family: var(--font-mono); font-size: var(--step-n2); color: var(--color-muted); }
+  .bar { height: 10px; border-radius: var(--radius-pill); background: var(--color-accent); }
+  .callout { border: 1px solid var(--color-border); border-left: 3px solid var(--color-accent); border-radius: var(--radius-md); background: var(--color-surface); padding: var(--space-4) var(--space-5); }
+  .btn { font-family: var(--font-ui); font-size: var(--step-n1); border: 0; border-radius: var(--radius-md); height: var(--control-md); padding: 0 var(--space-5); background: var(--color-accent); color: var(--color-on-accent); }
+  .btn.ghost { background: transparent; color: var(--color-accent-text); border: 1px solid var(--color-border); }
+  code { font-family: var(--font-mono); font-size: 0.92em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>PROJECT: Cloud Task Manager — Complete UI/UX Red…</h1>
+  <p class="lede">Every token in <code>tokens.css</code>, rendered. Measured from
+  <code>index.html</code> on 2026-11-04 — compact light hairline, 64 tokens.</p>
+
+  <h2>Color roles</h2>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#FAFBF9"></div><div class="meta"><b>--color-bg</b>#FAFBF9</div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF"></div><div class="meta"><b>--color-surface</b>#FFFFFF</div></div>
+    <div class="sw"><div class="chip" style="background:#242E2A"></div><div class="meta"><b>--color-text</b>#242E2A</div></div>
+    <div class="sw"><div class="chip" style="background:#637067"></div><div class="meta"><b>--color-muted</b>#637067</div></div>
+    <div class="sw"><div class="chip" style="background:#E3E8E2"></div><div class="meta"><b>--color-border</b>#E3E8E2</div></div>
+    <div class="sw"><div class="chip" style="background:#25765B"></div><div class="meta"><b>--color-accent</b>#25765B</div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF"></div><div class="meta"><b>--color-on-accent</b>#FFFFFF</div></div>
+    <div class="sw"><div class="chip" style="background:#25765B"></div><div class="meta"><b>--color-accent-text</b>#25765B</div></div>
+    <div class="sw"><div class="chip" style="background:#15803D"></div><div class="meta"><b>--color-success</b>#15803D</div></div>
+    <div class="sw"><div class="chip" style="background:#A16207"></div><div class="meta"><b>--color-warning</b>#A16207</div></div>
+    <div class="sw"><div class="chip" style="background:#B91C1C"></div><div class="meta"><b>--color-danger</b>#B91C1C</div></div>
+  </div>
+
+  <h3>Accent scale</h3>
+  <div class="ramp">
+    <div style="background:#F0F9F5;color:#111111">50<br>#F0F9F5</div>
+    <div style="background:#DEF0E8;color:#111111">100<br>#DEF0E8</div>
+    <div style="background:#BFE0D2;color:#111111">200<br>#BFE0D2</div>
+    <div style="background:#97CBB5;color:#111111">300<br>#97CBB5</div>
+    <div style="background:#6EB297;color:#111111">400<br>#6EB297</div>
+    <div style="background:#4A977B;color:#FFFFFF">500<br>#4A977B</div>
+    <div style="background:#337F64;color:#FFFFFF">600<br>#337F64</div>
+    <div style="background:#22664F;color:#FFFFFF">700<br>#22664F</div>
+    <div style="background:#154E3B;color:#FFFFFF">800<br>#154E3B</div>
+    <div style="background:#0B3628;color:#FFFFFF">900<br>#0B3628</div>
+  </div>
+
+  <h2>Type scale</h2>
+  <p class="note">Base 13px · ratio 1.174 · heading weight 650 · tracking -0.035em</p>
+  <div class="specimen" style="font-size:var(--step-6)">step-6 · 34px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-5)">step-5 · 29px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-4)">step-4 · 25px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-3)">step-3 · 21px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-2)">step-2 · 18px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-1)">step-1 · 15px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-0)">step-0 · 13px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-n1)">step-n1 · 12px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <div class="specimen" style="font-size:var(--step-n2)">step-n2 · 12px · PROJECT: Cloud Task Manager — Complete UI/UX Red…</div>
+  <p style="font-family:var(--font-body)">Body copy in <code>--font-body</code> at <code>--step-0</code>, set to <code>--measure</code> so a line stays readable. This is the size and the line height the source page actually used.</p>
+  <p class="note" style="font-family:var(--font-mono)">Mono sample in <code>--font-mono</code>: 0123456789 iIlL1 oO0</p>
+
+  <h2>Radius, depth, controls</h2>
+  <div class="samples">
+    <figure><div class="box" style="border-radius:var(--radius-sm)"></div><figcaption>--radius-sm · 6px</figcaption></figure>
+    <figure><div class="box" style="border-radius:var(--radius-md)"></div><figcaption>--radius-md · 8px</figcaption></figure>
+    <figure><div class="box" style="border-radius:var(--radius-lg)"></div><figcaption>--radius-lg · 12px</figcaption></figure>
+    <figure><div class="box" style="border-radius:var(--radius-pill)"></div><figcaption>--radius-pill · 999px</figcaption></figure>
+    <figure><div class="box" style="box-shadow:var(--shadow-1);border-radius:var(--radius-md)"></div><figcaption>--shadow-1 · hairline</figcaption></figure>
+    <figure><div class="box" style="box-shadow:var(--shadow-2);border-radius:var(--radius-md)"></div><figcaption>--shadow-2 · hairline</figcaption></figure>
+  </div>
+  <div class="samples" style="margin-top:var(--space-5);align-items:center">
+    <button class="btn">--control-md</button>
+    <button class="btn ghost">accent as text</button>
+    <div style="flex:1;min-width:160px"><div class="bar"></div></div>
+  </div>
+  <p class="note">Motion posture <code>minimal</code>: <code>--dur-fast</code>, <code>--dur-slow</code>, <code>--ease</code>.
+  Density <code>compact</code>: <code>--control-sm/md/lg</code>.</p>
+
+  <h2>Observed structure</h2>
+  <div class="callout">
+    <p><strong>Observed in the source, not a specified component inventory.</strong> These are
+    the landmarks, element counts and repeated class names found on
+    <code>index.html</code>. A class name that appears twice is a repetition, not a
+    component with variants, states and token bindings — this package ships no
+    <code>components.json</code> because an honest one cannot be read off a rendered page.</p>
+  </div>
+  <h3>Landmarks and elements observed</h3>
+  <table><thead><tr><th>What</th><th>Count</th></tr></thead><tbody>
+    <tr><td>header</td><td class="n">1</td></tr>
+    <tr><td>nav</td><td class="n">2</td></tr>
+    <tr><td>main</td><td class="n">1</td></tr>
+    <tr><td>aside</td><td class="n">2</td></tr>
+    <tr><td>footer</td><td class="n">1</td></tr>
+    <tr><td>section</td><td class="n">5</td></tr>
+    <tr><td>h1</td><td class="n">1</td></tr>
+    <tr><td>h2</td><td class="n">4</td></tr>
+    <tr><td>buttons</td><td class="n">34</td></tr>
+    <tr><td>links</td><td class="n">2</td></tr>
+    <tr><td>images</td><td class="n">39</td></tr>
+  </tbody></table>
+  <h3>Repeated class names observed</h3>
+  <table><thead><tr><th>Class</th><th>Times used</th></tr></thead><tbody>
+    <tr><td class="n">.icon</td><td class="n">39</td></tr>
+    <tr><td class="n">.task-title</td><td class="n">10</td></tr>
+    <tr><td class="n">.icon-button</td><td class="n">8</td></tr>
+    <tr><td class="n">.check-box</td><td class="n">5</td></tr>
+    <tr><td class="n">.check-button</td><td class="n">5</td></tr>
+    <tr><td class="n">.date-chip</td><td class="n">5</td></tr>
+    <tr><td class="n">.nav-item</td><td class="n">5</td></tr>
+    <tr><td class="n">.nav-label</td><td class="n">5</td></tr>
+    <tr><td class="n">.task-info</td><td class="n">5</td></tr>
+    <tr><td class="n">.task-meta</td><td class="n">5</td></tr>
+    <tr><td class="n">.task-row</td><td class="n">5</td></tr>
+    <tr><td class="n">.badge</td><td class="n">3</td></tr>
+    <tr><td class="n">.deadline</td><td class="n">3</td></tr>
+    <tr><td class="n">.deadline-copy</td><td class="n">3</td></tr>
+    <tr><td class="n">.deadline-date</td><td class="n">3</td></tr>
+    <tr><td class="n">.metric</td><td class="n">3</td></tr>
+    <tr><td class="n">.metric-label</td><td class="n">3</td></tr>
+    <tr><td class="n">.metric-sub</td><td class="n">3</td></tr>
+    <tr><td class="n">.metric-value</td><td class="n">3</td></tr>
+    <tr><td class="n">.panel</td><td class="n">3</td></tr>
+    <tr><td class="n">.panel-heading</td><td class="n">3</td></tr>
+    <tr><td class="n">.row</td><td class="n">3</td></tr>
+    <tr><td class="n">.text-button</td><td class="n">3</td></tr>
+    <tr><td class="n">.avatar</td><td class="n">2</td></tr>
+    <tr><td class="n">.eyebrow</td><td class="n">2</td></tr>
+    <tr><td class="n">.nav-count</td><td class="n">2</td></tr>
+    <tr><td class="n">.nav-items</td><td class="n">2</td></tr>
+    <tr><td class="n">.priority-label</td><td class="n">2</td></tr>
+    <tr><td class="n">.recent-item</td><td class="n">2</td></tr>
+    <tr><td class="n">.red</td><td class="n">2</td></tr>
+  </tbody></table>
+
+  <h2>What is measured and what is not</h2>
+  <p><code>DESIGN.md</code> carries the full list. In short: colors, fonts, sizes, radii and depth were
+  measured; the name, mood, signature, "use for", feedback colors, motion posture and mono
+  font are defaults or restatements, and a human should rewrite them before this is
+  published as a brand system.</p>
+  <p class="note">Capture cap-20261104t040335z-3878 · 1440x900 · 64 tokens ·
+  evidence in <code>reports/</code> and <code>thumbnail.png</code>.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "schema": "design-evidence/claims/1",
+  "rows": [
+    {
+      "id": "claim_task05j_model",
+      "claim": "The remaining task designs use title, description, due date and completion status.",
+      "kind": "fact",
+      "source": "doc",
+      "status": "documented",
+      "evidence": [
+        {
+          "path": "HANDOFF.md",
+          "range": {
+            "start": 32,
+            "end": 32
+          },
+          "quote": "The remaining task screens use only `title`, `description`, `due_date` and `completed`. There are no priority or due-time controls, team features, notification controls or analytics. The original approved Dashboard contains legacy priority badges and a time label: these stay only in that preserved reference and are explicitly excluded from the new component/implementation contract. Their presence must not be interpreted as supported Django fields."
+        }
+      ]
+    },
+    {
+      "id": "claim_preview_auth",
+      "claim": "Authentication interactions are visual design states, not account authentication.",
+      "kind": "mechanism",
+      "source": "code",
+      "status": "unverified",
+      "evidence": [],
+      "notes": "No browser or backend tests were performed. See HANDOFF.md for design-only interaction boundaries."
+    }
+  ]
+}
