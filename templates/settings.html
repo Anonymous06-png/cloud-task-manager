@@ -1,35 +1,11 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% translate "Settings" %} | Cloud Task Manager{% endblock %}
-
+{% extends 'base.html' %}{% load i18n %}
+{% block title %}{% translate 'Settings' %}{% endblock %}
+{% block breadcrumb %}{% translate 'Settings' %}{% endblock %}
 {% block content %}
-    <div class="form-card">
-        <p class="eyebrow">{% translate "Your preferences" %}</p>
-        <h1>{% translate "Settings" %}</h1>
-        <p class="lede">{% translate "Choose your preferred language." %}</p>
-
-        <form method="post" action="{% url 'set_language' %}">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{% url 'tasks:settings' %}">
-            <fieldset>
-                <legend>{% translate "Language" %}</legend>
-                {% get_available_languages as available_languages %}
-                {% get_language_info_list for available_languages as languages %}
-                {% get_current_language as current_language %}
-                {% for language in languages %}
-                    <p class="language-option">
-                        <label>
-                            <input type="radio" name="language" value="{{ language.code }}"
-                                   {% if language.code == current_language %}checked{% endif %}>
-                            {{ language.name_local|capfirst }} ({{ language.code }})
-                        </label>
-                    </p>
-                {% endfor %}
-            </fieldset>
-            <div class="form-actions">
-                <button type="submit">{% translate "Apply" %}</button>
-            </div>
-        </form>
-    </div>
+<header class="page-header"><div><h1>{% translate 'Settings' %}</h1><p>{% translate 'Adjust language, appearance and navigation.' %}</p></div></header>
+<div class="settings-grid"><div class="settings-main">
+<section class="panel setting-card"><h2>{% translate 'Language' %}</h2><p class="muted">{% translate 'Display language for this browser' %}</p><form method="post" action="{% url 'set_language' %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'tasks:settings' %}">{% get_current_language as current_language %}<div class="choice-list"><label class="choice"><input type="radio" name="language" value="vi" {% if current_language == 'vi' %}checked{% endif %}><span><strong>Tiếng Việt</strong><small>{% translate 'Vietnamese interface' %}</small></span></label><label class="choice"><input type="radio" name="language" value="en" {% if current_language == 'en' %}checked{% endif %}><span><strong>English</strong><small>{% translate 'Use English for the interface' %}</small></span></label></div><button class="btn setting-save" type="submit">{% translate 'Apply language' %}</button></form></section>
+<section class="panel setting-card"><h2>{% translate 'Appearance' %}</h2><p class="muted">{% translate 'Choose a comfortable display' %}</p><div class="choice-list"><label class="choice"><input type="radio" name="theme" value="light" data-theme-choice><span><strong>{% translate 'Light' %}</strong><small>{% translate 'Light background and gentle contrast' %}</small></span></label><label class="choice"><input type="radio" name="theme" value="dark" data-theme-choice><span><strong>{% translate 'Dark' %}</strong><small>{% translate 'Dark background for focus' %}</small></span></label></div></section>
+<section class="panel setting-card"><h2>{% translate 'Sidebar' %}</h2><p class="muted">{% translate 'Choose how much navigation to show' %}</p><div class="choice-list"><label class="choice"><input type="radio" name="sidebar" value="expanded" data-sidebar-choice><span><strong>{% translate 'Expanded sidebar' %}</strong><small>{% translate 'Show icons and labels' %}</small></span></label><label class="choice"><input type="radio" name="sidebar" value="collapsed" data-sidebar-choice><span><strong>{% translate 'Collapsed sidebar' %}</strong><small>{% translate 'Show icons only' %}</small></span></label></div></section>
+</div>{% if user.is_authenticated %}<aside class="panel account-card"><h2>{% translate 'Account' %}</h2><div><small>{% translate 'Display name' %}</small><strong>{{ user.get_full_name|default:user.username }}</strong></div><div><small>{% translate 'Current language' %}</small><strong>{% if current_language == 'vi' %}Tiếng Việt{% else %}English{% endif %}</strong></div><form method="post" action="{% url 'tasks:logout' %}">{% csrf_token %}<button type="submit" class="btn secondary">{% translate 'Log out' %}</button></form></aside>{% endif %}</div>
 {% endblock %}

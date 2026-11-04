@@ -1,76 +1,19 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% translate "Dashboard" %} | Cloud Task Manager{% endblock %}
-
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate 'Dashboard' %}{% endblock %}
+{% block breadcrumb %}{% translate 'Dashboard' %}{% endblock %}
 {% block content %}
-    <header class="page-header">
-        <div>
-            <p class="eyebrow">{% translate "Your private workspace" %}</p>
-            <h1>{% translate "Dashboard" %}</h1>
-            <p class="version">{% translate "A clear view of what is moving, waiting, and done." %}</p>
-        </div>
-        <div class="page-header-actions">
-            <a class="btn" href="{% url 'tasks:task_create' %}">{% translate "+ New task" %}</a>
-        </div>
-    </header>
-
-    <section aria-labelledby="tasks-heading">
-        <div class="section-heading">
-            <h2 id="tasks-heading">{% translate "Your tasks" %}</h2>
-            <p>{% translate "Filter by progress" %}</p>
-        </div>
-
-        <form class="filter-bar" method="get" action="{% url 'tasks:dashboard' %}">
-            <span class="filter-label">{% translate "Show" %}</span>
-            <div class="filter-options" role="group" aria-label="{% translate 'Task status filter' %}">
-                <a class="filter-option {% if not status_filter %}active{% endif %}" href="{% url 'tasks:dashboard' %}">{% translate "All tasks" %}</a>
-                <a class="filter-option {% if status_filter == 'incomplete' %}active{% endif %}" href="{% url 'tasks:dashboard' %}?status=incomplete">{% translate "Incomplete" %}</a>
-                <a class="filter-option {% if status_filter == 'completed' %}active{% endif %}" href="{% url 'tasks:dashboard' %}?status=completed">{% translate "Completed" %}</a>
-            </div>
-            <label class="sr-only" for="status-filter">{% translate "Status" %}</label>
-            <select class="sr-only" id="status-filter" name="status">
-                <option value="" {% if not status_filter %}selected{% endif %}>{% translate "All tasks" %}</option>
-                <option value="incomplete" {% if status_filter == 'incomplete' %}selected{% endif %}>{% translate "Incomplete" %}</option>
-                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>{% translate "Completed" %}</option>
-            </select>
-            <button class="filter-submit" type="submit">{% translate "Apply" %}</button>
-        </form>
-
-        {% if tasks %}
-            <ul class="task-list">
-                {% for task in tasks %}
-                    <li class="task-card">
-                        <div class="task-card-main">
-                            <a class="task-title" href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a>
-                            <div class="task-meta">
-                                <span class="badge {% if task.status == 'completed' %}completed{% else %}pending{% endif %}">{{ task.get_status_display }}</span>
-                                {% if task.due_date %}<span>{% blocktranslate with due=task.due_date|date:"M j, Y" %}Due {{ due }}{% endblocktranslate %}</span>{% else %}<span>{% translate "No due date" %}</span>{% endif %}
-                            </div>
-                        </div>
-                        <div class="task-actions">
-                            <a href="{% url 'tasks:task_update' task.pk %}">{% translate "Edit" %}</a>
-                            <a class="delete-link" href="{% url 'tasks:task_delete' task.pk %}">{% translate "Delete" %}</a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <div class="empty-state">
-                {% if status_filter == 'completed' %}
-                    <h3>{% translate "No completed tasks yet." %}</h3>
-                    <p>{% translate "Finish a task and it will appear here as a record of your progress." %}</p>
-                {% elif status_filter == 'incomplete' %}
-                    <h3>{% translate "Your list is clear." %}</h3>
-                    <p>{% translate "There are no incomplete tasks right now. Add the next thing you want to move forward." %}</p>
-                {% else %}
-                    <h3>{% translate "Start with one clear next step." %}</h3>
-                    <p>{% translate "Your task list is ready for its first item." %}</p>
-                {% endif %}
-                <a class="btn" href="{% url 'tasks:task_create' %}">{% translate "Create a task" %}</a>
-            </div>
-        {% endif %}
-    </section>
-
-    <p class="auth-links"><a href="{% url 'tasks:home' %}">{% translate "← Back to home" %}</a></p>
+<header class="page-header"><div><h1>{% translate 'Dashboard' %}</h1><p>{% translate 'Your work at a glance.' %}</p></div><a class="btn" href="{% url 'tasks:task_create' %}"><svg><use href="#i-plus"/></svg>{% translate 'Create task' %}</a></header>
+<section class="stats-card" aria-label="{% translate 'Task summary' %}">
+  <div><span>{% translate 'To do' %}</span><strong>{{ pending_count|stringformat:'02d' }}</strong><small>{% translate 'Open tasks' %}</small></div>
+  <div><span>{% translate 'Due soon' %}</span><strong>{{ due_soon_count|stringformat:'02d' }}</strong><small>{% translate 'Next 7 days' %}</small></div>
+  <div><span>{% translate 'Completed' %}</span><strong>{{ completed_count|stringformat:'02d' }}</strong><small>{% translate 'All time' %}</small></div>
+</section>
+<div class="dashboard-grid">
+  <section class="panel priority-panel" aria-labelledby="priority-heading"><div class="panel-heading"><h2 id="priority-heading">{% translate 'Your next tasks' %}</h2><a class="text-link" href="{% url 'tasks:task_list' %}">{% translate 'View all tasks' %} <svg><use href="#i-arrow"/></svg></a></div>
+    {% if priority_tasks %}<ul class="priority-list">{% for task in priority_tasks %}{% include 'includes/task_row.html' %}{% endfor %}</ul>{% else %}<div class="empty-state"><h3>{% translate 'Start with one clear next step.' %}</h3><p>{% translate 'Your task list is ready for its first item.' %}</p><a class="btn secondary" href="{% url 'tasks:task_create' %}">{% translate 'Create a task' %}</a></div>{% endif %}
+  </section>
+  <div class="dashboard-side"><section class="panel due-panel" aria-labelledby="due-heading"><h2 id="due-heading">{% translate 'Due soon' %}</h2><p class="muted">{{ due_soon_count }} {% translate 'tasks in the next 7 days' %}</p>
+    {% if due_soon %}<ul>{% for task in due_soon %}<li><span class="due-date">{{ task.due_date|date:'d/m' }}</span><a href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a></li>{% endfor %}</ul>{% else %}<p class="muted due-empty">{% translate 'No tasks due in the next 7 days.' %}</p>{% endif %}
+  </section><section class="quiet-card"><h2>{% translate 'Work at your own pace' %}</h2><p>{% translate 'Keep your list short. Finish one task, then choose the next.' %}</p><a class="text-link" href="{% url 'tasks:task_list' %}">{% translate 'Open task list' %} <svg><use href="#i-arrow"/></svg></a></section></div>
+</div>
 {% endblock %}

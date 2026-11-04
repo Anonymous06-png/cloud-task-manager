@@ -256,3 +256,41 @@ class TaskInvalidInputTests(TaskSetupMixin, TestCase):
         self.assertIn('title', response.context['form'].errors)
         task.refresh_from_db()
         self.assertEqual(task.title, 'Existing')
+
+class TaskUiFlowTests(TaskSetupMixin, TestCase):
+    """Task list and dashboard controls use owned PostgreSQL records."""
+
+    def test_dashboard_counts_only_owned_tasks_and_upcoming_dates(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        today = timezone.localdate()
+        Task.objects.create(user=self.user, title='Due now', due_date=today, status='pending')
+        Task.objects.create(user=self.user, title='Due later', due_date=today + timedelta(days=10), status='pending')
+        Task.objects.create(user=self.user, title='Finished', status='completed')
+        Task.objects.create(user=self.other_user, title='Private due task', due_date=today, status='pending')
+        response = self.client.get(reverse('tasks:dashboard'))
+        self.assertEqual(response.context['pending_count'], 2)
+        self.assertEqual(response.context['due_soon_count'], 1)
+        self.assertEqual(response.context['completed_count'], 1)
+        self.assertNotContains(response, 'Private due task')
+
+    def test_task_list_search_and_status_filter(self):
+        _make_task(self.user, 'Write report', 'pending')
+        _make_task(self.user, 'Write archive', 'completed')
+        _make_task(self.other_user, 'Write private', 'pending')
+        response = self.client.get(reverse('tasks:task_list'), {'q': 'Write', 'status': 'incomplete'})
+        self.assertContains(response, 'Write report')
+        self.assertNotContains(response, 'Write archive')
+        self.assertNotContains(response, 'Write private')
+
+    def test_toggle_requires_post_and_owner(self):
+        own = _make_task(self.user, 'Own task', 'pending')
+        other = _make_task(self.other_user, 'Other task', 'pending')
+        url = reverse('tasks:task_toggle', args=[own.pk])
+        self.assertEqual(self.client.get(url).status_code, 405)
+        self.assertEqual(self.client.post(reverse('tasks:task_toggle', args=[other.pk])).status_code, 404)
+        self.assertRedirects(self.client.post(url, {'next': reverse('tasks:task_list')}), reverse('tasks:task_list'))
+        own.refresh_from_db()
+        other.refresh_from_db()
+        self.assertEqual(own.status, 'completed')
+        self.assertEqual(other.status, 'pending')

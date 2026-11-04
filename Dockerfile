@@ -27,6 +27,7 @@ COPY config/ ./config/
 COPY tasks/ ./tasks/
 COPY templates/ ./templates/
 COPY static/ ./static/
+COPY locale/ ./locale/
 
 # Create non-root user
 RUN useradd -m -u 1000 django && \
