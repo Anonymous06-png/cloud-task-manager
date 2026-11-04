@@ -32,4 +32,6 @@ class Task(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.title} ({self.get_status_display()})"
+        # Keep the developer-facing representation stable across UI languages.
+        status = 'Completed' if self.status == 'completed' else 'Not Completed'
+        return f"{self.title} ({status})"

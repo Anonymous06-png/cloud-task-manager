@@ -38,7 +38,7 @@
 
         <div class="detail-actions">
             <a class="btn" href="{% url 'tasks:task_update' task.pk %}">{% translate "Edit task" %}</a>
-            <a class="btn secondary" href="{% url 'tasks:dashboard' %}">{% translate "Back to tasks" %}</a>
+            <a class="btn secondary" href="{% url 'tasks:task_list' %}">{% translate "Back to tasks" %}</a>
             <a class="btn danger" href="{% url 'tasks:task_delete' task.pk %}">{% translate "Delete" %}</a>
         </div>
     </div>

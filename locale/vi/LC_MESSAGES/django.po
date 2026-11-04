@@ -302,3 +302,172 @@ msgstr "Chọn ngôn ngữ bạn muốn sử dụng."
 
 msgid "Language"
 msgstr "Ngôn ngữ"
+
+# --- Task 05E interface ---
+msgid "Workspace"
+msgstr "Không gian làm việc"
+
+msgid "Tasks"
+msgstr "Công việc"
+
+msgid "Open navigation"
+msgstr "Mở thanh điều hướng"
+
+msgid "Toggle sidebar"
+msgstr "Thu gọn hoặc mở rộng thanh bên"
+
+msgid "Collapse"
+msgstr "Thu gọn"
+
+msgid "Switch theme"
+msgstr "Đổi giao diện"
+
+msgid "Your work at a glance."
+msgstr "Những việc cần chú ý hôm nay."
+
+msgid "Task summary"
+msgstr "Tóm tắt công việc"
+
+msgid "To do"
+msgstr "Cần làm"
+
+msgid "Open tasks"
+msgstr "Việc đang mở"
+
+msgid "Due soon"
+msgstr "Sắp đến hạn"
+
+msgid "Next 7 days"
+msgstr "Trong 7 ngày tới"
+
+msgid "All time"
+msgstr "Tất cả"
+
+msgid "Your next tasks"
+msgstr "Ưu tiên hôm nay"
+
+msgid "View all tasks"
+msgstr "Xem tất cả công việc"
+
+msgid "tasks in the next 7 days"
+msgstr "việc trong 7 ngày tới"
+
+msgid "No tasks due in the next 7 days."
+msgstr "Không có việc nào đến hạn trong 7 ngày tới."
+
+msgid "Work at your own pace"
+msgstr "Làm việc theo nhịp của bạn"
+
+msgid "Keep your list short. Finish one task, then choose the next."
+msgstr "Giữ danh sách ngắn. Hoàn thành một việc rồi chọn việc tiếp theo."
+
+msgid "Open task list"
+msgstr "Mở danh sách công việc"
+
+msgid "Mark incomplete"
+msgstr "Đánh dấu chưa hoàn thành"
+
+msgid "Mark completed"
+msgstr "Đánh dấu đã hoàn thành"
+
+msgid "Task actions"
+msgstr "Thao tác công việc"
+
+msgid "View"
+msgstr "Xem"
+
+msgid "Track what is open and what is done."
+msgstr "Theo dõi việc đang làm, sắp đến hạn và đã hoàn thành."
+
+msgid "Task list"
+msgstr "Danh sách công việc"
+
+msgid "All"
+msgstr "Tất cả"
+
+msgid "Search tasks"
+msgstr "Tìm công việc"
+
+msgid "Search"
+msgstr "Tìm"
+
+msgid "Task"
+msgstr "Công việc"
+
+msgid "No matching tasks."
+msgstr "Không tìm thấy công việc phù hợp."
+
+msgid "Try a different search."
+msgstr "Hãy thử từ khóa khác."
+
+msgid "Pages"
+msgstr "Các trang"
+
+msgid "Previous"
+msgstr "Trước"
+
+msgid "Next"
+msgstr "Tiếp"
+
+msgid "Adjust language, appearance and navigation."
+msgstr "Điều chỉnh ngôn ngữ, giao diện và cách điều hướng."
+
+msgid "Display language for this browser"
+msgstr "Ngôn ngữ hiển thị trên trình duyệt này"
+
+msgid "Vietnamese interface"
+msgstr "Giao diện tiếng Việt"
+
+msgid "Apply language"
+msgstr "Áp dụng ngôn ngữ"
+
+msgid "Appearance"
+msgstr "Giao diện"
+
+msgid "Choose a comfortable display"
+msgstr "Chọn cách hiển thị phù hợp với bạn"
+
+msgid "Light"
+msgstr "Sáng"
+
+msgid "Light background and gentle contrast"
+msgstr "Nền sáng, độ tương phản dịu"
+
+msgid "Dark"
+msgstr "Tối"
+
+msgid "Dark background for focus"
+msgstr "Nền tối, dễ tập trung"
+
+msgid "Sidebar"
+msgstr "Thanh điều hướng"
+
+msgid "Choose how much navigation to show"
+msgstr "Chọn mức hiển thị của thanh điều hướng"
+
+msgid "Expanded sidebar"
+msgstr "Mở rộng thanh bên"
+
+msgid "Show icons and labels"
+msgstr "Hiển thị biểu tượng và nhãn"
+
+msgid "Collapsed sidebar"
+msgstr "Thu gọn thanh bên"
+
+msgid "Show icons only"
+msgstr "Chỉ hiển thị biểu tượng"
+
+msgid "Account"
+msgstr "Tài khoản"
+
+msgid "Display name"
+msgstr "Tên hiển thị"
+
+msgid "Current language"
+msgstr "Ngôn ngữ hiện tại"
+
+msgid "A simple place to keep your tasks, dates and progress together."
+msgstr "Một nơi đơn giản để theo dõi công việc, hạn chót và tiến độ."
+
+msgid "Use English for the interface"
+msgstr "Dùng tiếng Anh cho giao diện"

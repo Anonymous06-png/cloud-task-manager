@@ -5,45 +5,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f7f2e8">
-    <title>{% block title %}Cloud Task Manager{% endblock %}</title>
+    <meta name="theme-color" content="#f5f7f5">
+    <title>{% block title %}{% translate 'Workspace' %}{% endblock %}</title>
+    <script>try{document.documentElement.dataset.theme=localStorage.getItem('ctm-theme')||'light';document.documentElement.dataset.sidebar=localStorage.getItem('ctm-sidebar')||'expanded'}catch(e){}</script>
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'js/app.js' %}" defer></script>
 </head>
-<body>
-    <header class="topbar">
-        <a class="brand" href="{% url 'tasks:home' %}">Cloud Task Manager</a>
-        <nav aria-label="{% translate 'Main navigation' %}">
-            {% if user.is_authenticated %}
-                <a href="{% url 'tasks:dashboard' %}">{% translate "Dashboard" %}</a>
-                <span class="greeting">{% blocktranslate with username=user.username %}Hi, {{ username }}{% endblocktranslate %}</span>
-                <form class="inline-form" method="post" action="{% url 'tasks:logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">{% translate "Log out" %}</button>
-                </form>
-            {% else %}
-                <a href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>
-                <a href="{% url 'tasks:register' %}">{% translate "Create account" %}</a>
-            {% endif %}
-            <a href="{% url 'tasks:settings' %}">{% translate "Settings" %}</a>
-            <form class="inline-form lang-switch" method="post" action="{% url 'set_language' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" name="language" value="vi" lang="vi" title="Tiếng Việt" aria-label="Tiếng Việt">VI</button>
-                <button type="submit" name="language" value="en" title="English" aria-label="English">EN</button>
-            </form>
+<body class="{% if user.is_authenticated %}has-sidebar{% else %}public-page{% endif %}">
+    <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M9 10h12"/></symbol>
+        <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1"/></symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9 7 7m10 10 2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 16.5A9 9 0 0 1 7.5 4 9 9 0 1 0 20 16.5Z"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    </svg>
+    {% if user.is_authenticated %}
+    <button class="mobile-menu icon-button" type="button" data-mobile-toggle aria-controls="workspace-sidebar" aria-expanded="false" aria-label="{% translate 'Open navigation' %}"><svg><use href="#i-menu"/></svg></button>
+    <div class="sidebar-scrim" data-mobile-close></div>
+    <aside class="sidebar" id="workspace-sidebar" aria-label="{% translate 'Main navigation' %}">
+        <a class="workspace-mark" href="{% url 'tasks:dashboard' %}"><span class="mark"><svg><use href="#i-check"/></svg></span><span class="sidebar-label">{% translate 'Workspace' %}</span></a>
+        <nav class="side-nav" aria-label="{% translate 'Main navigation' %}">
+            <a href="{% url 'tasks:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %} title="{% translate 'Dashboard' %}"><svg><use href="#i-grid"/></svg><span class="sidebar-label">{% translate 'Dashboard' %}</span></a>
+            <a href="{% url 'tasks:task_list' %}" {% if request.resolver_match.url_name == 'task_list' or request.resolver_match.url_name == 'task_detail' or request.resolver_match.url_name == 'task_create' or request.resolver_match.url_name == 'task_update' or request.resolver_match.url_name == 'task_delete' %}aria-current="page"{% endif %} title="{% translate 'Tasks' %}"><svg><use href="#i-list"/></svg><span class="sidebar-label">{% translate 'Tasks' %}</span></a>
+            <a href="{% url 'tasks:task_list' %}?status=completed" title="{% translate 'Completed' %}"><svg><use href="#i-check"/></svg><span class="sidebar-label">{% translate 'Completed' %}</span></a>
         </nav>
-    </header>
-
-    <main class="container">
-        {% if messages %}
-            <ul class="messages" aria-live="polite">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
-        {% block content %}{% endblock %}
-    </main>
+        <div class="sidebar-bottom">
+            <button class="sidebar-collapse" type="button" data-sidebar-toggle aria-label="{% translate 'Toggle sidebar' %}" title="{% translate 'Toggle sidebar' %}"><svg><use href="#i-chevron"/></svg><span class="sidebar-label">{% translate 'Collapse' %}</span></button>
+            <a class="sidebar-settings" href="{% url 'tasks:settings' %}" {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %} title="{% translate 'Settings' %}"><svg><use href="#i-settings"/></svg><span class="sidebar-label">{% translate 'Settings' %}</span></a>
+            <div class="profile"><span class="avatar">{{ user.username|slice:':2'|upper }}</span><span class="sidebar-label profile-name">{{ user.get_full_name|default:user.username }}</span></div>
+        </div>
+    </aside>
+    {% else %}
+    <header class="public-header"><a class="workspace-mark" href="{% url 'tasks:home' %}"><span class="mark"><svg><use href="#i-check"/></svg></span><span>{% translate 'Workspace' %}</span></a><nav aria-label="{% translate 'Main navigation' %}"><a href="{% url 'tasks:login' %}">{% translate 'Log in' %}</a><a href="{% url 'tasks:register' %}">{% translate 'Create account' %}</a><a href="{% url 'tasks:settings' %}">{% translate 'Settings' %}</a></nav></header>
+    {% endif %}
+    <div class="app-content">
+        <div class="utility-bar">
+            <span class="breadcrumb"><a href="{% url 'tasks:home' %}">{% translate 'Workspace' %}</a> <span aria-hidden="true">/</span> {% block breadcrumb %}{% translate 'Dashboard' %}{% endblock %}</span>
+            <div class="utilities">
+                <form class="lang-switch" method="post" action="{% url 'set_language' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="vi" lang="vi" {% if current_language == 'vi' %}aria-current="true"{% endif %}>VI</button><span>/</span><button type="submit" name="language" value="en" lang="en" {% if current_language == 'en' %}aria-current="true"{% endif %}>EN</button></form>
+                <button class="theme-toggle icon-button" type="button" data-theme-toggle title="{% translate 'Switch theme' %}" aria-label="{% translate 'Switch theme' %}"><svg><use href="#i-moon"/></svg></button>
+                {% if user.is_authenticated %}<a class="utility-avatar" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Settings' %}">{{ user.username|slice:':2'|upper }}</a>{% endif %}
+            </div>
+        </div>
+        <main class="main-content" id="main-content">
+            {% if messages %}<ul class="messages" aria-live="polite">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>{% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
 </body>
 </html>
