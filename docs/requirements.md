@@ -43,7 +43,7 @@ Django, PostgreSQL and Docker Compose are project choices. The PDF allows altern
 | T6 | Invalid input is rejected without crashing app | NOT RUN / not evidenced |
 | T7 | Request or trial error appears in logs | NOT RUN / not evidenced |
 
-Historical local testing does not change these production statuses. As recorded in [Task 05E report](reports/step-05e-complete-ui-integration.md) on the PR branch: Chromium browser smoke was reported 19/19 PASS; Django suite 55 run / 51 pass / 4 fail. These are agent-reported PR results, not a new execution.
+Historical local testing does not change these production statuses. As recorded in [Task 05E report in PR #1](https://github.com/Anonymous06-png/cloud-task-manager/blob/task-05e-complete-ui-integration/docs/reports/step-05e-complete-ui-integration.md) on the PR branch: Chromium browser smoke was reported 19/19 PASS; Django suite 55 run / 51 pass / 4 fail. These are agent-reported PR results, not a new execution.
 
 ## Required final submissions
 
