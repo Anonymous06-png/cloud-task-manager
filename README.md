@@ -1,220 +1,86 @@
 # Cloud Task Manager
 
-Personal task management web application deployed on cloud infrastructure.
+Web application for personal task management, built for a Cloud Computing course project.
 
-**Project Status**: In Development
+**Status (2026-11-04):** Django application development is in progress. A public cloud deployment and grading-ready URL have **not been verified**. The updated Figma-based UI is proposed in [PR #1](https://github.com/Anonymous06-png/cloud-task-manager/pull/1), not yet part of the main branch.
 
-## Team Members
-- [Member names will be added]
+## Project and architecture
 
-## Overview
-A web application for managing personal tasks with user authentication, CRUD
-operations, and cloud deployment. Built with Django server-rendered templates
-(no JavaScript SPA framework).
+- Application: Django 5.2, server-rendered Django Templates, HTML/CSS and minimal JavaScript.
+- Authentication: Django sessions, server-side ownership checks and CSRF protection.
+- Database: PostgreSQL 16.
+- App server: Gunicorn; containerization: Docker and Docker Compose.
+- Cloud target: deployment design is pending final infrastructure verification. Prior planning included Azure Ubuntu VM/Caddy; a VPS NAT/Cloudflare Tunnel path was also evaluated. Neither should be described as a successfully deployed Django production system without runtime evidence.
 
-## Features
-- User registration and login (Django sessions, server-side protected pages)
-- Add, view, update, and delete tasks (planned)
-- Filter tasks by completion status (planned)
-- Persistent PostgreSQL storage
-- Health check endpoint for monitoring
-- Dockerized deployment
+The task model and application include registration/login, task CRUD, status filtering and a health endpoint. Browser and database evidence for earlier local functionality is recorded in docs/reports. UI work in PR #1 is **not** on main until merged.
 
-## Technology Stack
-- **Backend**: Python 3.11, Django 5.2 LTS
-- **Frontend**: Django templates, HTML, CSS
-- **Database**: PostgreSQL 16
-- **Container**: Docker / Docker Compose
-- **WSGI server**: Gunicorn
-- **Reverse proxy / TLS**: Caddy (production)
-- **Cloud Platform**: Azure Ubuntu VM (planned)
+## Local run with Docker Compose
 
-## Architecture
+Prerequisites: Docker Engine with Docker Compose, Git and a Docker-supported host.
 
-```
-[User] -> [Caddy HTTPS] -> [Gunicorn/Django] -> [PostgreSQL]
-                                   |
-                            [Health: /health/]
-```
+1. Copy .env.example to .env (PowerShell: Copy-Item .env.example .env).
+2. Replace the placeholder SECRET_KEY and POSTGRES_PASSWORD with strong values. **Never commit .env.**
+3. Run:
 
-## Local Development (container-first)
-
-All runtime verification is done with Docker Compose so that the local machine
-does not need Python or Django installed.
-
-### Prerequisites
-- Docker Desktop (Docker Engine + Compose)
-- Git
-
-### Configure required variables
-
-Required variables: `SECRET_KEY` and `POSTGRES_PASSWORD`. Compose stops with a
-clear error if either is unset or empty.
-
-```powershell
-# 1. Create the environment file from the template
-Copy-Item .env.example .env
-```
-
-Then edit `.env` and set:
-
-- `SECRET_KEY` - generate a value and paste it in (do not commit `.env`):
-  ```powershell
-  python -c "from django.core.management.utils import get_random_secret_key as g; print(g())"
-  ```
-- `POSTGRES_PASSWORD` - choose a strong password.
-
-`DJANGO_ENV=local` is the default for this stack, so the app serves plain HTTP
-on `127.0.0.1` without a TLS listener.
-
-### Run the stack
-
-```powershell
+~~~sh
 docker compose up --build -d
-```
-
-Access the application:
-- Home: http://127.0.0.1:8080/
-- Register: http://127.0.0.1:8080/register/
-- Login: http://127.0.0.1:8080/login/
-- Dashboard (login required): http://127.0.0.1:8080/dashboard/
-- Health check (public): http://127.0.0.1:8080/health/
-
-The app port is bound to `127.0.0.1:8080` only. PostgreSQL is not published to
-the host; it is reachable only on the internal Compose network.
-
-### Check status and logs
-
-```powershell
 docker compose ps
-docker compose logs app
-```
+~~~
 
-### Run the automated tests (inside the app container)
+The app is available at http://127.0.0.1:8080/ and its health endpoint at http://127.0.0.1:8080/health/. The database stays on the internal Docker network and uses a named volume.
 
-```powershell
+To inspect logs or run checks:
+
+~~~sh
+docker compose logs --tail=100 app
 docker compose exec app python manage.py check
 docker compose exec app python manage.py test
-```
+~~~
 
-## Building the Docker Image
+For a non-destructive stop, use docker compose stop. **Do not use down -v or prune to clean up**: those operations can remove persistent data. This section documents intended Compose use, not a claim that every host has been verified.
 
-```powershell
-docker compose build
-```
+A separately configured Windows Python + isolated PostgreSQL development instance was also used for local tests. Its host settings are machine-specific and not a portable deployment method.
 
-## Persistence verification (validation test T4)
+## Cloud deployment and assessment
 
-This compares an identifiable test record before and after restarting the
-application container. It runs entirely through Compose and does not print the
-database password.
+A release is not complete until the team has demonstrated:
 
-```powershell
-# 1. Write an identifiable marker
-docker compose exec db psql -U taskuser -d taskmanager -c "CREATE TABLE IF NOT EXISTS persist_check (marker text);"
-docker compose exec db psql -U taskuser -d taskmanager -c "INSERT INTO persist_check (marker) VALUES ('task02c-persist-marker');"
+1. A public URL and repeatable deployment from Docker.
+2. Working authentication and task CRUD with PostgreSQL persistence after an app restart.
+3. Successful /health/, graceful handling of invalid input and inspectable request/error logs.
+4. At least one monitoring metric, budget/cost monitoring and a monthly cost estimate.
+5. Least-privilege networking, protected secrets and a documented cleanup procedure.
+6. A demo account with sample data and a verified test report for T1–T7.
 
-# 2. Record the marker value before restart
-docker compose exec db psql -U taskuser -d taskmanager -c "SELECT marker FROM persist_check;"
+**Status:** Cloud-specific T1–T7, production metrics, exact monthly cost and public Django deployment are **NOT RUN / not yet evidenced** in the current repository. Do not present local smoke checks as deployed-cloud verification.
 
-# 3. Restart only the application container
-docker compose restart app
+## Submission checklist
 
-# 4. Confirm the same marker value is still present
-docker compose exec db psql -U taskuser -d taskmanager -c "SELECT marker FROM persist_check;"
-```
+The official requirements are in [docs/Project-Cloud-Computing.pdf](docs/Project-Cloud-Computing.pdf). Deliverables include the Git URL, live public URL, a 10–20 page PDF report, slides, a 5–7 minute demo video and the member contribution table. The README, architecture diagram and test evidence must describe the deployment actually used for grading.
 
-Expected: `task02c-persist-marker` is present after the restart. Once task CRUD
-exists, replace the marker table with an application-created task row.
+Team member names, final infrastructure details, deployment evidence and cost figures must be supplied and verified before submission.
 
-## Cloud Deployment (production)
+## Repository guide
 
-Production serves HTTPS via Caddy on the Azure Ubuntu VM. The same image is used
-with a production environment:
+| Path | Purpose |
+| --- | --- |
+| config/, tasks/, templates/, static/, locale/ | Active Django source and assets |
+| Dockerfile, docker-compose.yml, requirements.txt, .env.example | Runtime/deployment definition |
+| docs/Project-Cloud-Computing.pdf | Official assignment |
+| docs/requirements.md | Requirement-to-evidence tracking (not authoritative over the PDF) |
+| docs/design/ | Historical UI prototype and Figma design reference; **not** the running application |
+| docs/reports/ | Historical agent/test evidence. Older reports may describe outdated states and are not a substitute for current checks |
+| docs/archive/legacy-node/ | Inactive Node.js reference kept for historical traceability |
+| backend/ | Duplicate **inactive** legacy Node.js source, not Django's active backend |
+| tools/ | Historical local test helpers |
 
-| Variable | Description |
-|----------|-------------|
-| `SECRET_KEY` | Required Django signing key (from a secrets manager) |
-| `POSTGRES_PASSWORD` | Required database password |
-| `DATABASE_URL` | `postgresql://user:password@host:5432/dbname` |
-| `DJANGO_ENV` | `production` |
-| `SECURE_SSL_REDIRECT` | `True` (HTTPS enforced; `/health/` stays exempt) |
-| `ALLOWED_HOSTS` | Public hostname(s) |
+The project does not use the legacy Node.js application. Do not remove historical evidence, legacy archives or local data during routine cleanup without explicit approval.
 
-### Deployment Steps
-1. Create cloud resources (VM, managed database).
-2. Configure security groups and firewall rules (expose only 80/443 and SSH).
-3. Provide environment variables through the platform's secrets manager.
-4. Set `DJANGO_ENV=production` and `SECURE_SSL_REDIRECT=True`.
-5. Deploy the Docker image and run migrations.
-6. Verify `/health/` and review logs.
+## Security
 
-Detailed steps will be added after platform setup.
+Never commit real .env files, passwords, access tokens, SSH private keys or credential-bearing database URLs. Use environment variables or a secret manager. Review the public repository and reports before sharing them with third parties.
 
-## Testing
+## Known pending items
 
-### Validation Test Cases
-
-| ID | Test Scenario | Expected Result |
-|----|---------------|-----------------|
-| T1 | Access public URL | Web page displays normally |
-| T2 | Register and login | User accesses personal functions |
-| T3 | Add, edit, delete task | Data changes correctly in database |
-| T4 | Restart application | Data persists (see Persistence verification) |
-| T5 | Call `/health/` | Returns success status |
-| T6 | Send invalid data | Application handles error appropriately |
-| T7 | View logs | Find experimental requests or errors |
-
-## Monitoring
-
-- Application logs viewable through the cloud platform (`docker compose logs app`).
-- Health check endpoint: `/health/`.
-- Metrics tracked: [To be specified after deployment]
-
-## Cost Estimation
-[Monthly cost breakdown will be added after deployment]
-
-## Cleanup Instructions
-
-### Destroying Cloud Resources
-1. Stop compute instances/containers.
-2. Delete database instances.
-3. Release static IPs.
-4. Remove unused disks.
-5. Delete security groups (if no longer needed).
-
-## Project Structure
-
-```
-cloud-task-manager/
-├── config/               # Django project (settings, urls, wsgi)
-├── tasks/                # Tasks app (models, views, urls, tests)
-├── templates/            # Django templates
-├── static/               # Project static files (tracked via .gitkeep)
-├── docs/
-│   └── reports/          # Task reports
-├── backend/              # Legacy Node.js (archived, DO NOT USE)
-├── docs/archive/legacy-node/   # Archived Node.js reference
-├── .env.example          # Environment variable template
-├── .gitignore
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── manage.py
-└── README.md
-```
-
-## Security Notes
-- Never commit:
-  - `.env` files
-  - Passwords or access keys
-  - Private keys (`.pem`, `.key`)
-  - Database connection strings with credentials
-- Required secrets fail fast at startup instead of defaulting to empty.
-- PostgreSQL is not published to the host.
-
-## License
-MIT
-
----
-**Cloud Computing Project** | [University/Course Name]
+- PR #1 UI integration is awaiting review/merge; its report documents 55 Django tests: 51 passed and four text/language assertion failures. These are **reported cloud-branch results**, not a test run performed by this README update.
+- Team members, architecture illustration, seed/demo instructions, production deployment, monitoring/cost evidence and final T1–T7 results still need accurate, current documentation.

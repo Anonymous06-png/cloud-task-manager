@@ -8,13 +8,11 @@ __pycache__/
 dist/
 build/
 
-# Virtual environments
+# Local environments and generated data
 .venv/
 venv/
 env/
 ENV/
-
-# Django
 *.log
 local_settings.py
 db.sqlite3
@@ -22,51 +20,41 @@ db.sqlite3-journal
 staticfiles/
 media/
 
-# Environment files
+# Never send real environment files or credentials to build context
 .env
 .env.*
 !.env.example
-
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-*.cover
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# Secrets & Keys
 *.pem
 *.key
 *.crt
 secrets/
 credentials/
+pgpass.conf
+*.pgpass
 
-# Backups
-backups/
-*.dump
-*.sql
+# Local tooling and tests
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
+.vscode/
+.idea/
+.mimosa/
+.zcode/
+tools/
 
-# Legacy/Archive (already copied, exclude from build)
-docs/archive/
+# Documentation/legacy are not copied by the Django Dockerfile
+docs/
+backend/
+CLAUDE.md
 
-# Node.js legacy (DO NOT BUILD)
-backend/node_modules/
-backend/package-lock.json
-backend/*.js
-backend/package.json
-
-# Temporary
+# OS and temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
 tmp/
 temp/
 *.tmp
+backups/
+*.dump
+*.sql

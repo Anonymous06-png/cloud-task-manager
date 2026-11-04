@@ -1,61 +1,33 @@
-# Claude Code Project Contract
+# Cloud Task Manager — Agent project contract
 
-## Selected Stack
+## Active application
 
-- **Backend**: Django with server-rendered templates
-- **Frontend**: HTML/CSS/JavaScript (Django templates, no React/Vue)
-- **Database**: PostgreSQL
-- **Container**: Docker Compose
-- **Deployment**: Azure Ubuntu VM with Gunicorn and Caddy
+- Django 5.2 with server-rendered templates and minimal vanilla JavaScript.
+- PostgreSQL 16, Django sessions/auth, Docker / Docker Compose, Gunicorn.
+- Active Django project: config/; application: tasks/; UI: templates/, static/, locale/.
+- Legacy Node.js in backend/ and docs/archive/legacy-node/ is **inactive**.
+- Cloud deployment configuration must follow the team's latest approved target; do not claim an Azure/VPS production deployment without current evidence.
 
-## Excluded Technologies
+## Priority and source of truth
 
-❌ React, Vue, Angular  
-❌ JWT manual implementation (use Django sessions)  
-❌ Kubernetes, Redis, Celery (unless explicitly approved)  
-❌ Node.js, Express (archived for reference only)
+1. docs/Project-Cloud-Computing.pdf for grading requirements.
+2. Current source and actual commands for runtime behavior.
+3. Latest handoff/task reports for decisions and past evidence. Old reports can be superseded.
+4. Explicit user decisions for future changes.
 
-## Work Guidelines
+## Scope and safety
 
-1. **Task-based execution**: Work on one assigned task at a time
-2. **Preserve existing work**: Do not delete or modify unrelated user changes
-3. **Honest reporting**: Never invent successful checks or claim tests passed without execution evidence
-4. **Documentation**: Every task must save a Markdown report under `docs/reports/`
-5. **No autonomous changes**: No Git staging/commits/pushes, destructive cleanup, or Azure operations without explicit approval
+- Work on one small assigned task only; reuse existing implementation.
+- Do not change the framework or database architecture, install unrelated tools, update dependencies in bulk, or touch WebIOT.
+- No destructive Git operations, staging, commits, pushes, merges, database/volume removal or paid cloud resources without explicit user authorization.
+- Never overwrite a real .env or display/store secrets.
+- Keep historical archive and previous reports unless specifically authorized to reorganize them.
 
-## Repository Structure
+## Verification and reporting
 
-```
-cloud-task-manager/
-├── backend/             # Legacy Node.js (DO NOT USE)
-├── taskmanager/         # Active Django project
-├── docs/
-│   ├── archive/         # Preserved implementations
-│   └── reports/         # Task completion reports
-├── requirements.txt     # Python dependencies
-├── manage.py           # Django management
-├── Dockerfile          # Python-based image
-└── docker-compose.yml  # PostgreSQL + Django
-```
-
-## Environment Variables
-
-All secrets via environment variables, never hardcoded:
-- `SECRET_KEY` - Django secret key
-- `DATABASE_URL` - PostgreSQL connection string
-- `DEBUG` - Debug mode (False in production)
-
-## Validation Requirements
-
-Every task must validate:
-- Python syntax
-- Django system checks
-- Docker build success
-- Report actual command output and exit codes
-- Mark NOT RUN when checks are blocked
-
-## Notes
-
-- Node.js implementation archived in `docs/archive/legacy-node/`
-- Assignment allows any framework; Django is our chosen implementation
-- One unambiguous active setup (no conflicting Compose files)
+- PASS means executed successfully; FAIL means executed and failed.
+- FIXED IN SOURCE means changed without runtime verification.
+- NOT RUN and BLOCKED must be stated explicitly.
+- Select only tests relevant to the assigned task; do not claim a Docker build or UI browser QA from code inspection.
+- An agent editing the repository must create a **new** sanitized Markdown report under docs/reports/, including scope, files changed, commands/results/exit codes when applicable, actual test counts, blockers, risks, Git status and next permitted step.
+- Keep PR changes reviewable; do not automatically merge.
