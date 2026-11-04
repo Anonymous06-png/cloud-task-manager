@@ -302,3 +302,202 @@ msgstr "Chọn ngôn ngữ bạn muốn sử dụng."
 
 msgid "Language"
 msgstr "Ngôn ngữ"
+
+# --- Task 05L Dashboard, sidebar and preferences ---
+msgid "Workspace"
+msgstr "Không gian làm việc"
+
+msgid "Overview"
+msgstr "Tổng quan"
+
+msgid "Your space"
+msgstr "Không gian của bạn"
+
+msgid "Tasks"
+msgstr "Công việc"
+
+msgid "Skip to main content"
+msgstr "Đến nội dung chính"
+
+msgid "Open navigation"
+msgstr "Mở thanh điều hướng"
+
+msgid "Close navigation"
+msgstr "Đóng thanh điều hướng"
+
+msgid "Toggle sidebar"
+msgstr "Thu gọn hoặc mở rộng thanh bên"
+
+msgid "Collapse sidebar"
+msgstr "Thu gọn thanh bên"
+
+msgid "Expand sidebar"
+msgstr "Mở rộng thanh bên"
+
+msgid "Switch theme"
+msgstr "Đổi giao diện"
+
+msgid "Personal"
+msgstr "Cá nhân"
+
+msgid "Account"
+msgstr "Tài khoản"
+
+msgid "Task summary"
+msgstr "Tóm tắt công việc"
+
+msgid "Not completed"
+msgstr "Chưa hoàn thành"
+
+msgid "Due soon"
+msgstr "Sắp đến hạn"
+
+msgid "In your list"
+msgstr "Trong danh sách của bạn"
+
+msgid "In the next 7 days"
+msgstr "Trong 7 ngày tới"
+
+msgid "%(date)s · What needs your attention today."
+msgstr "%(date)s · Những việc cần chú ý hôm nay."
+
+msgid "Tasks to focus on"
+msgstr "Việc cần ưu tiên"
+
+msgid "View all"
+msgstr "Xem tất cả"
+
+msgid "Open tasks"
+msgstr "Việc đang mở"
+
+msgid "Mark a task complete when you are ready. You can always open it again."
+msgstr "Đánh dấu để hoàn thành. Bạn luôn có thể mở lại."
+
+msgid "Today · %(date)s"
+msgstr "Hôm nay · %(date)s"
+
+msgid "One task at a time."
+msgstr "Từng việc một, nhẹ đầu hơn."
+
+msgid "Start with the most important task that is due soon."
+msgstr "Bắt đầu từ công việc quan trọng nhất sắp đến hạn."
+
+msgid "Due"
+msgstr "Hạn chót"
+
+msgid "Open task"
+msgstr "Mở công việc"
+
+msgid "Upcoming deadlines"
+msgstr "Những ngày tới"
+
+msgid "No time set"
+msgstr "Không đặt giờ"
+
+msgid "No tasks due in the next 7 days."
+msgstr "Không có công việc nào đến hạn trong 7 ngày tới."
+
+msgid "Recently completed"
+msgstr "Vừa hoàn thành"
+
+msgid "View completed"
+msgstr "Xem đã hoàn thành"
+
+msgid "Mark incomplete"
+msgstr "Đánh dấu chưa hoàn thành"
+
+msgid "Mark completed"
+msgstr "Đánh dấu hoàn thành"
+
+msgid "Task actions"
+msgstr "Thao tác công việc"
+
+msgid "View"
+msgstr "Xem"
+
+msgid "Shape the workspace around the way you work."
+msgstr "Một không gian làm việc theo cách của bạn."
+
+msgid "Use the language that feels most natural."
+msgstr "Chọn ngôn ngữ phù hợp với bạn."
+
+msgid "Appearance"
+msgstr "Giao diện"
+
+msgid "Choose how the workspace looks and feels."
+msgstr "Chọn giao diện giúp bạn tập trung hơn."
+
+msgid "Theme"
+msgstr "Chủ đề"
+
+msgid "Light"
+msgstr "Sáng"
+
+msgid "A clear, bright workspace."
+msgstr "Không gian làm việc sáng và rõ ràng."
+
+msgid "Dark"
+msgstr "Tối"
+
+msgid "Easy on the eyes at night."
+msgstr "Dịu mắt hơn trong ánh sáng yếu."
+
+msgid "Sidebar"
+msgstr "Thanh điều hướng"
+
+msgid "Choose how much navigation to show"
+msgstr "Điều chỉnh không gian dành cho thanh điều hướng"
+
+msgid "Expanded sidebar"
+msgstr "Mở rộng thanh bên"
+
+msgid "Show icons and labels"
+msgstr "Hiển thị biểu tượng và nhãn"
+
+msgid "Collapsed sidebar"
+msgstr "Thu gọn thanh bên"
+
+msgid "Show icons only"
+msgstr "Chỉ hiển thị biểu tượng"
+
+msgid "Signed in as"
+msgstr "Đang đăng nhập với tên"
+
+msgid "Display name"
+msgstr "Tên hiển thị"
+
+msgid "Current language"
+msgstr "Ngôn ngữ hiện tại"
+
+msgid "Track what is open and what is done."
+msgstr "Theo dõi công việc đang làm và đã hoàn thành."
+
+msgid "Task list"
+msgstr "Danh sách công việc"
+
+msgid "All"
+msgstr "Tất cả"
+
+msgid "Search tasks"
+msgstr "Tìm công việc"
+
+msgid "Search"
+msgstr "Tìm"
+
+msgid "Task"
+msgstr "Công việc"
+
+msgid "No matching tasks."
+msgstr "Không tìm thấy công việc phù hợp."
+
+msgid "Try a different search."
+msgstr "Hãy thử từ khóa khác."
+
+msgid "Pages"
+msgstr "Các trang"
+
+msgid "Previous"
+msgstr "Trước"
+
+msgid "Next"
+msgstr "Tiếp"

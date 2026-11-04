@@ -2,34 +2,134 @@
 {% load i18n %}
 
 {% block title %}{% translate "Settings" %} | Cloud Task Manager{% endblock %}
-
+{% block breadcrumb %}{% translate "Settings" %}{% endblock %}
 {% block content %}
-    <div class="form-card">
-        <p class="eyebrow">{% translate "Your preferences" %}</p>
-        <h1>{% translate "Settings" %}</h1>
-        <p class="lede">{% translate "Choose your preferred language." %}</p>
-
-        <form method="post" action="{% url 'set_language' %}">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{% url 'tasks:settings' %}">
-            <fieldset>
-                <legend>{% translate "Language" %}</legend>
-                {% get_available_languages as available_languages %}
-                {% get_language_info_list for available_languages as languages %}
-                {% get_current_language as current_language %}
-                {% for language in languages %}
-                    <p class="language-option">
-                        <label>
-                            <input type="radio" name="language" value="{{ language.code }}"
-                                   {% if language.code == current_language %}checked{% endif %}>
-                            {{ language.name_local|capfirst }} ({{ language.code }})
+    <header class="page-header page-heading">
+        <div class="heading-copy">
+            <h1>{% translate "Settings" %}</h1>
+            <p>{% translate "Shape the workspace around the way you work." %}</p>
+        </div>
+        {% if user.is_authenticated %}
+        <span class="badge green"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>{% translate "Personal" %}</span>
+        {% endif %}
+    </header>
+    <div class="settings-grid">
+        <div class="settings-stack">
+            <section class="panel setting-panel" aria-labelledby="language-heading">
+                <div class="panel-heading">
+                    <div>
+                        <h2 id="language-heading">{% translate "Language" %}</h2>
+                        <p class="muted">{% translate "Use the language that feels most natural." %}</p>
+                    </div>
+                    <svg class="icon" aria-hidden="true"><use href="#i-language"/></svg>
+                </div>
+                <form method="post" action="{% url 'set_language' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'tasks:settings' %}">
+                    {% get_available_languages as available_languages %}
+                    {% get_language_info_list for available_languages as languages %}
+                    {% get_current_language as current_language %}
+                    <fieldset class="choice-group">
+                        <legend class="sr-only">{% translate "Language" %}</legend>
+                        {% for language in languages %}
+                        <label class="choice">
+                            <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-language"/></svg></span>
+                            <span class="choice-copy">
+                                <strong>{{ language.name_local|capfirst }}</strong>
+                                <small>{{ language.code|upper }}</small>
+                            </span>
+                            <input class="choice-radio" type="radio" name="language" value="{{ language.code }}" {% if language.code == current_language %}checked{% endif %} onchange="this.form.submit()">
+                            <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
                         </label>
-                    </p>
-                {% endfor %}
-            </fieldset>
-            <div class="form-actions">
-                <button type="submit">{% translate "Apply" %}</button>
+                        {% endfor %}
+                    </fieldset>
+                </form>
+            </section>
+
+            <section class="panel setting-panel" aria-labelledby="appearance-heading">
+                <div class="panel-heading">
+                    <div>
+                        <h2 id="appearance-heading">{% translate "Appearance" %}</h2>
+                        <p class="muted">{% translate "Choose how the workspace looks and feels." %}</p>
+                    </div>
+                    <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+                </div>
+                <fieldset class="choice-group">
+                    <legend class="sr-only">{% translate "Theme" %}</legend>
+                    <label class="choice">
+                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
+                        <span class="choice-copy">
+                            <strong>{% translate "Light" %}</strong>
+                            <small>{% translate "A clear, bright workspace." %}</small>
+                        </span>
+                        <input class="choice-radio" type="radio" name="theme" value="light" data-theme-choice>
+                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                    </label>
+                    <label class="choice">
+                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span>
+                        <span class="choice-copy">
+                            <strong>{% translate "Dark" %}</strong>
+                            <small>{% translate "Easy on the eyes at night." %}</small>
+                        </span>
+                        <input class="choice-radio" type="radio" name="theme" value="dark" data-theme-choice>
+                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                    </label>
+                </fieldset>
+            </section>
+
+            <section class="panel setting-panel" aria-labelledby="sidebar-heading">
+                <div class="panel-heading">
+                    <div>
+                        <h2 id="sidebar-heading">{% translate "Sidebar" %}</h2>
+                        <p class="muted">{% translate "Choose how much navigation to show" %}</p>
+                    </div>
+                    <svg class="icon" aria-hidden="true"><use href="#i-panel-left"/></svg>
+                </div>
+                <fieldset class="choice-group">
+                    <legend class="sr-only">{% translate "Sidebar" %}</legend>
+                    <label class="choice">
+                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-panel-left"/></svg></span>
+                        <span class="choice-copy">
+                            <strong>{% translate "Expanded sidebar" %}</strong>
+                            <small>{% translate "Show icons and labels" %}</small>
+                        </span>
+                        <input class="choice-radio" type="radio" name="sidebar" value="expanded" data-sidebar-choice>
+                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                    </label>
+                    <label class="choice">
+                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-panel-left-close"/></svg></span>
+                        <span class="choice-copy">
+                            <strong>{% translate "Collapsed sidebar" %}</strong>
+                            <small>{% translate "Show icons only" %}</small>
+                        </span>
+                        <input class="choice-radio" type="radio" name="sidebar" value="collapsed" data-sidebar-choice>
+                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                    </label>
+                </fieldset>
+            </section>
+        </div>
+
+        {% if user.is_authenticated %}
+        <aside class="panel setting-panel account-setting account-card" aria-labelledby="account-heading">
+            <div class="panel-heading">
+                <div>
+                    <h2 id="account-heading">{% translate "Account" %}</h2>
+                    <p class="muted">{% translate "Signed in as" %} <strong>{{ user.username }}</strong></p>
+                </div>
+                <span class="avatar">{{ user.username|slice:':2'|upper }}</span>
             </div>
-        </form>
+            <div class="setting-body">
+                <dl class="account-dl">
+                    <div><dt>{% translate "Display name" %}</dt><dd>{{ user.get_full_name|default:user.username }}</dd></div>
+                    {% if user.email %}<div><dt>Email</dt><dd>{{ user.email }}</dd></div>{% endif %}
+                    <div><dt>{% translate "Current language" %}</dt><dd>{% if current_language == 'vi' %}{% translate "Vietnamese" %}{% else %}{% translate "English" %}{% endif %}</dd></div>
+                </dl>
+                <form class="settings-logout" method="post" action="{% url 'tasks:logout' %}">
+                    {% csrf_token %}
+                    <button class="btn secondary" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>{% translate "Log out" %}</button>
+                </form>
+            </div>
+        </aside>
+        {% endif %}
     </div>
 {% endblock %}
