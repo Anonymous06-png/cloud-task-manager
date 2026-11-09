@@ -233,7 +233,8 @@ class PublicEndpointTests(TestCase):
         self.assertContains(response, 'Cloud Task Manager')
         self.assertTemplateUsed(response, 'home.html')
         self.assertTemplateUsed(response, 'includes/workspace_preview.html')
-        self.assertContains(response, 'class="workspace-login"')
+        self.assertContains(response, _('Make room for the work that matters.'))
+        self.assertNotIn('_auth_user_id', self.client.session)
         self.assertNotContains(response, 'class="tech-stack"')
         for name in ('login', 'register'):
             url = reverse(f'tasks:{name}')
