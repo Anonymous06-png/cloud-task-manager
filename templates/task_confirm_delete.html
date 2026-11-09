@@ -1,19 +1,20 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% translate "Delete task" %} | Cloud Task Manager{% endblock %}
-
+{% extends 'base.html' %}{% load i18n %}
+{% block title %}{% translate 'Delete task' %} · {% translate 'Workspace' %}{% endblock %}
+{% block breadcrumb %}{% translate 'Delete task' %}{% endblock %}
 {% block content %}
-    <div class="danger-card">
-        <p class="eyebrow">{% translate "This cannot be undone" %}</p>
-        <h1>{% translate "Delete this task?" %}</h1>
-        <p class="warning-copy">{% blocktranslate with task_title=task.title %}You are about to permanently remove <strong>“{{ task_title }}”</strong> from your workspace.{% endblocktranslate %}</p>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-actions">
-                <button class="danger" type="submit">{% translate "Delete task" %}</button>
-                <a class="btn secondary" href="{% url 'tasks:task_detail' task.pk %}">{% translate "Keep task" %}</a>
-            </div>
-        </form>
-    </div>
+<div class="editor-shell">
+  <a class="text-link back-link" href="{% url 'tasks:task_detail' task.pk %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Keep task' %}</a>
+  <section class="danger-card" aria-labelledby="delete-heading">
+    <p class="eyebrow">{% translate 'This cannot be undone' %}</p>
+    <h1 id="delete-heading">{% translate 'Delete this task?' %}</h1>
+    <p class="warning-copy">{% blocktranslate with task_title=task.title %}You are about to permanently remove <strong>“{{ task_title }}”</strong> from your workspace.{% endblocktranslate %}</p>
+    <form method="post" data-submit-form>
+      {% csrf_token %}
+      <div class="form-actions">
+        <a class="btn secondary" href="{% url 'tasks:task_detail' task.pk %}">{% translate 'Keep task' %}</a>
+        <button class="btn danger" type="submit" data-submit-label="{% translate 'Deleting…' %}"><span>{% translate 'Delete task' %}</span></button>
+      </div>
+    </form>
+  </section>
+</div>
 {% endblock %}

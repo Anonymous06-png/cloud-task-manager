@@ -1,24 +1,23 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% translate "Create account" %} | Cloud Task Manager{% endblock %}
-
+{% extends 'base.html' %}{% load i18n %}
+{% block title %}{% translate 'Create account' %} · {% translate 'Workspace' %}{% endblock %}
+{% block breadcrumb %}{% translate 'Create account' %}{% endblock %}
 {% block content %}
-    <div class="auth-shell">
-        <div class="auth-card">
-            <p class="eyebrow">{% translate "A fresh start" %}</p>
-            <h1>{% translate "Create your account" %}</h1>
-            <p class="version">{% translate "Set up a private workspace for the tasks you want to move forward." %}</p>
-
-            <form method="post" action="{% url 'tasks:register' %}" novalidate>
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">{% translate "Create account" %}</button>
-            </form>
-
-            <p class="auth-links">
-                {% translate "Already have an account?" %} <a href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>.
-            </p>
-        </div>
+<div class="workspace-login">
+  <section class="login-form-panel" aria-labelledby="register-title">
+    <div class="login-form-content">
+      <p class="login-welcome"><span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>{% translate 'A fresh start' %}</p>
+      <h1 id="register-title">{% translate 'Create your account' %}</h1>
+      <p class="login-description">{% translate 'Set up a private workspace for the tasks you want to move forward.' %}</p>
+      <form class="login-form" method="post" action="{% url 'tasks:register' %}" data-submit-form>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}{% include 'includes/form_field.html' %}{% endfor %}
+        <button class="btn login-submit" type="submit" data-submit-label="{% translate 'Creating account…' %}"><span>{% translate 'Create account' %}</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </form>
+      <p class="login-register">{% translate 'Already have an account?' %} <a href="{% url 'tasks:login' %}">{% translate 'Log in' %}</a></p>
     </div>
+    <a class="login-home" href="{% url 'tasks:home' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to home' %}</a>
+  </section>
+  {% include 'includes/workspace_preview.html' %}
+</div>
 {% endblock %}

@@ -1,21 +1,25 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{{ title }} | Cloud Task Manager{% endblock %}
-
+{% extends 'base.html' %}{% load i18n %}
+{% block title %}{{ title }} · {% translate 'Workspace' %}{% endblock %}
+{% block breadcrumb %}{{ title }}{% endblock %}
 {% block content %}
-    <div class="form-card">
-        <p class="eyebrow">{% translate "Make the next step visible" %}</p>
-        <h1>{{ title }}</h1>
-        <p class="lede">{% translate "Add enough detail to make this task easy to pick up again." %}</p>
-
-        <form method="post" novalidate>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="form-actions">
-                <button type="submit">{% translate "Save task" %}</button>
-                <a class="btn secondary" href="{% url 'tasks:dashboard' %}">{% translate "Cancel" %}</a>
-            </div>
-        </form>
-    </div>
+<div class="editor-shell">
+  <a class="text-link back-link" href="{% if task %}{% url 'tasks:task_detail' task.pk %}{% else %}{% url 'tasks:task_list' %}{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to tasks' %}</a>
+  <header class="page-header"><div><h1>{{ title }}</h1><p>{% translate 'Add enough detail to make this task easy to pick up again.' %}</p></div></header>
+  <div class="form-card">
+    <form method="post" data-submit-form>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% include 'includes/form_field.html' with field=form.title %}
+      {% include 'includes/form_field.html' with field=form.description %}
+      <div class="form-grid">
+        {% include 'includes/form_field.html' with field=form.due_date %}
+        {% include 'includes/form_field.html' with field=form.status %}
+      </div>
+      <div class="form-actions">
+        <a class="btn secondary" href="{% if task %}{% url 'tasks:task_detail' task.pk %}{% else %}{% url 'tasks:task_list' %}{% endif %}">{% translate 'Cancel' %}</a>
+        <button class="btn" type="submit" data-submit-label="{% translate 'Saving…' %}"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>{% translate 'Save task' %}</span></button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

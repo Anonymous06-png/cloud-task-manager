@@ -10,6 +10,7 @@ import secrets
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
+from django.utils.translation import gettext, override
 
 from .models import Task
 
@@ -55,6 +56,34 @@ class TaskCrudTests(TaskSetupMixin, TestCase):
             Task.objects.filter(user=self.user, title='New task').exists()
         )
 
+    def test_sequential_unicode_task_submissions_persist_exactly_once(self):
+        titles = (
+            'ASCII baseline',
+            'Công việc tiếng Việt',
+            'Hoàn thành kế hoạch',
+            'Task with emoji ✅ 📝',
+            'Công việc tiếng Việt',
+        )
+        for index, title in enumerate(titles, 1):
+            description = 'ASCII baseline' if index == 1 else 'Mô tả công việc hợp lệ'
+            response = self.client.post(reverse('tasks:task_create'), {
+                'title': title,
+                'description': description,
+                'status': 'pending',
+                'due_date': '2027-01-02',
+            })
+            self.assertRedirects(response, reverse('tasks:dashboard'))
+            self.assertEqual(Task.objects.filter(user=self.user).count(), index)
+        saved = list(self.user.tasks.order_by('pk').values_list(
+            'title', 'description', 'status', 'due_date',
+        ))
+        self.assertEqual([row[0] for row in saved], list(titles))
+        self.assertEqual(saved[0][1], 'ASCII baseline')
+        self.assertTrue(all(row[1] == 'Mô tả công việc hợp lệ' for row in saved[1:]))
+        self.assertTrue(all(row[2] == 'pending' for row in saved))
+        self.assertTrue(all(str(row[3]) == '2027-01-02' for row in saved))
+        self.assertFalse(self.other_user.tasks.exists())
+
     def test_create_task_with_due_date(self):
         response = self.client.post(reverse('tasks:task_create'), {
             'title': 'Due task',
@@ -78,7 +107,11 @@ class TaskCrudTests(TaskSetupMixin, TestCase):
     def test_dashboard_shows_empty_state_when_no_tasks(self):
         response = self.client.get(reverse('tasks:dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'No tasks found')
+        with override('vi'):
+            self.assertContains(response, gettext('Your list is clear.'))
+        self.assertFalse(response.context['priority_tasks'])
+        self.assertEqual(response.context['pending_count'], 0)
+        self.assertContains(response, reverse('tasks:task_create'))
 
     def test_update_own_task(self):
         task = _make_task(self.user, 'Original')
@@ -111,6 +144,94 @@ class TaskCrudTests(TaskSetupMixin, TestCase):
         # Confirmation page renders; deletion requires POST.
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Task.objects.filter(pk=task.pk).exists())
+
+
+class TaskFormRenderingTests(TaskSetupMixin, TestCase):
+    """The create/edit pages must render, including bound invalid forms."""
+
+    def test_create_form_get_renders_in_both_languages(self):
+        for language in ('vi', 'en'):
+            with self.subTest(language=language):
+                self.client.cookies['django_language'] = language
+                response = self.client.get(reverse('tasks:task_create'))
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, 'task_form.html')
+                for field in ('title', 'description', 'due_date', 'status'):
+                    self.assertContains(response, f'name="{field}"')
+                self.assertContains(response, 'csrfmiddlewaretoken')
+
+    def test_edit_form_get_preserves_task_values(self):
+        task = _make_task(self.user, 'Editable task')
+        response = self.client.get(reverse('tasks:task_update', args=[task.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'task_form.html')
+        self.assertEqual(response.context['form'].instance, task)
+        self.assertContains(response, 'Editable task')
+
+    def test_create_ignores_submitted_owner(self):
+        response = self.client.post(reverse('tasks:task_create'), {
+            'title': 'Owner injection', 'status': 'pending',
+            'user': self.other_user.pk,
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Task.objects.get(title='Owner injection').user, self.user)
+
+    def test_invalid_update_status_and_date_preserve_record(self):
+        task = _make_task(self.user, 'Unchanged')
+        response = self.client.post(reverse('tasks:task_update', args=[task.pk]), {
+            'title': 'Rejected', 'status': 'invalid', 'due_date': 'not-a-date',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(set(response.context['form'].errors), {'status', 'due_date'})
+        task.refresh_from_db()
+        self.assertEqual(task.title, 'Unchanged')
+        self.assertEqual(task.status, 'pending')
+        self.assertIsNone(task.due_date)
+
+    def test_task_posts_require_csrf_and_preserve_data(self):
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.user)
+        task = _make_task(self.user, 'CSRF protected')
+        for route, args in (
+            ('task_create', []), ('task_update', [task.pk]),
+            ('task_toggle', [task.pk]), ('task_delete', [task.pk]),
+        ):
+            with self.subTest(route=route):
+                response = client.post(reverse(f'tasks:{route}', args=args), {
+                    'title': 'Rejected', 'status': 'completed',
+                })
+                self.assertEqual(response.status_code, 403)
+        task.refresh_from_db()
+        self.assertEqual(task.title, 'CSRF protected')
+        self.assertEqual(task.status, 'pending')
+        self.assertEqual(Task.objects.filter(user=self.user).count(), 1)
+
+    def test_toggle_is_post_only_and_owner_scoped(self):
+        task = _make_task(self.other_user, 'Other task')
+        url = reverse('tasks:task_toggle', args=[task.pk])
+        self.assertEqual(self.client.get(url).status_code, 405)
+        self.assertEqual(self.client.post(url).status_code, 404)
+        task.refresh_from_db()
+        self.assertEqual(task.status, 'pending')
+
+    def test_task_list_search_status_and_pagination_are_owner_scoped(self):
+        for index in range(9):
+            _make_task(self.user, f'Matched {index}')
+        _make_task(self.user, 'Matched completed', 'completed')
+        _make_task(self.other_user, 'Matched private')
+        response = self.client.get(reverse('tasks:task_list'), {
+            'q': 'Matched', 'status': 'incomplete', 'page': 2,
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['page'].paginator.count, 9)
+        self.assertEqual(len(response.context['tasks']), 2)
+        self.assertNotContains(response, 'Matched private')
+        self.assertNotContains(response, 'Matched completed')
+        response = self.client.get(reverse('tasks:task_list'), {
+            'status': 'invalid', 'page': 'invalid', 'q': "' OR 1=1 --",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['page'].paginator.count, 0)
 
 
 class TaskStatusFilterTests(TaskSetupMixin, TestCase):

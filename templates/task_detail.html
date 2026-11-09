@@ -1,45 +1,27 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{{ task.title }} | Cloud Task Manager{% endblock %}
-
+{% extends 'base.html' %}{% load i18n %}
+{% block title %}{{ task.title }} · {% translate 'Workspace' %}{% endblock %}
+{% block breadcrumb %}{% translate 'Task detail' %}{% endblock %}
 {% block content %}
-    <div class="detail-card">
-        <div class="detail-header">
-            <div>
-                <p class="eyebrow">{% translate "Task detail" %}</p>
-                <h1>{{ task.title }}</h1>
-            </div>
-            <span class="badge {% if task.status == 'completed' %}completed{% else %}pending{% endif %}">{{ task.get_status_display }}</span>
-        </div>
-
-        <div class="detail-meta">
-            <div>
-                <strong>{% translate "Status" %}</strong>
-                {{ task.get_status_display }}
-            </div>
-            <div>
-                <strong>{% translate "Due date" %}</strong>
-                {% if task.due_date %}{{ task.due_date|date:"M j, Y" }}{% else %}{% translate "No due date" %}{% endif %}
-            </div>
-        </div>
-
-        {% if task.description %}
-            <div class="description">
-                <p class="eyebrow">{% translate "Notes" %}</p>
-                <p>{{ task.description|linebreaksbr }}</p>
-            </div>
-        {% else %}
-            <div class="description">
-                <p class="eyebrow">{% translate "Notes" %}</p>
-                <p class="version">{% translate "No notes added yet." %}</p>
-            </div>
-        {% endif %}
-
-        <div class="detail-actions">
-            <a class="btn" href="{% url 'tasks:task_update' task.pk %}">{% translate "Edit task" %}</a>
-            <a class="btn secondary" href="{% url 'tasks:dashboard' %}">{% translate "Back to tasks" %}</a>
-            <a class="btn danger" href="{% url 'tasks:task_delete' task.pk %}">{% translate "Delete" %}</a>
-        </div>
+<div class="editor-shell">
+  <a class="text-link back-link" href="{% url 'tasks:task_list' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to tasks' %}</a>
+  <article class="detail-card">
+    <header class="detail-header">
+      <div><p class="eyebrow">{% translate 'Task detail' %}</p><h1>{{ task.title }}</h1></div>
+      <span class="badge {% if task.status == 'completed' %}completed{% endif %}">{{ task.get_status_display }}</span>
+    </header>
+    <dl class="detail-meta">
+      <div><dt>{% translate 'Due date' %}</dt><dd>{% if task.due_date %}<time datetime="{{ task.due_date|date:'Y-m-d' }}">{{ task.due_date|date:'d/m/Y' }}</time>{% else %}{% translate 'No due date' %}{% endif %}</dd></div>
+      <div><dt>{% translate 'Status' %}</dt><dd>{{ task.get_status_display }}</dd></div>
+    </dl>
+    <form method="post" action="{% url 'tasks:task_toggle' task.pk %}">
+      {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+      <button class="btn secondary" type="submit" aria-pressed="{% if task.status == 'completed' %}true{% else %}false{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-circle-check"/></svg>{% if task.status == 'completed' %}{% translate 'Mark incomplete' %}{% else %}{% translate 'Mark completed' %}{% endif %}</button>
+    </form>
+    <section class="description" aria-labelledby="notes-heading"><h2 id="notes-heading">{% translate 'Notes' %}</h2><p{% if not task.description %} class="muted"{% endif %}>{% if task.description %}{{ task.description|linebreaksbr }}{% else %}{% translate 'No notes added yet.' %}{% endif %}</p></section>
+    <div class="detail-actions">
+      <a class="btn danger-quiet" href="{% url 'tasks:task_delete' task.pk %}"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>{% translate 'Delete' %}</a>
+      <a class="btn" href="{% url 'tasks:task_update' task.pk %}"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>{% translate 'Edit task' %}</a>
     </div>
+  </article>
+</div>
 {% endblock %}

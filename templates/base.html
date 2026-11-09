@@ -45,13 +45,15 @@
         <symbol id="i-logout" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol>
         <symbol id="i-language" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
         <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24"><path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m14 5 5 5"/></symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></symbol>
         <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
     </svg>
     {% if user.is_authenticated %}
     <div class="sidebar-scrim" data-mobile-close aria-hidden="true"></div>
     <aside class="sidebar" id="workspace-sidebar" aria-label="{% translate 'Main navigation' %}">
         <div class="sidebar-header">
-            <a class="workspace-mark" href="{% url 'tasks:dashboard' %}" title="{% translate 'Workspace' %}" data-tooltip="{% translate 'Workspace' %}">
+            <a class="workspace-mark" href="{% url 'tasks:dashboard' %}" aria-label="{% translate 'Workspace' %}" title="{% translate 'Workspace' %}" data-tooltip="{% translate 'Workspace' %}">
                 <span class="mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
                 <span class="sidebar-label">{% translate 'Workspace' %}</span>
             </a>
@@ -65,28 +67,31 @@
         </div>
         <p class="nav-caption">{% translate 'Your space' %}</p>
         <nav class="side-nav" aria-label="{% translate 'Main navigation' %}">
-            <a href="{% url 'tasks:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' and request.GET.status != 'completed' and request.GET.status != 'incomplete' %}aria-current="page"{% endif %} title="{% translate 'Overview' %}" data-tooltip="{% translate 'Overview' %}">
+            <a class="sidebar-create" href="{% url 'tasks:task_create' %}" aria-label="{% translate 'Create task' %}" title="{% translate 'Create task' %}" data-tooltip="{% translate 'Create task' %}">
+                <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span class="sidebar-label">{% translate 'Create task' %}</span>
+            </a>
+            <a href="{% url 'tasks:dashboard' %}" aria-label="{% translate 'Overview' %}" {% if request.resolver_match.url_name == 'dashboard' and request.GET.status != 'completed' and request.GET.status != 'incomplete' %}aria-current="page"{% endif %} title="{% translate 'Overview' %}" data-tooltip="{% translate 'Overview' %}">
                 <svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>
                 <span class="sidebar-label">{% translate 'Overview' %}</span>
             </a>
-            <a href="{% url 'tasks:task_list' %}" {% if request.resolver_match.url_name == 'task_list' and request.GET.status != 'completed' or request.resolver_match.url_name == 'dashboard' and request.GET.status == 'incomplete' or request.resolver_match.url_name == 'task_detail' or request.resolver_match.url_name == 'task_create' or request.resolver_match.url_name == 'task_update' or request.resolver_match.url_name == 'task_delete' %}aria-current="page"{% endif %} title="{% translate 'Tasks' %}" data-tooltip="{% translate 'Tasks' %}">
+            <a href="{% url 'tasks:task_list' %}" aria-label="{% translate 'Tasks' %}" {% if request.resolver_match.url_name == 'task_list' and request.GET.status != 'completed' or request.resolver_match.url_name == 'dashboard' and request.GET.status == 'incomplete' or request.resolver_match.url_name == 'task_detail' or request.resolver_match.url_name == 'task_create' or request.resolver_match.url_name == 'task_update' or request.resolver_match.url_name == 'task_delete' %}aria-current="page"{% endif %} title="{% translate 'Tasks' %}" data-tooltip="{% translate 'Tasks' %}">
                 <svg class="icon" aria-hidden="true"><use href="#i-list-todo"/></svg>
                 <span class="sidebar-label">{% translate 'Tasks' %}</span>
                 {% if pending_count is not None %}<span class="nav-count">{{ pending_count }}</span>{% endif %}
             </a>
-            <a href="{% url 'tasks:task_list' %}?status=completed" {% if request.GET.status == 'completed' %}aria-current="page"{% endif %} title="{% translate 'Completed' %}" data-tooltip="{% translate 'Completed' %}">
+            <a href="{% url 'tasks:task_list' %}?status=completed" aria-label="{% translate 'Completed' %}" {% if request.GET.status == 'completed' %}aria-current="page"{% endif %} title="{% translate 'Completed' %}" data-tooltip="{% translate 'Completed' %}">
                 <svg class="icon" aria-hidden="true"><use href="#i-circle-check"/></svg>
                 <span class="sidebar-label">{% translate 'Completed' %}</span>
                 {% if completed_count is not None %}<span class="nav-count">{{ completed_count }}</span>{% endif %}
             </a>
         </nav>
         <div class="sidebar-bottom">
-            <a class="sidebar-settings" href="{% url 'tasks:settings' %}" {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %} title="{% translate 'Settings' %}" data-tooltip="{% translate 'Settings' %}">
+            <a class="sidebar-settings" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Settings' %}" {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %} title="{% translate 'Settings' %}" data-tooltip="{% translate 'Settings' %}">
                 <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
                 <span class="sidebar-label">{% translate 'Settings' %}</span>
             </a>
             <div class="sidebar-foot">
-                <a class="profile" href="{% url 'tasks:settings' %}" title="{% translate 'Account' %}: {{ user.get_full_name|default:user.username }}" data-tooltip="{{ user.get_full_name|default:user.username }}">
+                <a class="profile" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Account' %}: {{ user.get_full_name|default:user.username }}" title="{% translate 'Account' %}: {{ user.get_full_name|default:user.username }}" data-tooltip="{{ user.get_full_name|default:user.username }}">
                     <span class="avatar">{{ user.username|slice:':2'|upper }}</span>
                     <span class="sidebar-label profile-copy">
                         <span class="profile-name">{{ user.get_full_name|default:user.username }}</span>
@@ -96,7 +101,7 @@
                 </a>
                 <form class="sidebar-logout" method="post" action="{% url 'tasks:logout' %}">
                     {% csrf_token %}
-                    <button type="submit" title="{% translate 'Log out' %}" data-tooltip="{% translate 'Log out' %}">
+                    <button type="submit" aria-label="{% translate 'Log out' %}" title="{% translate 'Log out' %}" data-tooltip="{% translate 'Log out' %}">
                         <svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>
                         <span class="sidebar-label">{% translate 'Log out' %}</span>
                     </button>
@@ -110,21 +115,31 @@
             <span class="mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
             <span>{% translate 'Workspace' %}</span>
         </a>
-        <nav aria-label="{% translate 'Main navigation' %}">
-            <a href="{% url 'tasks:login' %}">{% translate 'Log in' %}</a>
-            <a class="btn" href="{% url 'tasks:register' %}">{% translate 'Create account' %}</a>
-            <a href="{% url 'tasks:settings' %}">{% translate 'Settings' %}</a>
+        <nav class="public-nav" aria-label="{% translate 'Main navigation' %}">
+            <form class="lang-switch" method="post" action="{% url 'set_language' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" name="language" value="vi" lang="vi" {% if current_language == 'vi' %}aria-current="true"{% endif %}>VI</button>
+                <span aria-hidden="true">/</span>
+                <button type="submit" name="language" value="en" lang="en" {% if current_language == 'en' %}aria-current="true"{% endif %}>EN</button>
+            </form>
+            <button class="theme-toggle icon-button" type="button" data-theme-toggle title="{% translate 'Switch theme' %}" aria-label="{% translate 'Switch theme' %}">
+                <svg class="icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+                <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+            </button>
+            <span class="public-nav-divider" aria-hidden="true"></span>
+            <a class="public-login-link" href="{% url 'tasks:login' %}" {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}>{% translate 'Log in' %}</a>
+            <a class="btn" href="{% url 'tasks:register' %}" {% if request.resolver_match.url_name == 'register' %}aria-current="page"{% endif %}>{% translate 'Create account' %}</a>
         </nav>
     </header>
     {% endif %}
     <div class="app-content">
+        {% if user.is_authenticated %}
         <header class="utility-bar topbar">
             <div class="topbar-left">
-                {% if user.is_authenticated %}
                 <button class="mobile-menu icon-button" type="button" data-mobile-toggle aria-controls="workspace-sidebar" aria-expanded="false" aria-label="{% translate 'Open navigation' %}" title="{% translate 'Open navigation' %}">
                     <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
                 </button>
-                {% endif %}
                 <span class="breadcrumb">
                     <a class="workspace-crumb" href="{% url 'tasks:home' %}">{% translate 'Workspace' %}</a>
                     <span class="crumb-slash" aria-hidden="true">/</span>
@@ -143,11 +158,10 @@
                     <svg class="icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
                     <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
                 </button>
-                {% if user.is_authenticated %}
                 <a class="utility-avatar" href="{% url 'tasks:settings' %}" title="{% translate 'Account' %}" aria-label="{% translate 'Settings' %}">{{ user.username|slice:':2'|upper }}</a>
-                {% endif %}
             </div>
         </header>
+        {% endif %}
         <main class="main-content content" id="main-content" tabindex="-1">
             {% if messages %}<ul class="messages" aria-live="polite">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>{% endif %}
             {% block content %}{% endblock %}

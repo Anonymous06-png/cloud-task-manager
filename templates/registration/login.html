@@ -15,12 +15,13 @@
                 <h1 id="login-title">{% translate "Log in to your workspace" %}</h1>
                 <p class="login-description" id="login-description">{% translate "Pick up where you left off and keep your next steps moving." %}</p>
 
-                <form class="login-form" method="post" action="{% url 'tasks:login' %}" aria-describedby="login-description" novalidate>
+                <form class="login-form" method="post" action="{% url 'tasks:login' %}" aria-describedby="login-description" data-submit-form>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.non_field_errors }}
+                    {% for field in form %}{% include 'includes/form_field.html' %}{% endfor %}
                     <input type="hidden" name="next" value="{{ next }}">
-                    <button class="login-submit" type="submit">
-                        {% translate "Log in" %}
+                    <button class="btn login-submit" type="submit" data-submit-label="{% translate 'Signing in…' %}">
+                        <span>{% translate "Log in" %}</span>
                         <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
                     </button>
                 </form>

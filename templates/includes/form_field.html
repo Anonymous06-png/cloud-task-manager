@@ -1,0 +1,9 @@
+{% load i18n %}
+<div class="form-field{% if field.errors %} has-error{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required-mark" aria-hidden="true"> *</span>{% else %} <span class="field-optional">{% translate 'Optional' %}</span>{% endif %}</label>
+  {% if field.name == 'due_date' %}
+  <input type="date" name="{{ field.html_name }}" id="{{ field.id_for_label }}" value="{% if form.is_bound %}{{ field.value|default_if_none:'' }}{% else %}{{ field.value|date:'Y-m-d' }}{% endif %}"{% if field.errors %} aria-invalid="true" aria-describedby="{{ field.auto_id }}_error"{% endif %}>
+  {% else %}{{ field }}{% endif %}
+  {% if field.help_text %}<div class="helptext" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+  {{ field.errors }}
+</div>

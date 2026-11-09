@@ -107,7 +107,10 @@
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
       closeMobile(true);
-      document.querySelectorAll('details.task-menu[open]').forEach(d => d.removeAttribute('open'));
+      document.querySelectorAll('details.task-menu[open]').forEach(menu => {
+        if (menu.contains(document.activeElement)) menu.querySelector('summary')?.focus();
+        menu.removeAttribute('open');
+      });
     }
     if (event.key === 'Tab' && document.body.classList.contains('mobile-nav-open') && sidebar) {
       const focusable = [...sidebar.querySelectorAll('a[href], button:not([disabled])')].filter(el => el.offsetParent !== null);
@@ -137,6 +140,38 @@
   document.querySelectorAll('.side-nav a, .sidebar-settings').forEach(link => {
     link.addEventListener('click', () => closeMobile(false));
   });
+
+  document.querySelectorAll('details.task-menu').forEach(menu => {
+    menu.addEventListener('toggle', () => {
+      if (!menu.open) return;
+      document.querySelectorAll('details.task-menu[open]').forEach(other => {
+        if (other !== menu) other.removeAttribute('open');
+      });
+    });
+  });
+
+  document.querySelectorAll('[data-submit-form]').forEach(form => {
+    const button = form.querySelector('[data-submit-label]');
+    const label = button?.querySelector('span');
+    const original = label?.textContent;
+    const reset = () => {
+      if (!button) return;
+      button.disabled = false;
+      form.removeAttribute('aria-busy');
+      if (label) label.textContent = original;
+    };
+    form.addEventListener('submit', () => {
+      if (!button) return;
+      button.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      if (label) label.textContent = button.dataset.submitLabel;
+      window.setTimeout(reset, 10000);
+    });
+    window.addEventListener('pageshow', reset);
+  });
+
+  const invalidField = document.querySelector('.form-field [aria-invalid="true"]');
+  if (invalidField) invalidField.focus();
 
   root.dataset.theme = root.dataset.theme === 'dark' ? 'dark' : 'light';
   root.dataset.sidebar = root.dataset.sidebar === 'collapsed' ? 'collapsed' : 'expanded';

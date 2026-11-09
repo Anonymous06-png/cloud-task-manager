@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase, SimpleTestCase, Client, override_settings
 from django.urls import reverse
+from django.utils.translation import gettext, override
 from .models import Task
 
 # Test-only fixtures, generated at runtime so that no credential literals
@@ -63,8 +64,10 @@ class FoundationSmokeTests(TestCase):
             title='Sample Task',
             status='completed'
         )
-        expected = 'Sample Task (Completed)'
-        self.assertEqual(str(task), expected)
+        for language in ('vi', 'en'):
+            with self.subTest(language=language), override(language):
+                expected = f"Sample Task ({gettext('Completed')})"
+                self.assertEqual(str(task), expected)
 
 
 class ConfigurationTests(SimpleTestCase):

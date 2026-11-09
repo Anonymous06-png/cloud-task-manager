@@ -38,11 +38,12 @@
                                 <strong>{{ language.name_local|capfirst }}</strong>
                                 <small>{{ language.code|upper }}</small>
                             </span>
-                            <input class="choice-radio" type="radio" name="language" value="{{ language.code }}" {% if language.code == current_language %}checked{% endif %} onchange="this.form.submit()">
+                            <input class="choice-radio" type="radio" name="language" value="{{ language.code }}" {% if language.code == current_language %}checked{% endif %}>
                             <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
                         </label>
                         {% endfor %}
                     </fieldset>
+                    <button class="btn secondary settings-save" type="submit">{% translate 'Save language' %}</button>
                 </form>
             </section>
 
@@ -77,36 +78,7 @@
                 </fieldset>
             </section>
 
-            <section class="panel setting-panel" aria-labelledby="sidebar-heading">
-                <div class="panel-heading">
-                    <div>
-                        <h2 id="sidebar-heading">{% translate "Sidebar" %}</h2>
-                        <p class="muted">{% translate "Choose how much navigation to show" %}</p>
-                    </div>
-                    <svg class="icon" aria-hidden="true"><use href="#i-panel-left"/></svg>
-                </div>
-                <fieldset class="choice-group">
-                    <legend class="sr-only">{% translate "Sidebar" %}</legend>
-                    <label class="choice">
-                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-panel-left"/></svg></span>
-                        <span class="choice-copy">
-                            <strong>{% translate "Expanded sidebar" %}</strong>
-                            <small>{% translate "Show icons and labels" %}</small>
-                        </span>
-                        <input class="choice-radio" type="radio" name="sidebar" value="expanded" data-sidebar-choice>
-                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
-                    </label>
-                    <label class="choice">
-                        <span class="choice-icon"><svg class="icon" aria-hidden="true"><use href="#i-panel-left-close"/></svg></span>
-                        <span class="choice-copy">
-                            <strong>{% translate "Collapsed sidebar" %}</strong>
-                            <small>{% translate "Show icons only" %}</small>
-                        </span>
-                        <input class="choice-radio" type="radio" name="sidebar" value="collapsed" data-sidebar-choice>
-                        <span class="radio-dot" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
-                    </label>
-                </fieldset>
-            </section>
+            <p class="preference-note">{% translate 'Appearance preferences are saved in this browser.' %}</p>
         </div>
 
         {% if user.is_authenticated %}

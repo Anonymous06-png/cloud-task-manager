@@ -2,25 +2,22 @@
 {% load i18n %}
 
 {% block title %}{% translate "Workspace" %} | {{ project_name }}{% endblock %}
-{% block breadcrumb %}{% translate "Home" %}{% endblock %}
 
 {% block content %}
-    <div class="workspace-login">
-        <section class="login-form-panel" aria-labelledby="home-title">
-            <div class="login-form-content">
-                <p class="login-welcome">
-                    <span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
-                    {% translate "Workspace" %}
-                </p>
-                <h1 id="home-title">{% translate "Make room for your best work." %}</h1>
-                <p class="login-description">{% translate "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence." %}</p>
-                <div class="hero-actions">
-                    <a class="btn" href="{% url 'tasks:register' %}">{% translate "Create your workspace" %}</a>
-                    <a class="btn secondary" href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>
-                </div>
+    <section class="home-hero" aria-labelledby="home-title">
+        <div class="home-hero-copy">
+            <p class="home-hero-brand">
+                <span class="mark" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+                {% translate "Workspace" %}
+            </p>
+            <h1 id="home-title">{% translate "Make room for the work that matters." %}</h1>
+            <p class="home-hero-lead">{% translate "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence." %}</p>
+            <div class="hero-actions">
+                <a class="btn" href="{% url 'tasks:register' %}">{% translate "Create your workspace" %}</a>
+                <a class="btn secondary" href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>
             </div>
-        </section>
+        </div>
 
         {% include "includes/workspace_preview.html" %}
-    </div>
+    </section>
 {% endblock %}
