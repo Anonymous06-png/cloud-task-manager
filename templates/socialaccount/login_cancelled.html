@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate 'Sign-in cancelled' %} | Flowspace{% endblock %}
+{% block breadcrumb %}{% translate 'Sign-in cancelled' %}{% endblock %}
+{% block content %}
+<div class="workspace-login">
+  <section class="login-form-panel" aria-labelledby="social-cancelled-title">
+    <div class="login-form-content">
+      <p class="login-welcome"><span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>{% translate 'No worries' %}</p>
+      <h1 id="social-cancelled-title">{% translate 'Sign-in cancelled' %}</h1>
+      <p class="login-description">{% translate 'You cancelled the Google sign-in. You can try again whenever you are ready.' %}</p>
+      <p class="login-register">
+        <a class="btn btn-google login-google" href="{% url 'tasks:login' %}">{% translate 'Back to log in' %}</a>
+      </p>
+    </div>
+    <a class="login-home" href="{% url 'tasks:home' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to home' %}</a>
+  </section>
+</div>
+{% endblock %}

@@ -1,64 +1,49 @@
 {% load i18n %}
-<figure class="login-preview" aria-label="{% translate 'Sample workspace' %}" aria-describedby="login-preview-caption">
-  <div class="login-preview-app" role="img" aria-hidden="true">
-    <div class="login-preview-sidebar">
-      <span class="login-preview-brand">
-        <span class="mark"><svg class="icon"><use href="#i-check"/></svg></span>
-        <span class="login-preview-brand-name">{% translate 'Workspace' %}</span>
-      </span>
-      <span class="login-preview-nav-item"><svg class="icon"><use href="#i-grid"/></svg>{% translate 'Overview' %}</span>
-      <span class="login-preview-nav-item is-active"><svg class="icon"><use href="#i-list-todo"/></svg>{% translate 'Tasks' %}<span class="login-preview-nav-count">3</span></span>
-      <span class="login-preview-nav-item"><svg class="icon"><use href="#i-circle-check"/></svg>{% translate 'Completed' %}<span class="login-preview-nav-count">2</span></span>
+{% comment %}
+Illustrative mini-dashboard preview (approved Flowspace design). Decorative
+only: no live data, no fake controls wired to the backend. Progress is
+derived from the sample list: 2 of 3 tasks done = 67%. All inner classes
+are pv-* namespaced to avoid colliding with the real app-shell styles.
+{% endcomment %}
+<figure class="fs-preview login-preview" aria-label="{% translate 'Sample workspace' %}" aria-describedby="fs-preview-caption">
+  <section class="pv-dashboard" role="img" aria-hidden="true">
+    <div class="pv-top">
+      <span>Flowspace <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg> {% translate "Personal" %}</span>
+      <span>{% translate "Sample data" %}</span>
     </div>
-    <div class="login-preview-main">
-      <div class="login-preview-head">
-        <span class="login-preview-wordmark" id="login-preview-title">{% translate 'Your tasks' %}</span>
-        <span class="login-preview-sample">{% translate 'Sample workspace' %}</span>
+    <div class="pv-body">
+      <aside class="pv-sidebar">
+        <div class="pv-sidebar-brand"><svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg>Flowspace</div>
+        <span class="pv-sidebar-label"><svg class="icon pv-label-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg>{% translate "Your space" %}<svg class="icon pv-label-chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+        <div class="pv-sidebar-links">
+          <span class="pv-side-item selected"><svg class="icon" aria-hidden="true"><use href="#i-list-todo"/></svg>{% translate "My tasks" %}</span>
+          <span class="pv-side-item"><svg class="icon" aria-hidden="true"><use href="#i-circle"/></svg>{% translate "Pending" %}</span>
+          <span class="pv-side-item"><svg class="icon" aria-hidden="true"><use href="#i-circle-check"/></svg>{% translate "Done" %}</span>
+        </div>
+        <div class="pv-side-account"><span class="pv-avatar">AN</span><span>An Nguyễn<small>{% translate "Sample account" %}</small></span></div>
+      </aside>
+      <div class="pv-task-main">
+        <div class="pv-task-heading">
+          <div>
+            <h2>{% translate "My tasks" %}</h2>
+            <p>{% translate "Wednesday, 28 October 2026" %}</p>
+          </div>
+          <span class="pv-add-task"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>{% translate "Add task" %}</span></span>
+        </div>
+        <div class="pv-completion">
+          <div class="pv-completion-text"><strong>67%</strong><span>{% translate "2 of 3 tasks done" %}</span></div>
+          <div class="pv-progress-track"><span class="pv-progress-fill"></span></div>
+        </div>
+        <div class="pv-task-filters"><span class="selected">{% translate "All" %} <span>3</span></span><span>{% translate "Pending" %} <span>1</span></span><span>{% translate "Done" %} <span>2</span></span></div>
+        <div class="pv-task-columns"><span>{% translate "Task" %}</span><span>{% translate "Due" %}</span><span>{% translate "Status" %}</span></div>
+        <div class="pv-task-list">
+          <div class="pv-task-row done"><span class="pv-task-check"><span class="pv-checkbox"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span></span><span class="pv-task-name">{% translate "Design the interface" %}</span><span class="pv-task-due">26/10/2026</span><span class="pv-task-state">{% translate "Done" %}</span><span class="pv-task-more"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></div>
+          <div class="pv-task-row done"><span class="pv-task-check"><span class="pv-checkbox"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span></span><span class="pv-task-name">{% translate "Test the app" %}</span><span class="pv-task-due">27/10/2026</span><span class="pv-task-state">{% translate "Done" %}</span><span class="pv-task-more"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></div>
+          <div class="pv-task-row"><span class="pv-task-check"><span class="pv-checkbox"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span></span><span class="pv-task-name">{% translate "Prepare the presentation" %}</span><span class="pv-task-due">30/10/2026</span><span class="pv-task-state">{% translate "Pending" %}</span><span class="pv-task-more"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></div>
+        </div>
+        <div class="pv-task-footer"><span>{% translate "Showing 3 tasks" %}</span></div>
       </div>
-      <p class="login-preview-progress">
-        <span class="login-preview-progress-count"><strong>2/5</strong> {% translate 'Completed' %}</span>
-        <span class="login-preview-progress-value">40%</span>
-      </p>
-      {# Progress is derived from the sample list below: 2 of 5 tasks completed = 40%. #}
-      <div class="login-preview-track"><span class="login-preview-fill" style="width: 40%;"></span></div>
-      <ul class="login-preview-tasks">
-        <li class="login-preview-task">
-          <span class="login-preview-task-icon login-preview-task-pending"><svg class="icon"><use href="#i-circle-dashed"/></svg></span>
-          <div class="login-preview-task-copy">
-            <p>{% translate 'Review the launch checklist' %}</p>
-            <span class="login-preview-task-meta"><svg class="icon"><use href="#i-calendar"/></svg>{% translate 'Today' %}</span>
-          </div>
-        </li>
-        <li class="login-preview-task">
-          <span class="login-preview-task-icon login-preview-task-pending"><svg class="icon"><use href="#i-circle-dashed"/></svg></span>
-          <div class="login-preview-task-copy">
-            <p>{% translate 'Send the weekly update' %}</p>
-            <span class="login-preview-task-meta"><svg class="icon"><use href="#i-calendar"/></svg>{% translate 'Tomorrow' %}</span>
-          </div>
-        </li>
-        <li class="login-preview-task">
-          <span class="login-preview-task-icon login-preview-task-pending"><svg class="icon"><use href="#i-circle-dashed"/></svg></span>
-          <div class="login-preview-task-copy">
-            <p>{% translate 'Draft the meeting agenda' %}</p>
-            <span class="login-preview-task-meta"><svg class="icon"><use href="#i-calendar"/></svg>{% translate 'Friday' %}</span>
-          </div>
-        </li>
-        <li class="login-preview-task login-preview-task-complete">
-          <span class="login-preview-task-icon"><svg class="icon"><use href="#i-circle-check"/></svg></span>
-          <div class="login-preview-task-copy">
-            <p>{% translate 'Prepare the project brief' %}</p>
-            <span class="login-preview-task-meta">{% translate 'Completed' %}</span>
-          </div>
-        </li>
-        <li class="login-preview-task login-preview-task-complete">
-          <span class="login-preview-task-icon"><svg class="icon"><use href="#i-circle-check"/></svg></span>
-          <div class="login-preview-task-copy">
-            <p>{% translate 'Plan the week ahead' %}</p>
-            <span class="login-preview-task-meta">{% translate 'Completed' %}</span>
-          </div>
-        </li>
-      </ul>
     </div>
-  </div>
-  <figcaption id="login-preview-caption">{% translate 'Illustrative preview with sample tasks, not your account data.' %}</figcaption>
+  </section>
+  <figcaption id="fs-preview-caption">{% translate "Illustrative preview with sample tasks, not your account data." %}</figcaption>
 </figure>

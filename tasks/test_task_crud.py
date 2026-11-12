@@ -107,10 +107,17 @@ class TaskCrudTests(TaskSetupMixin, TestCase):
     def test_dashboard_shows_empty_state_when_no_tasks(self):
         response = self.client.get(reverse('tasks:dashboard'))
         self.assertEqual(response.status_code, 200)
+        # The approved Dashboard empty state uses its own copy. The
+        # "Your list is clear." string belongs to the task-list page
+        # (status=incomplete branch) and is not rendered here.
         with override('vi'):
-            self.assertContains(response, gettext('Your list is clear.'))
+            self.assertContains(response, gettext('Start with one clear next step.'))
+            self.assertContains(response, gettext('Your task list is ready for its first item.'))
+            self.assertContains(response, gettext('Create a task'))
+            self.assertNotContains(response, gettext('Your list is clear.'))
         self.assertFalse(response.context['priority_tasks'])
         self.assertEqual(response.context['pending_count'], 0)
+        self.assertEqual(response.context['completed_count'], 0)
         self.assertContains(response, reverse('tasks:task_create'))
 
     def test_update_own_task(self):

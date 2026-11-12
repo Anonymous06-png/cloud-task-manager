@@ -1,0 +1,9 @@
+{% load i18n %}
+<div class="profile-identity">
+    {% include 'includes/avatar.html' with avatar_class='profile-initials' avatar_size=72 %}
+    <div class="profile-identity-copy">
+        <p class="profile-display-name">{{ user.profile.display_name|default:user.get_full_name|default:user.username }}</p>
+        <p class="muted">@{{ user.username }}</p>
+        {% if not user.profile.avatar %}<p class="profile-avatar-note">{% translate 'Your initials are shown as a placeholder.' %}</p>{% endif %}
+    </div>
+</div>

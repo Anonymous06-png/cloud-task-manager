@@ -8,17 +8,21 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import F
-from django.http import JsonResponse
+from django.db import connection, transaction
+from django.db.models import F, Value
+from django.db.models.functions import Collate
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
 
-from .forms import SignUpForm, TaskForm
-from .models import Task
+from .forms import AvatarForm, ProfileForm, SignUpForm, TaskForm
+from .models import Profile, Task
 
 
 def home(request):
@@ -35,6 +39,94 @@ def language_settings(request):
         'project_name': 'Cloud Task Manager',
         'version': '1.1.0-auth',
     })
+
+
+@login_required
+@require_http_methods(['GET', 'HEAD'])
+def profile_view(request):
+    """No user identifier is accepted: this is always the signed-in account."""
+    profile = Profile.objects.filter(user=request.user).first()
+    return render(request, 'profile.html', {'profile': profile})
+
+
+@login_required
+@require_http_methods(['GET', 'HEAD', 'POST'])
+def profile_edit(request):
+    profile = Profile.objects.filter(user=request.user).first()
+    instance = profile or Profile(user=request.user)
+    initial = {
+        'display_name': instance.display_name or request.user.get_full_name() or request.user.username,
+    }
+    form = ProfileForm(
+        request.POST if request.method == 'POST' else None,
+        instance=instance, initial=initial,
+    )
+    if request.method == 'POST' and form.is_valid():
+        if form.instance.pk:
+            form.instance.save(update_fields=['display_name', 'date_of_birth'])
+        else:
+            form.save()
+        messages.success(request, _('Profile updated.'))
+        return redirect('tasks:profile')
+    return render(request, 'profile_edit.html', {'form': form, 'avatar_form': AvatarForm()})
+
+
+def _delete_avatar(storage, name):
+    # Also safe if an account is edited twice before a transaction commits.
+    if name and not Profile.objects.filter(avatar=name).exists():
+        storage.delete(name)
+
+
+@login_required
+@require_POST
+def profile_avatar(request):
+    action = request.POST.get('action')
+    form = AvatarForm(request.POST, request.FILES)
+    if action not in {'upload', 'remove'}:
+        raise Http404
+    if action == 'upload' and not form.is_valid():
+        profile = Profile.objects.filter(user=request.user).first()
+        details = ProfileForm(instance=profile, initial={
+            'display_name': (profile.display_name if profile else '') or request.user.get_full_name() or request.user.username,
+        })
+        return render(request, 'profile_edit.html', {'form': details, 'avatar_form': form})
+    new_name = None
+    storage = Profile._meta.get_field('avatar').storage
+    try:
+        with transaction.atomic():
+            # Serialize first-avatar creation as well as replacement/removal.
+            get_user_model().objects.select_for_update().get(pk=request.user.pk)
+            profile, _created = Profile.objects.get_or_create(user=request.user)
+            old_name = profile.avatar.name
+            if action == 'upload':
+                profile.avatar.save('avatar.png', form.cleaned_data['avatar'], save=False)
+                new_name = profile.avatar.name
+            else:
+                profile.avatar = ''
+            profile.save(update_fields=['avatar'])
+            if old_name:
+                transaction.on_commit(lambda: _delete_avatar(storage, old_name), robust=True)
+    except Exception:
+        if new_name:
+            storage.delete(new_name)
+        raise
+    messages.success(request, _('Profile picture updated.'))
+    return redirect('tasks:profile_edit')
+
+
+@login_required
+@require_http_methods(['GET', 'HEAD'])
+def profile_avatar_image(request):
+    profile = Profile.objects.filter(user=request.user).first()
+    if not profile or not profile.avatar:
+        raise Http404
+    try:
+        response = FileResponse(profile.avatar.open('rb'), content_type='image/png')
+    except FileNotFoundError:
+        raise Http404
+    response['Cache-Control'] = 'private, no-store'
+    response['X-Content-Type-Options'] = 'nosniff'
+    return response
 
 
 def health_check(request):
@@ -55,7 +147,10 @@ def register(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            # An explicit backend is required now that AUTHENTICATION_BACKENDS
+            # also contains allauth's social login backend; registration must
+            # always authenticate through the ModelBackend.
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, _('Account created. You are now signed in.'))
             return redirect('tasks:dashboard')
     else:
@@ -114,7 +209,14 @@ def _task_list_response(request, status_filter='', template='task_list.html'):
 
     query = request.GET.get('q', '').strip()[:100]
     if query:
-        tasks = tasks.filter(title__icontains=query)
+        if connection.vendor == 'postgresql':
+            # C-locale UPPER() is ASCII-only. Collate both operands before
+            # Django applies UPPER(), so Vietnamese Đ/đ and vowels match too.
+            tasks = tasks.alias(
+                search_title=Collate('title', 'und-x-icu'),
+            ).filter(search_title__icontains=Collate(Value(query), 'und-x-icu'))
+        else:
+            tasks = tasks.filter(title__icontains=query)
 
     all_tasks = request.user.tasks.all()
     page = Paginator(tasks, 7).get_page(request.GET.get('page'))

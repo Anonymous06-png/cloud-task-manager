@@ -1,25 +1,41 @@
-{% extends 'base.html' %}{% load i18n %}
+{% extends 'base.html' %}{% load i18n static %}
 {% block title %}{{ title }} · {% translate 'Workspace' %}{% endblock %}
 {% block breadcrumb %}{{ title }}{% endblock %}
 {% block content %}
-<div class="editor-shell">
-  <a class="text-link back-link" href="{% if task %}{% url 'tasks:task_detail' task.pk %}{% else %}{% url 'tasks:task_list' %}{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to tasks' %}</a>
-  <header class="page-header"><div><h1>{{ title }}</h1><p>{% translate 'Add enough detail to make this task easy to pick up again.' %}</p></div></header>
-  <div class="form-card">
-    <form method="post" data-submit-form>
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      {% include 'includes/form_field.html' with field=form.title %}
-      {% include 'includes/form_field.html' with field=form.description %}
-      <div class="form-grid">
-        {% include 'includes/form_field.html' with field=form.due_date %}
-        {% include 'includes/form_field.html' with field=form.status %}
-      </div>
-      <div class="form-actions">
+{% get_current_language as task_form_language %}
+<div class="task-editor">
+  <form method="post" data-submit-form>
+    {% csrf_token %}
+    <div class="task-editor-topbar">
+      <a class="text-link task-editor-back" href="{% if task %}{% url 'tasks:task_detail' task.pk %}{% else %}{% url 'tasks:task_list' %}{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to tasks' %}</a>
+      <div class="task-editor-actions">
+        {% if task %}<a class="btn danger-quiet" href="{% url 'tasks:task_delete' task.pk %}"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>{% translate 'Delete' %}</a>{% endif %}
         <a class="btn secondary" href="{% if task %}{% url 'tasks:task_detail' task.pk %}{% else %}{% url 'tasks:task_list' %}{% endif %}">{% translate 'Cancel' %}</a>
         <button class="btn" type="submit" data-submit-label="{% translate 'Saving…' %}"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>{% translate 'Save task' %}</span></button>
       </div>
-    </form>
-  </div>
+    </div>
+    <header class="task-editor-header"><h1>{{ title }}</h1><p>{% translate 'Add enough detail to make this task easy to pick up again.' %}</p></header>
+    {{ form.non_field_errors }}
+    <div class="task-editor-grid">
+      <div class="task-editor-main task-editor-panel">
+      {% include 'includes/form_field.html' with field=form.title %}
+      {% include 'includes/form_field.html' with field=form.description %}
+      </div>
+      <aside class="task-editor-aside task-editor-panel" aria-labelledby="task-editor-details">
+        <div class="task-editor-panel-heading"><h2 id="task-editor-details">{% translate 'Task detail' %}</h2></div>
+        <div class="task-editor-date-field">
+          {% include 'includes/form_field.html' with field=form.due_date %}
+          <div class="task-editor-date-presets" data-task-date-presets="{{ form.due_date.id_for_label }}" role="group" aria-label="{% translate 'Due date' %}" hidden>
+            <button type="button" data-task-date-offset="0">{% if task_form_language == 'vi' %}Hôm nay{% else %}Today{% endif %}</button>
+            <button type="button" data-task-date-offset="1">{% if task_form_language == 'vi' %}Ngày mai{% else %}Tomorrow{% endif %}</button>
+            <button type="button" data-task-date-offset="7">{% if task_form_language == 'vi' %}+7 ngày{% else %}+7 days{% endif %}</button>
+            <button type="button" class="task-editor-date-clear" data-task-date-clear aria-label="{% if task_form_language == 'vi' %}Xóa ngày{% else %}Clear date{% endif %}" title="{% if task_form_language == 'vi' %}Xóa ngày{% else %}Clear date{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+          </div>
+        </div>
+        {% include 'includes/form_field.html' with field=form.status %}
+      </aside>
+    </div>
+  </form>
 </div>
+<script src="{% static 'js/task-form.js' %}" defer></script>
 {% endblock %}

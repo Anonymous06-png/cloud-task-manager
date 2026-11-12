@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate 'Finish signing up' %} | Flowspace{% endblock %}
+{% block breadcrumb %}{% translate 'Finish signing up' %}{% endblock %}
+{% block content %}
+<div class="workspace-login">
+  <section class="login-form-panel" aria-labelledby="social-signup-title">
+    <div class="login-form-content">
+      <p class="login-welcome"><span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>{% translate 'One more step' %}</p>
+      <h1 id="social-signup-title">{% translate 'Finish signing up' %}</h1>
+      <p class="login-description">{% translate 'Confirm the details below to create your workspace with Google.' %}</p>
+      <form class="login-form" method="post" action="{% url 'socialaccount_signup' %}" data-submit-form>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}{% include 'includes/form_field.html' %}{% endfor %}
+        <button class="btn login-submit" type="submit" data-submit-label="{% translate 'Creating account…' %}"><span>{% translate 'Continue' %}</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </form>
+    </div>
+    <a class="login-home" href="{% url 'tasks:home' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to home' %}</a>
+  </section>
+</div>
+{% endblock %}

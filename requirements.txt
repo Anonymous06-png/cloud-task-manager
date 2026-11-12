@@ -5,6 +5,8 @@
 # Django 5.2 LTS, latest patch as of 2026-10-19 (supports Python 3.10-3.14).
 # Source: https://www.djangoproject.com/download/  (5.2 LTS -> 5.2.18)
 Django==5.2.18
+# Server-side avatar decoding and safe raster re-encoding (no existing upgrades).
+Pillow==13.0.0
 
 # Database
 psycopg2-binary==2.9.10
@@ -15,6 +17,12 @@ gunicorn==23.0.0
 
 # Environment Variables
 python-decouple==3.8
+
+# Social authentication (Google Sign-In via django-allauth; OAuth
+# credentials come from environment variables, never hardcoded)
+django-allauth[socialaccount]==65.21.1
+# Required by django-allauth's OAuth2 client flow (server-side token exchange)
+requests==2.34.2
 
 # Security & Performance
 whitenoise==6.8.2

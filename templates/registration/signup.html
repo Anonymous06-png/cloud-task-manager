@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% load i18n %}
-{% block title %}{% translate 'Create account' %} · {% translate 'Workspace' %}{% endblock %}
+{% block title %}{% translate 'Create account' %} | Flowspace{% endblock %}
 {% block breadcrumb %}{% translate 'Create account' %}{% endblock %}
 {% block content %}
 <div class="workspace-login">
@@ -14,10 +14,10 @@
         {% for field in form %}{% include 'includes/form_field.html' %}{% endfor %}
         <button class="btn login-submit" type="submit" data-submit-label="{% translate 'Creating account…' %}"><span>{% translate 'Create account' %}</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       </form>
+      {% include 'includes/google_button.html' %}
       <p class="login-register">{% translate 'Already have an account?' %} <a href="{% url 'tasks:login' %}">{% translate 'Log in' %}</a></p>
     </div>
     <a class="login-home" href="{% url 'tasks:home' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to home' %}</a>
   </section>
-  {% include 'includes/workspace_preview.html' %}
 </div>
 {% endblock %}

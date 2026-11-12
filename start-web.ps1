@@ -37,6 +37,34 @@ function Get-ProcessChain($Process) {
     return $chain
 }
 
+function Import-PrivateOAuthKeys($PrivateRoot) {
+    # Optional Google OAuth credentials (django-allauth), read from the
+    # private keys file when present. Values are never printed or logged;
+    # already configured environment variables are never overwritten; with
+    # no credentials (or an absent file) the app stays on username/password
+    # login. Returns the names of the variables that were set.
+    $known = @('GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET')
+    $oauthFile = Join-Path $PrivateRoot "oauth-keys-backup.env"
+    if (!(Test-Path -LiteralPath $oauthFile -PathType Leaf)) { return @() }
+    if ((Get-Item -LiteralPath $oauthFile -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        throw "The private OAuth credentials file cannot be a reparse point."
+    }
+    $loaded = @()
+    foreach ($line in [IO.File]::ReadAllLines($oauthFile)) {
+        if ($line -match '^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$') {
+            $name = $Matches[1]
+            $value = $Matches[2]
+            if ($known -notcontains $name) { continue }
+            if ([string]::IsNullOrEmpty($value)) { continue }
+            if ([string]::IsNullOrEmpty([Environment]::GetEnvironmentVariable($name, 'Process'))) {
+                [Environment]::SetEnvironmentVariable($name, $value, 'Process')
+                $loaded += $name
+            }
+        }
+    }
+    return $loaded
+}
+
 try {
     Set-Location $PSScriptRoot
     $entryUrl = "http://127.0.0.1:$Port/"
@@ -197,6 +225,11 @@ except Exception:
         if ($plain) { [Array]::Clear($plain, 0, $plain.Length) }
     }
     Write-Host "Protected local signing key loaded; value not displayed."
+
+    $oauthKeys = Import-PrivateOAuthKeys $privateRoot
+    if ($oauthKeys.Count) {
+        Write-Host ("Optional Google OAuth credentials loaded for: " + ($oauthKeys -join ', '))
+    }
 
     & $python manage.py check
     if ($LASTEXITCODE -ne 0) { throw "Django system checks failed." }

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Log in" %} | Cloud Task Manager{% endblock %}
+{% block title %}{% translate "Log in" %} | Flowspace{% endblock %}
 {% block breadcrumb %}{% translate "Log in" %}{% endblock %}
 
 {% block content %}
@@ -26,6 +26,8 @@
                     </button>
                 </form>
 
+                {% include 'includes/google_button.html' %}
+
                 <p class="login-register">
                     {% translate "New here?" %} <a href="{% url 'tasks:register' %}">{% translate "Create your account" %}</a>
                 </p>
@@ -35,7 +37,5 @@
                 {% translate "Back to home" %}
             </a>
         </section>
-
-        {% include "includes/workspace_preview.html" %}
     </div>
 {% endblock %}

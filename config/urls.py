@@ -9,5 +9,8 @@ urlpatterns = [
     # Django's set_language view (/i18n/setlang/): persists the chosen
     # language in a cookie.
     path('i18n/', include('django.conf.urls.i18n')),
+    # django-allauth: /accounts/google/login/ (+ /callback/) exists only when
+    # OAuth credentials are configured; the other account URLs stay inert.
+    path('accounts/', include('allauth.urls')),
     path('', include('tasks.urls')),
 ]

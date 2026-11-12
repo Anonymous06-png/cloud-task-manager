@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Profile' %} · Flowspace{% endblock %}
+{% block breadcrumb %}{% translate 'Profile' %}{% endblock %}
+{% block content %}
+<div class="flowspace-profile">
+    <a class="profile-back" href="{% url 'tasks:settings' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to Settings' %}</a>
+    <header class="profile-page-heading">
+        <p class="profile-location">{% translate 'Personal' %} <span aria-hidden="true">/</span> {% translate 'Profile' %}</p>
+        <div class="profile-title-row"><h1>{% translate 'Profile' %}</h1><a class="btn" href="{% url 'tasks:profile_edit' %}">{% translate 'Edit Profile' %}</a></div>
+        <p>{% translate 'Your personal Flowspace account details.' %}</p>
+    </header>
+    <section class="profile-card" aria-labelledby="profile-details-heading">
+        {% include 'includes/profile_identity.html' %}
+        <div class="profile-details">
+            <h2 id="profile-details-heading">{% translate 'Personal details' %}</h2>
+            <p class="profile-section-note">{% translate 'Username and email are read-only.' %}</p>
+            <dl class="profile-ledger">
+                <div><dt>{% translate 'Display name' %}</dt><dd>{{ user.profile.display_name|default:user.get_full_name|default:user.username }}</dd></div>
+                <div><dt>{% translate 'Date of birth' %}</dt><dd>{% if profile.date_of_birth %}<time datetime="{{ profile.date_of_birth|date:'Y-m-d' }}">{{ profile.date_of_birth|date:'DATE_FORMAT' }}</time>{% else %}{% translate 'Not provided' %}{% endif %}</dd></div>
+                <div><dt>{% translate 'Username' %}</dt><dd>@{{ user.username }}</dd></div>
+                <div><dt>{% translate 'Email address' %}</dt><dd>{{ user.email|default:_('Not provided') }}</dd></div>
+            </dl>
+        </div>
+    </section>
+</div>
+{% endblock %}

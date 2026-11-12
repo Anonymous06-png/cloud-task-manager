@@ -5,23 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FAFBF9">
+    <meta name="theme-color" content="#FFFFFF">
     <title>{% block title %}{% translate 'Workspace' %}{% endblock %}</title>
     <script>try{document.documentElement.dataset.theme=localStorage.getItem('ctm-theme')||'light';document.documentElement.dataset.sidebar=localStorage.getItem('ctm-sidebar')||'expanded'}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="{% static 'css/design-tokens.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'flowspace/favicon.svg' %}">
     <script src="{% static 'js/app.js' %}" defer></script>
 </head>
 <body class="{% if user.is_authenticated %}has-sidebar{% else %}public-page{% endif %}">
     <a class="skip-link" href="#main-content">{% translate 'Skip to main content' %}</a>
     <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="fold" viewBox="0 0 40 34"><path fill="currentColor" fill-rule="evenodd" stroke="none" d="M0 0h25l15 15v19H15L0 19ZM10 10v5l9 9h11v-5l-9-9Z"/></symbol>
         <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
         <symbol id="i-grid" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></symbol>
         <symbol id="i-list" viewBox="0 0 24 24"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/></symbol>
         <symbol id="i-list-todo" viewBox="0 0 24 24"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/></symbol>
+        <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol>
         <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol>
+        <symbol id="i-layout-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol>
         <symbol id="i-circle-dashed" viewBox="0 0 24 24"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"/><path d="M13.9 21.818a10 10 0 0 1-3.8 0"/><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/><path d="M2.182 13.9a10 10 0 0 1 0-3.8"/><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/><path d="M21.818 10.1a10 10 0 0 1 0 3.8"/><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/></symbol>
         <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
         <symbol id="i-settings" viewBox="0 0 24 24"><path d="M14 17H5"/><path d="M19 7h-9"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
@@ -43,6 +47,8 @@
         <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
         <symbol id="i-list-check" viewBox="0 0 24 24"><path d="M16 5H3"/><path d="M16 12H3"/><path d="M11 19H3"/><path d="m15 18 2 2 4-4"/></symbol>
         <symbol id="i-logout" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+        <symbol id="i-list-filter" viewBox="0 0 24 24"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></symbol>
         <symbol id="i-language" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
         <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
         <symbol id="i-edit" viewBox="0 0 24 24"><path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m14 5 5 5"/></symbol>
@@ -53,13 +59,25 @@
     <div class="sidebar-scrim" data-mobile-close aria-hidden="true"></div>
     <aside class="sidebar" id="workspace-sidebar" aria-label="{% translate 'Main navigation' %}">
         <div class="sidebar-header">
-            <a class="workspace-mark" href="{% url 'tasks:dashboard' %}" aria-label="{% translate 'Workspace' %}" title="{% translate 'Workspace' %}" data-tooltip="{% translate 'Workspace' %}">
-                <span class="mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
-                <span class="sidebar-label">{% translate 'Workspace' %}</span>
+            <button class="workspace-mark sidebar-brand-toggle sidebar-logo-toggle" type="button" data-sidebar-toggle aria-controls="workspace-sidebar" aria-expanded="false" aria-label="{% translate 'Expand sidebar' %}" title="{% translate 'Expand sidebar' %}" data-label-collapse="{% translate 'Collapse sidebar' %}" data-label-expand="{% translate 'Expand sidebar' %}">
+                <span class="mark">
+                    <svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg>
+                    <svg class="icon toggle-symbol" aria-hidden="true"><use href="#i-panel-left"/></svg>
+                </span>
+            </button>
+            <button class="workspace-mark sidebar-expanded-brand sidebar-logo-toggle" type="button" data-sidebar-toggle aria-controls="workspace-sidebar" aria-expanded="true" aria-label="{% translate 'Collapse sidebar' %}" title="{% translate 'Collapse sidebar' %}" data-label-collapse="{% translate 'Collapse sidebar' %}" data-label-expand="{% translate 'Expand sidebar' %}">
+                <span class="mark">
+                    <svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg>
+                    <svg class="icon toggle-symbol" aria-hidden="true"><use href="#i-panel-left-close"/></svg>
+                </span>
+                <span class="sidebar-label" translate="no">Flowspace</span>
+            </button>
+            <a class="workspace-mark sidebar-mobile-brand" href="{% url 'tasks:dashboard' %}" aria-label="Flowspace — {% translate 'Workspace' %}" title="Flowspace — {% translate 'Workspace' %}">
+                <span class="mark"><svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg></span>
+                <span class="sidebar-label">Flowspace</span>
             </a>
-            <button class="icon-button sidebar-top-toggle" type="button" data-sidebar-toggle aria-controls="workspace-sidebar" aria-expanded="true" aria-label="{% translate 'Collapse sidebar' %}" title="{% translate 'Collapse sidebar' %}" data-label-collapse="{% translate 'Collapse sidebar' %}" data-label-expand="{% translate 'Expand sidebar' %}">
-                <svg class="icon icon-collapse" aria-hidden="true"><use href="#i-panel-left-close"/></svg>
-                <svg class="icon icon-expand" aria-hidden="true"><use href="#i-panel-left"/></svg>
+            <button class="icon-button sidebar-collapse-toggle" type="button" data-sidebar-toggle aria-controls="workspace-sidebar" aria-expanded="true" aria-label="{% translate 'Collapse sidebar' %}" title="{% translate 'Collapse sidebar' %}" data-label-collapse="{% translate 'Collapse sidebar' %}" data-label-expand="{% translate 'Expand sidebar' %}">
+                <svg class="icon" aria-hidden="true"><use href="#i-panel-left-close"/></svg>
             </button>
             <button class="icon-button mobile-drawer-close" type="button" data-mobile-close aria-label="{% translate 'Close navigation' %}" title="{% translate 'Close navigation' %}">
                 <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>
@@ -86,50 +104,87 @@
             </a>
         </nav>
         <div class="sidebar-bottom">
-            <a class="sidebar-settings" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Settings' %}" {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %} title="{% translate 'Settings' %}" data-tooltip="{% translate 'Settings' %}">
-                <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
-                <span class="sidebar-label">{% translate 'Settings' %}</span>
-            </a>
-            <div class="sidebar-foot">
-                <a class="profile" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Account' %}: {{ user.get_full_name|default:user.username }}" title="{% translate 'Account' %}: {{ user.get_full_name|default:user.username }}" data-tooltip="{{ user.get_full_name|default:user.username }}">
-                    <span class="avatar">{{ user.username|slice:':2'|upper }}</span>
+            <div class="sidebar-foot" data-account>
+                <button class="profile account-trigger" id="account-trigger" type="button" hidden aria-expanded="false" aria-controls="account-dropdown" aria-label="{% translate 'Account' %}: {{ user.profile.display_name|default:user.get_full_name|default:user.username }}" title="{% translate 'Account' %}: {{ user.profile.display_name|default:user.get_full_name|default:user.username }}">
+                    {% include 'includes/avatar.html' with avatar_class='avatar' avatar_size=34 %}
                     <span class="sidebar-label profile-copy">
-                        <span class="profile-name">{{ user.get_full_name|default:user.username }}</span>
+                        <span class="profile-name">{{ user.profile.display_name|default:user.get_full_name|default:user.username }}</span>
                         <span class="profile-type">{% translate 'Personal' %}</span>
                     </span>
-                    <svg class="icon sidebar-label profile-chevron" aria-hidden="true"><use href="#i-chevrons-up-down"/></svg>
-                </a>
-                <form class="sidebar-logout" method="post" action="{% url 'tasks:logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" aria-label="{% translate 'Log out' %}" title="{% translate 'Log out' %}" data-tooltip="{% translate 'Log out' %}">
-                        <svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>
-                        <span class="sidebar-label">{% translate 'Log out' %}</span>
-                    </button>
-                </form>
+                    <svg class="icon sidebar-label profile-chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                </button>
+                <section class="account-dropdown" id="account-dropdown" role="region" aria-labelledby="account-trigger" hidden inert>
+                    <div class="account-identity">
+                        {% include 'includes/avatar.html' with avatar_class='avatar' avatar_size=34 %}
+                        <div class="account-identity-copy">
+                            <p class="account-name">{{ user.profile.display_name|default:user.get_full_name|default:user.username }}</p>
+                            <p class="account-meta">@{{ user.username }}</p>
+                            {% if user.email %}<p class="account-meta">{{ user.email }}</p>{% endif %}
+                        </div>
+                    </div>
+                    <a class="account-action account-profile" href="{% url 'tasks:profile' %}" {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'profile_edit' %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#i-user"/></svg>
+                        <span>{% if current_language == 'vi' %}Hồ sơ cá nhân{% else %}My Profile{% endif %}</span>
+                    </a>
+                    <a class="account-action" href="{% url 'tasks:settings' %}" {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %}>
+                        <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
+                        <span>{% translate 'Settings' %}</span>
+                    </a>
+                    <hr class="account-divider">
+                    <form class="account-logout" method="post" action="{% url 'tasks:logout' %}">
+                        {% csrf_token %}
+                        <button class="account-action" type="submit">
+                            <svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>
+                            <span>{% if current_language == 'vi' %}Đăng xuất khỏi phiên này{% else %}Log out of this session{% endif %}</span>
+                        </button>
+                    </form>
+                </section>
+                <noscript>
+                    <a class="profile" href="{% url 'tasks:profile' %}"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span class="sidebar-label">{% if current_language == 'vi' %}Hồ sơ cá nhân{% else %}My Profile{% endif %}</span></a>
+                    <a class="profile" href="{% url 'tasks:settings' %}" aria-label="{% translate 'Settings' %}" title="{% translate 'Settings' %}">
+                        <span class="avatar" aria-hidden="true">{{ user.username|slice:':2'|upper }}</span>
+                        <span class="sidebar-label">{% translate 'Settings' %}</span>
+                    </a>
+                    <form class="sidebar-logout" method="post" action="{% url 'tasks:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" aria-label="{% translate 'Log out' %}" title="{% translate 'Log out' %}">
+                            <svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>
+                            <span class="sidebar-label">{% translate 'Log out' %}</span>
+                        </button>
+                    </form>
+                </noscript>
             </div>
         </div>
     </aside>
     {% else %}
-    <header class="public-header">
-        <a class="workspace-mark" href="{% url 'tasks:home' %}">
-            <span class="mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
-            <span>{% translate 'Workspace' %}</span>
-        </a>
-        <nav class="public-nav" aria-label="{% translate 'Main navigation' %}">
-            <form class="lang-switch" method="post" action="{% url 'set_language' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" name="language" value="vi" lang="vi" {% if current_language == 'vi' %}aria-current="true"{% endif %}>VI</button>
-                <span aria-hidden="true">/</span>
-                <button type="submit" name="language" value="en" lang="en" {% if current_language == 'en' %}aria-current="true"{% endif %}>EN</button>
-            </form>
-            <button class="theme-toggle icon-button" type="button" data-theme-toggle title="{% translate 'Switch theme' %}" aria-label="{% translate 'Switch theme' %}">
-                <svg class="icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
-                <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
-            </button>
-            <span class="public-nav-divider" aria-hidden="true"></span>
-            <a class="public-login-link" href="{% url 'tasks:login' %}" {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}>{% translate 'Log in' %}</a>
-            <a class="btn" href="{% url 'tasks:register' %}" {% if request.resolver_match.url_name == 'register' %}aria-current="page"{% endif %}>{% translate 'Create account' %}</a>
+    <header class="site-header">
+        <nav class="site-nav page-width" aria-label="{% translate 'Main navigation' %}">
+            <a class="brand" href="{% url 'tasks:home' %}" aria-label="{% translate 'Flowspace — Home' %}">
+                <svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg>
+                <span>Flowspace</span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="{% url 'tasks:home' %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>{% translate 'Home' %}</a>
+                <a class="nav-login-link" href="{% url 'tasks:login' %}" {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}>{% translate 'Log in' %}</a>
+            </div>
+            <div class="nav-actions">
+                <form class="lang-switch" method="post" action="{% url 'set_language' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" name="language" value="vi" lang="vi" {% if current_language == 'vi' %}aria-current="true"{% endif %}>VI</button>
+                    <span aria-hidden="true">/</span>
+                    <button type="submit" name="language" value="en" lang="en" {% if current_language == 'en' %}aria-current="true"{% endif %}>EN</button>
+                </form>
+                <button class="theme-toggle icon-button" type="button" data-theme-toggle title="{% translate 'Switch theme' %}" aria-label="{% translate 'Switch theme' %}">
+                    <svg class="icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+                    <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+                </button>
+                <a class="account-button" href="{% url 'tasks:register' %}" {% if request.resolver_match.url_name == 'register' %}aria-current="page"{% endif %}>{% translate 'Create account' %}</a>
+                <a class="icon-button account-icon" href="{% url 'tasks:register' %}" aria-label="{% translate 'Create account' %}"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></a>
+                <button class="icon-button nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="{% translate 'Open menu' %}" data-nav-toggle>
+                    <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+                </button>
+            </div>
         </nav>
     </header>
     {% endif %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Edit Profile' %} · Flowspace{% endblock %}
+{% block breadcrumb %}{% translate 'Edit Profile' %}{% endblock %}
+{% block content %}
+<div class="flowspace-profile">
+    <a class="profile-back" href="{% url 'tasks:profile' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to Profile' %}</a>
+    <header class="profile-page-heading">
+        <p class="profile-location">{% translate 'Personal' %} <span aria-hidden="true">/</span> {% translate 'Edit Profile' %}</p>
+        <h1>{% translate 'Edit Profile' %}</h1>
+        <p>{% translate 'Update your display name and personal details.' %}</p>
+    </header>
+    <section class="profile-card profile-avatar-card" aria-labelledby="avatar-heading">
+        {% include 'includes/profile_identity.html' %}
+        <div class="profile-avatar-controls">
+            <h2 id="avatar-heading">{% translate 'Profile picture' %}</h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'tasks:profile_avatar' %}">
+                {% csrf_token %}
+                <label for="id_avatar">{% translate 'Choose an image' %}</label>
+                {{ avatar_form.avatar }}
+                <p class="helptext" id="avatar-help">{% translate 'JPG, PNG or WebP. Maximum 2 MB and 4096 pixels per side.' %}</p>
+                {% if avatar_form.errors %}<div id="avatar-errors" role="alert">{{ avatar_form.errors }}</div>{% endif %}
+                <button class="btn secondary" type="submit" name="action" value="upload">{% if user.profile.avatar %}{% translate 'Change photo' %}{% else %}{% translate 'Upload photo' %}{% endif %}</button>
+            </form>
+            {% if user.profile.avatar %}<form method="post" action="{% url 'tasks:profile_avatar' %}">{% csrf_token %}<button class="btn danger-quiet" name="action" value="remove" type="submit">{% translate 'Remove photo' %}</button></form>{% endif %}
+        </div>
+    </section>
+    <form class="profile-card" method="post" action="{% url 'tasks:profile_edit' %}">
+        {% csrf_token %}
+        <div class="profile-details">
+            <h2>{% translate 'Personal details' %}</h2>
+            <p class="profile-section-note">{% translate 'Username and email are read-only.' %}</p>
+            {% if form.errors %}<div class="profile-error-summary" role="alert"><p>{% translate 'Please correct the errors below. Your changes have not been saved.' %}</p>{{ form.non_field_errors }}</div>{% endif %}
+            {% for field in form %}
+            <div class="form-field{% if field.errors %} has-error{% endif %}">
+                <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required-mark" aria-hidden="true"> *</span>{% else %}<span class="field-optional">{% translate 'Optional' %}</span>{% endif %}</label>
+                {{ field }}
+                <p class="helptext" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>
+                {% if field.errors %}<div id="{{ field.auto_id }}_error">{{ field.errors }}</div>{% endif %}
+            </div>
+            {% endfor %}
+            {% translate 'Read-only' as readonly_label %}
+            <dl class="profile-readonly">
+                <div><dt>{% translate 'Username' %}<span>{{ readonly_label }}</span></dt><dd>@{{ user.username }}</dd></div>
+                <div><dt>{% translate 'Email address' %}<span>{{ readonly_label }}</span></dt><dd>{{ user.email|default:_('Not provided') }}</dd></div>
+            </dl>
+        </div>
+        <div class="profile-form-footer">
+            <p>{% translate 'Changes are saved only when you select Save changes.' %}</p>
+            <div class="profile-form-actions">
+                <a class="btn secondary" href="{% url 'tasks:profile' %}">{% translate 'Cancel' %}</a>
+                <button class="btn" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>{% translate 'Save changes' %}</button>
+            </div>
+        </div>
+    </form>
+    <a class="profile-settings-link" href="{% url 'tasks:settings' %}">{% translate 'Back to Settings' %}</a>
+</div>
+{% endblock %}

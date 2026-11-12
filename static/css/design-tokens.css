@@ -1,42 +1,48 @@
-/* Adapted from design-reference/.../tokens.css; source package remains read-only. */
+/* Shared Direction C colors from frontend/Flowspace-Direction-C-Brand-Reference/tokens.css.
+   Existing layout/type scales and distinct semantic status colors are retained. */
 :root {
   color-scheme: light;
 
   /* color roles */
   --color-bg: #FFFFFF;
-  --color-surface: #FFFFFF;
-  --color-shell: #F6F8F5;
-  --color-surface-hover: #F6F8F5;
-  --color-text: #242E2A;
-  --color-muted: #637067;
-  --color-border: #E3E8E2;
-  --color-accent: #25765B;
+  --color-surface: #F5F6F7;
+  --color-shell: #F5F6F7;
+  --color-surface-hover: #EBEDF0;
+  --color-text: #292D32;
+  --color-muted: #626A73;
+  --color-border: #E0E3E6;
+  --color-accent: #526F91;
   --color-on-accent: #FFFFFF;
-  --color-accent-text: #216C53;
-  --color-accent-soft: #E7F2EB;
+  --color-accent-text: #526F91;
+  --color-accent-soft: #EBEDF0;
   --color-success: #25765B;
+  --color-on-success: #FFFFFF;
+  --color-success-soft: #E7F2EB;
   --color-warning: #956319;
   --color-warning-soft: #FBF3E4;
   --color-danger: #B7453D;
   --color-on-danger: #FFFFFF;
   --color-danger-soft: #FBEFED;
-  --color-focus: #25765B;
-  --color-today: #EFF5EF;
-  --color-backdrop: #15251D66;
+  --color-focus: #526F91;
+  --color-today: #EBEDF0;
+  --color-backdrop: #1B1E2266;
   --color-transparent: transparent;
-  --color-track: #DCE7DC;
-  --color-line-strong: #B5C0B6;
+  --color-track: #EBEDF0;
+  --color-line-strong: #ADB5BF;
+  --color-soft-border: #ECEEF0;
+  --color-complete: #68717B;
+  --color-selected: #EBEDF0;
 
-  --accent-50: #F0F9F5;
-  --accent-100: #DEF0E8;
-  --accent-200: #BFE0D2;
-  --accent-300: #97CBB5;
-  --accent-400: #6EB297;
-  --accent-500: #4A977B;
-  --accent-600: #337F64;
-  --accent-700: #22664F;
-  --accent-800: #154E3B;
-  --accent-900: #0B3628;
+  --accent-50: #F3F7FC;
+  --accent-100: #E4ECF5;
+  --accent-200: #CBD9EA;
+  --accent-300: #AAC0DA;
+  --accent-400: #89A4C5;
+  --accent-500: #6B89AC;
+  --accent-600: #557192;
+  --accent-700: #415A77;
+  --accent-800: #30445B;
+  --accent-900: #202F41;
 
   /* typography */
   --font-heading: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -103,30 +109,71 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-bg: #121815;
-  --color-surface: #19211C;
-  --color-shell: #151D18;
-  --color-surface-hover: #202B23;
-  --color-text: #E5EBE6;
-  --color-muted: #A0AFA3;
-  --color-border: #2E3B31;
-  --color-accent: #8BD4AC;
-  --color-on-accent: #153624;
-  --color-accent-text: #95D9B4;
-  --color-accent-soft: #233C2C;
-  --color-focus: #8BD4AC;
+  --color-bg: #1B1E22;
+  --color-surface: #23272C;
+  --color-shell: #23272C;
+  --color-surface-hover: #30363E;
+  --color-text: #E6E9ED;
+  --color-muted: #ADB5BF;
+  --color-border: #3B4149;
+  --color-accent: #AEC2DA;
+  --color-on-accent: #1B2532;
+  --color-accent-text: #AEC2DA;
+  --color-accent-soft: #30363E;
+  --color-focus: #AEC2DA;
   --color-warning: #E8BF7D;
   --color-warning-soft: #392F20;
   --color-danger: #F0A29A;
   --color-on-danger: #321A17;
   --color-danger-soft: #3C2521;
   --color-success: #95D9B4;
-  --color-today: #213127;
-  --color-backdrop: #050B08AA;
-  --color-track: #344B39;
-  --color-line-strong: #687C6B;
+  --color-on-success: #153624;
+  --color-success-soft: #233C2C;
+  --color-today: #30363E;
+  --color-backdrop: #1B1E22AA;
+  --color-track: #30363E;
+  --color-line-strong: #626A73;
+  --color-soft-border: #30353C;
+  --color-complete: #ADB5BF;
+  --color-selected: #30363E;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root { --dur-fast: 0ms; --dur-slow: 0ms; }
+}
+
+/* ==================================================================
+   Preserve the existing public-page type, shape and preview treatment.
+   All pages inherit the shared Direction C colors above.
+   ================================================================== */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+body.public-page {
+  --font-heading: "Inter", Arial, sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
+  --font-ui: "Inter", Arial, sans-serif;
+  --step-n2: .75rem;
+  --step-n1: .875rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5rem;
+  --step-3: 2rem;
+  --step-4: 2.75rem;
+  --weight-heading: 550;
+  --tracking-heading: -.035em;
+  --leading-heading: 1.18;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-panel: 8px;
+  --radius-lg: 8px;
+  --shadow-preview: 0 2px 4px color-mix(in srgb, var(--color-text) 3%, transparent), 0 16px 40px -20px color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+:root[data-theme="dark"] body.public-page {
+  --shadow-preview: none;
 }

@@ -233,7 +233,7 @@ class PublicEndpointTests(TestCase):
         self.assertContains(response, 'Cloud Task Manager')
         self.assertTemplateUsed(response, 'home.html')
         self.assertTemplateUsed(response, 'includes/workspace_preview.html')
-        self.assertContains(response, _('Make room for the work that matters.'))
+        self.assertContains(response, _('Tidy work today.'))
         self.assertNotIn('_auth_user_id', self.client.session)
         self.assertNotContains(response, 'class="tech-stack"')
         for name in ('login', 'register'):
@@ -261,7 +261,10 @@ class PublicEndpointTests(TestCase):
         response = self.client.post('/logout/', follow=True)
         self.assertEqual(response.redirect_chain, [('/login/', 302)])
         self.assertTemplateUsed(response, 'registration/login.html')
-        self.assertTemplateUsed(response, 'includes/workspace_preview.html')
+        # The approved Flowspace login layout (2026-11 redesign) renders the
+        # standalone workspace-login panel; the workspace preview no longer
+        # appears on the login page.
+        self.assertContains(response, 'login-form-panel')
         self.assertNotIn('_auth_user_id', self.client.session)
         self.assertRedirects(self.client.get('/dashboard/'), '/login/?next=/dashboard/')
         self.assertTemplateUsed(self.client.get('/'), 'home.html')

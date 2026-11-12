@@ -1,11 +1,27 @@
-{% extends 'base.html' %}{% load i18n %}
+{% extends 'base.html' %}{% load i18n static %}
 {% block title %}{% translate 'Tasks' %} · {% translate 'Workspace' %}{% endblock %}
 {% block breadcrumb %}{% translate 'Tasks' %}{% endblock %}
 {% block content %}
-<header class="page-header">
-  <div class="heading-copy"><h1>{% if status_filter == 'completed' %}{% translate 'Completed' %}{% else %}{% translate 'Tasks' %}{% endif %}</h1><p>{% translate 'Track what is open and what is done.' %}</p></div>
-  <a class="btn" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create task' %}</a>
-</header>
+<link rel="stylesheet" href="{% static 'css/task-list-motion.css' %}">
+<script src="{% static 'js/task-list-motion.js' %}" defer></script>
+<div class="flowspace-task-list">
+  <header class="list-header">
+    <div class="heading-copy">
+      <p class="list-location"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg>{% translate 'Personal' %} / {% translate 'Task list' %}</p>
+      <div class="list-heading-line">
+        <h1>{% translate 'Tasks' %}</h1>
+        <p class="list-summary"><span>{{ pending_count }} {% translate 'Incomplete' %}</span><span aria-hidden="true">·</span><span>{{ completed_count }} {% translate 'Completed' %}</span></p>
+      </div>
+    </div>
+    {% widthratio completed_count total_count 100 as completion_rate %}
+    <div class="list-progress">
+      <div><p>{% translate 'Task summary' %}</p><strong>{{ completion_rate|default:'0' }}% {% translate 'Completed' %}</strong></div>
+      <div class="list-progress-ring" aria-hidden="true">
+        <svg viewBox="0 0 36 36"><circle class="list-progress-track" cx="18" cy="18" r="15.9155"/><circle class="list-progress-value" cx="18" cy="18" r="15.9155" stroke-dasharray="{{ completion_rate|default:'0' }} 100"/></svg>
+        <span>{{ completed_count }}/{{ total_count }}</span>
+      </div>
+    </div>
+  </header>
 <section class="task-section list-panel" aria-label="{% translate 'Task list' %}">
   <div class="list-toolbar">
     <nav class="tabs" aria-label="{% translate 'Task status filter' %}">
@@ -13,17 +29,34 @@
       <a href="{% url 'tasks:task_list' %}?status=incomplete{% if query %}&amp;q={{ query|urlencode }}{% endif %}" {% if status_filter == 'incomplete' %}aria-current="page"{% endif %}>{% translate 'Incomplete' %} <span>{{ pending_count }}</span></a>
       <a href="{% url 'tasks:task_list' %}?status=completed{% if query %}&amp;q={{ query|urlencode }}{% endif %}" {% if status_filter == 'completed' %}aria-current="page"{% endif %}>{% translate 'Completed' %} <span>{{ completed_count }}</span></a>
     </nav>
-    <form class="search-form" method="get" action="{% url 'tasks:task_list' %}" role="search">
-      {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
-      <label class="sr-only" for="task-search">{% translate 'Search tasks' %}</label>
-      <input id="task-search" type="search" name="q" value="{{ query }}" maxlength="100" placeholder="{% translate 'Search tasks' %}">
-      <button type="submit" class="icon-button" aria-label="{% translate 'Search' %}" title="{% translate 'Search' %}"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button>
-    </form>
+    <div class="list-toolbar-actions">
+      <form class="search-form" method="get" action="{% url 'tasks:task_list' %}" role="search">
+        {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+        <label class="sr-only" for="task-search">{% translate 'Search tasks' %}</label>
+        <input id="task-search" type="search" name="q" value="{{ query }}" maxlength="100" placeholder="{% translate 'Search tasks' %}">
+        <button type="submit" class="icon-button" aria-label="{% translate 'Search' %}" title="{% translate 'Search' %}"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button>
+      </form>
+      <a class="btn" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create task' %}</a>
+    </div>
   </div>
   {% if query %}<div class="search-context"><span>{% translate 'Search tasks' %}: <strong>“{{ query }}”</strong> <span class="tiny-count">{{ page.paginator.count }}</span></span><a class="text-link" href="{% url 'tasks:task_list' %}{% if status_filter %}?status={{ status_filter }}{% endif %}">{% translate 'Clear search' %}<svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></a></div>{% endif %}
   {% if tasks %}
-    <ul class="full-task-list">{% for task in tasks %}{% include 'includes/task_row.html' %}{% endfor %}</ul>
-    <a class="add-task-row" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create a task' %}</a>
+    {# Group only this filtered page; stable sorting keeps the existing order within each status. #}
+    {% regroup tasks|dictsortreversed:'status' by status as task_groups %}
+    <div class="list-groups">
+      {% for group in task_groups %}
+      <details class="list-group list-group-{{ group.grouper }}" open>
+        <summary class="list-group-heading"><h2 id="list-group-{{ group.grouper }}"><svg class="icon list-group-caret" aria-hidden="true"><use href="#i-chevron-down"/></svg><span class="list-group-marker" aria-hidden="true"></span><span>{% if group.grouper == 'completed' %}{% translate 'Completed' %}{% else %}{% translate 'Overdue' %} &amp; {% translate 'Incomplete' %}{% endif %}</span><span class="list-group-count">{{ group.list|length }}</span></h2></summary>
+        <div class="list-columns" aria-hidden="true">
+          <span><svg class="icon"><use href="#i-list-check"/></svg>{% translate 'Task' %} &amp; {% translate 'Description' %}</span>
+          <span><svg class="icon"><use href="#i-calendar"/></svg>{% translate 'Due date' %}</span>
+          <span>{% translate 'Status' %}</span>
+          <span>{% get_current_language as list_language %}{% if list_language == 'vi' %}Thao tác{% else %}{% translate 'Actions' %}{% endif %}</span>
+        </div>
+        <ul class="full-task-list" aria-labelledby="list-group-{{ group.grouper }}">{% for task in group.list %}{% include 'includes/task_row.html' %}{% endfor %}</ul>
+      </details>
+      {% endfor %}
+    </div>
   {% else %}
     <div class="empty-state">
       <span class="empty-symbol"><svg class="icon" aria-hidden="true"><use href="{% if query %}#i-search{% else %}#i-list-check{% endif %}"/></svg></span>
@@ -40,4 +73,5 @@
   </nav>
   {% endif %}
 </section>
+</div>
 {% endblock %}

@@ -91,6 +91,121 @@ msgstr "Chừa không gian cho những việc thực sự quan trọng."
 msgid "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence."
 msgstr "Cloud Task Manager lưu trữ rõ ràng từng việc tiếp theo của bạn, để bạn nắm chi tiết, giữ đà và hoàn thành một cách tự tin."
 
+# --- Step 11 Flowspace home ---
+msgid "Flowspace — Tidy work today. A lighter head tomorrow."
+msgstr "Flowspace — Gọn việc hôm nay. Nhẹ đầu ngày mai."
+
+msgid "Tidy work today."
+msgstr "Gọn việc hôm nay."
+
+msgid "A lighter head tomorrow."
+msgstr "Nhẹ đầu ngày mai."
+
+msgid "Create tasks, set deadlines, track progress. One tidy space for what matters."
+msgstr "Tạo công việc, đặt thời hạn, theo dõi tiến độ. Một không gian gọn gàng cho những điều quan trọng."
+
+msgid "Create your space"
+msgstr "Tạo không gian của bạn"
+
+msgid "Get started free"
+msgstr "Bắt đầu miễn phí"
+
+msgid "Explore the demo"
+msgstr "Khám phá bản demo"
+
+msgid "Preview the app"
+msgstr "Xem trước giao diện"
+
+msgid "Enough tools. Fewer distractions."
+msgstr "Đủ công cụ. Ít phân tâm."
+
+msgid "From today's small tasks to your next goal."
+msgstr "Từ việc nhỏ hôm nay đến mục tiêu tiếp theo."
+
+msgid "Every task, one place"
+msgstr "Mọi công việc, một nơi"
+
+msgid "Add, edit or delete tasks. Cross one off, move one step forward."
+msgstr "Thêm, sửa hoặc xóa công việc. Gạch đi một việc, tiến thêm một bước."
+
+msgid "Own your deadlines"
+msgstr "Chủ động với thời hạn"
+
+msgid "Set a due date for each task. Know what to prioritise next."
+msgstr "Đặt ngày hoàn thành cho từng việc. Biết điều gì cần ưu tiên tiếp theo."
+
+msgid "See what needs doing"
+msgstr "Nhìn rõ điều cần làm"
+
+msgid "Filter by status. Keep focus on the work that's left."
+msgstr "Lọc theo trạng thái. Giữ sự tập trung cho phần việc còn lại."
+
+msgid "A tidy space. For the work that matters."
+msgstr "Một không gian gọn gàng. Cho những việc quan trọng."
+
+msgid "Flowspace — Home"
+msgstr "Flowspace — Trang chủ"
+
+msgid "Home"
+msgstr "Trang chủ"
+
+msgid "Open menu"
+msgstr "Mở menu"
+
+msgid "Sample data"
+msgstr "Dữ liệu mẫu"
+
+msgid "My tasks"
+msgstr "Công việc của tôi"
+
+msgid "Pending"
+msgstr "Chưa xong"
+
+msgid "Done"
+msgstr "Đã xong"
+
+msgid "Sample account"
+msgstr "Tài khoản mẫu"
+
+msgid "Wednesday, 28 October 2026"
+msgstr "Thứ Tư, 28 tháng 10, 2026"
+
+msgid "Add task"
+msgstr "Thêm công việc"
+
+msgid "2 of 3 tasks done"
+msgstr "2/3 công việc đã hoàn thành"
+
+msgid "All"
+msgstr "Tất cả"
+
+msgid "Task"
+msgstr "Công việc"
+
+msgid "Due"
+msgstr "Thời hạn"
+
+msgid "Status"
+msgstr "Trạng thái"
+
+msgid "Design the interface"
+msgstr "Thiết kế giao diện"
+
+msgid "Test the app"
+msgstr "Kiểm thử ứng dụng"
+
+msgid "Prepare the presentation"
+msgstr "Chuẩn bị thuyết trình"
+
+msgid "Showing 3 tasks"
+msgstr "Hiển thị 3 công việc"
+
+msgid "Sample workspace"
+msgstr "Không gian mẫu"
+
+msgid "Illustrative preview with sample tasks, not your account data."
+msgstr "Bản xem trước minh hoạ với công việc mẫu, không phải dữ liệu tài khoản của bạn."
+
 msgid "Open your workspace"
 msgstr "Mở không gian làm việc"
 
@@ -484,6 +599,12 @@ msgstr "Tìm công việc"
 msgid "Search"
 msgstr "Tìm"
 
+msgid "Clear search"
+msgstr "Xóa tìm kiếm"
+
+msgid "Overdue"
+msgstr "Quá hạn"
+
 msgid "Task"
 msgstr "Công việc"
 
@@ -501,3 +622,107 @@ msgstr "Trước"
 
 msgid "Next"
 msgstr "Tiếp"
+
+# --- UI-07A Profile (authentication identity remains read-only) ---
+msgid "Profile"
+msgstr "Hồ sơ cá nhân"
+
+msgid "Edit Profile"
+msgstr "Chỉnh sửa hồ sơ"
+
+msgid "Back to Profile"
+msgstr "Quay lại hồ sơ"
+
+msgid "Back to Settings"
+msgstr "Quay lại cài đặt"
+
+msgid "Your personal Flowspace account details."
+msgstr "Thông tin tài khoản Flowspace của bạn."
+
+msgid "Update your display name and personal details."
+msgstr "Cập nhật tên hiển thị và thông tin cá nhân."
+
+msgid "Personal details"
+msgstr "Thông tin cá nhân"
+
+msgid "Your initials are shown as a placeholder."
+msgstr "Ảnh đại diện tạm thời hiển thị chữ cái từ tên người dùng của bạn."
+
+msgid "Username and email are read-only."
+msgstr "Tên người dùng và email chỉ được xem, không thể chỉnh sửa tại đây."
+
+msgid "Read-only"
+msgstr "Chỉ đọc"
+
+msgid "Username"
+msgstr "Tên người dùng"
+
+msgid "Email address"
+msgstr "Địa chỉ email"
+
+msgid "Optional"
+msgstr "Không bắt buộc"
+
+msgid "Not provided"
+msgstr "Chưa cung cấp"
+
+msgid "Date of birth"
+msgstr "Ngày sinh"
+
+msgid "Use between 2 and 50 characters."
+msgstr "Sử dụng từ 2 đến 50 ký tự."
+
+msgid "Enter a display name."
+msgstr "Vui lòng nhập tên hiển thị."
+
+msgid "Optional. Leave blank if you prefer not to add it."
+msgstr "Không bắt buộc. Bạn có thể để trống nếu không muốn thêm thông tin này."
+
+msgid "Enter a valid date in YYYY-MM-DD format."
+msgstr "Nhập ngày hợp lệ theo định dạng YYYY-MM-DD."
+
+msgid "Date of birth cannot be in the future."
+msgstr "Ngày sinh không thể là ngày trong tương lai."
+
+msgid "Please correct the errors below. Your changes have not been saved."
+msgstr "Vui lòng sửa các lỗi bên dưới. Thay đổi của bạn chưa được lưu."
+
+msgid "Changes are saved only when you select Save changes."
+msgstr "Thay đổi chỉ được lưu khi bạn chọn Lưu thay đổi."
+
+msgid "Save changes"
+msgstr "Lưu thay đổi"
+
+msgid "Profile updated."
+msgstr "Đã cập nhật hồ sơ."
+
+# --- UI-07B Avatar ---
+msgid "Profile picture"
+msgstr "Ảnh đại diện"
+
+msgid "Choose an image"
+msgstr "Chọn ảnh"
+
+msgid "JPG, PNG or WebP. Maximum 2 MB and 4096 pixels per side."
+msgstr "JPG, PNG hoặc WebP. Tối đa 2 MB và 4096 pixel mỗi chiều."
+
+msgid "Upload photo"
+msgstr "Tải ảnh lên"
+
+msgid "Change photo"
+msgstr "Đổi ảnh"
+
+msgid "Remove photo"
+msgstr "Xóa ảnh"
+
+msgid "Choose an image no larger than 2 MB."
+msgstr "Chọn ảnh có dung lượng không quá 2 MB."
+
+msgid "Choose a valid JPG, PNG or WebP image."
+msgstr "Chọn ảnh JPG, PNG hoặc WebP hợp lệ."
+
+msgid "Choose a valid JPG, PNG or WebP image (up to 4096 pixels per side)."
+msgstr "Chọn ảnh JPG, PNG hoặc WebP hợp lệ (tối đa 4096 pixel mỗi chiều)."
+
+msgid "Profile picture updated."
+msgstr "Đã cập nhật ảnh đại diện."

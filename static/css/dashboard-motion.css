@@ -1,0 +1,84 @@
+/* Dashboard-only motion; Direction C colors, layout and focus styles stay intact. */
+@media (prefers-reduced-motion: no-preference) {
+  .flowspace-dashboard {
+    --dashboard-motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .flowspace-dashboard .dashboard-summary-card {
+    /* Backwards only: no hidden base state or retained animation after arrival. */
+    animation: flowspace-dashboard-card-enter 260ms var(--dashboard-motion-ease) backwards;
+    transition: translate 180ms var(--dashboard-motion-ease),
+      border-color 180ms var(--dashboard-motion-ease),
+      background-color 180ms var(--dashboard-motion-ease),
+      color 180ms var(--dashboard-motion-ease);
+  }
+
+  .flowspace-dashboard .dashboard-summary-card:nth-child(2) { animation-delay: 35ms; }
+  .flowspace-dashboard .dashboard-summary-card:nth-child(3) { animation-delay: 70ms; }
+
+  .flowspace-dashboard .task-row {
+    transition: background-color 140ms var(--dashboard-motion-ease);
+  }
+
+  .flowspace-dashboard .btn,
+  .flowspace-dashboard .check-button,
+  .flowspace-dashboard .icon-button {
+    transition: transform 160ms var(--dashboard-motion-ease),
+      background-color 160ms var(--dashboard-motion-ease),
+      border-color 160ms var(--dashboard-motion-ease),
+      color 160ms var(--dashboard-motion-ease),
+      filter 160ms var(--dashboard-motion-ease);
+  }
+
+  .flowspace-dashboard .text-link,
+  .flowspace-dashboard .task-title,
+  .flowspace-dashboard .dashboard-filters a,
+  .flowspace-dashboard .task-menu-pop a,
+  .flowspace-dashboard .check-box {
+    transition: background-color 140ms var(--dashboard-motion-ease),
+      border-color 140ms var(--dashboard-motion-ease),
+      color 140ms var(--dashboard-motion-ease);
+  }
+
+  .flowspace-dashboard .check-box .icon {
+    transition: opacity 140ms var(--dashboard-motion-ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Independent translate keeps hover responsive during the entrance transform. */
+    .flowspace-dashboard .dashboard-summary-card:hover { translate: 0 -2px; }
+    .flowspace-dashboard .btn:hover,
+    .flowspace-dashboard .check-button:hover,
+    .flowspace-dashboard .icon-button:hover { transform: translateY(-1px); }
+
+    .flowspace-dashboard .dashboard-summary-card:active { translate: 0 0; }
+    .flowspace-dashboard .btn:active,
+    .flowspace-dashboard .check-button:active,
+    .flowspace-dashboard .icon-button:active { transform: translateY(0); }
+  }
+}
+
+@keyframes flowspace-dashboard-card-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep the same immediate, visible interaction states without spatial motion. */
+@media (prefers-reduced-motion: reduce) {
+  .flowspace-dashboard .dashboard-summary-card,
+  .flowspace-dashboard .task-row,
+  .flowspace-dashboard .btn,
+  .flowspace-dashboard .check-button,
+  .flowspace-dashboard .icon-button,
+  .flowspace-dashboard .text-link,
+  .flowspace-dashboard .task-title,
+  .flowspace-dashboard .dashboard-filters a,
+  .flowspace-dashboard .task-menu-pop a,
+  .flowspace-dashboard .check-box,
+  .flowspace-dashboard .check-box .icon {
+    animation: none;
+    transition: none;
+    transform: none;
+    translate: none;
+  }
+}

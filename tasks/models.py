@@ -2,8 +2,26 @@
 Task models - Foundation only, CRUD implementation in later tasks.
 """
 from django.db import models
+from django.conf import settings
+from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from uuid import uuid4
+
+
+def avatar_path(instance, filename):
+    return f'avatars/{uuid4().hex}.png'
+
+
+class Profile(models.Model):
+    """Optional personal details, separate from authentication/provider identity."""
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile',
+    )
+    display_name = models.CharField(max_length=50, blank=True, default='', validators=[MinLengthValidator(2)])
+    date_of_birth = models.DateField(null=True, blank=True)
+    avatar = models.FileField(upload_to=avatar_path, blank=True)
 
 
 class Task(models.Model):

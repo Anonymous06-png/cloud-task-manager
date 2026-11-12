@@ -1,66 +1,80 @@
-{% extends 'base.html' %}{% load i18n %}
+{% extends 'base.html' %}{% load i18n static %}
 {% block title %}{% translate 'Overview' %} · {% translate 'Workspace' %}{% endblock %}
 {% block breadcrumb %}{% translate 'Overview' %}{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard-motion.css' %}">
+{% with total_tasks=pending_count|add:completed_count dashboard_tasks=tasks|slice:':6' %}
+<div class="flowspace-dashboard">
 <header class="page-header">
   <div class="heading-copy">
-    <p class="eyebrow">{{ today|date:'l, j F' }}</p>
+    <p class="eyebrow">{{ today|date:'l, j F Y' }}</p>
     <h1>{% translate 'Overview' %}</h1>
-    <p>{% translate 'What needs your attention today.' %}</p>
+    <p>{% translate 'Welcome back' %}, {{ user.get_short_name|default:user.username }}.</p>
   </div>
   <a class="btn" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create task' %}</a>
 </header>
 
-<nav class="task-summary" aria-label="{% translate 'Task summary' %}">
-  <a href="{% url 'tasks:task_list' %}?status=incomplete"><svg class="icon" aria-hidden="true"><use href="#i-circle-dashed"/></svg><strong>{{ pending_count }}</strong> {% translate 'Not completed' %}</a>
-  <a href="#due-heading"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><strong>{{ due_soon_count }}</strong> {% translate 'Due soon' %}</a>
-  <a href="{% url 'tasks:task_list' %}?status=completed"><svg class="icon" aria-hidden="true"><use href="#i-circle-check"/></svg><strong>{{ completed_count }}</strong> {% translate 'Completed' %}</a>
+<nav class="dashboard-summary" aria-label="{% translate 'Task summary' %}">
+  <a class="dashboard-summary-card" href="{% url 'tasks:task_list' %}?status=incomplete">
+    <span class="dashboard-summary-label">{% translate 'Not completed' %}<svg class="icon" aria-hidden="true"><use href="#i-circle-dashed"/></svg></span>
+    <span class="dashboard-summary-number"><strong>{{ pending_count }}</strong><span>{% translate 'One task at a time.' %}</span></span>
+  </a>
+  <a class="dashboard-summary-card" href="{% if total_tasks %}#due-heading{% else %}{% url 'tasks:task_list' %}{% endif %}">
+    <span class="dashboard-summary-label">{% translate 'Due soon' %}<svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+    <span class="dashboard-summary-number"><strong>{{ due_soon_count }}</strong><span>{% translate 'In the next 7 days' %}</span></span>
+  </a>
+  <a class="dashboard-summary-card" href="{% url 'tasks:task_list' %}?status=completed">
+    <span class="dashboard-summary-label">{% translate 'Completed' %}<svg class="icon" aria-hidden="true"><use href="#i-circle-check"/></svg></span>
+    <span class="dashboard-summary-number"><strong>{{ completed_count }}</strong><span>{% translate 'In your list' %}</span></span>
+  </a>
 </nav>
 
+{% if total_tasks %}
 <div class="dashboard-grid">
-  <div class="dashboard-tasks">
-    <section class="task-section" aria-labelledby="priority-heading">
-      <div class="section-toolbar">
-        <h2 id="priority-heading">{% translate 'Tasks to focus on' %}<span class="tiny-count">{{ priority_tasks|length }}</span></h2>
-        <a class="text-link" href="{% url 'tasks:task_list' %}?status=incomplete">{% translate 'View all' %}<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
-      </div>
-      {% if priority_tasks %}
-        <ul class="priority-list">{% for task in priority_tasks %}{% include 'includes/task_row.html' %}{% endfor %}</ul>
-        <a class="add-task-row" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create a task' %}</a>
-      {% else %}
-        <div class="empty-state">
-          <span class="empty-symbol"><svg class="icon" aria-hidden="true"><use href="#i-list-check"/></svg></span>
-          <h3>{% translate 'Your list is clear.' %}</h3>
-          <p>{% translate 'There are no incomplete tasks right now. Add the next thing you want to move forward.' %}</p>
-          <a class="btn secondary" href="{% url 'tasks:task_create' %}">{% translate 'Create a task' %}</a>
-        </div>
-      {% endif %}
-    </section>
-    {% if completed_tasks %}
-    <section class="task-section recent-section" aria-labelledby="completed-heading">
-      <div class="section-toolbar">
-        <h2 id="completed-heading">{% translate 'Recently completed' %}</h2>
-        <a class="text-link" href="{% url 'tasks:task_list' %}?status=completed">{% translate 'View completed' %}</a>
-      </div>
-      <ul class="priority-list">{% for task in completed_tasks|slice:':2' %}{% include 'includes/task_row.html' %}{% endfor %}</ul>
-    </section>
-    {% endif %}
-  </div>
+  <section class="task-section dashboard-tasks" aria-labelledby="task-heading">
+    <div class="section-toolbar">
+      <h2 id="task-heading">{% translate 'Your tasks' %}<span class="tiny-count">{{ total_tasks }}</span></h2>
+      <a class="text-link" href="{% url 'tasks:task_list' %}">{% translate 'View all' %}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <nav class="dashboard-filters" aria-label="{% translate 'Task status filter' %}">
+      <a href="{% url 'tasks:dashboard' %}" aria-current="page">{% translate 'All tasks' %}<span>{{ total_tasks }}</span></a>
+      <a href="{% url 'tasks:task_list' %}?status=incomplete">{% translate 'Not completed' %}<span>{{ pending_count }}</span></a>
+      <a href="{% url 'tasks:task_list' %}?status=completed">{% translate 'Completed' %}<span>{{ completed_count }}</span></a>
+    </nav>
+    <div class="dashboard-columns" aria-hidden="true"><span>{% translate 'Task' %}</span><span>{% translate 'Due date' %}</span><span>{% translate 'Status' %}</span></div>
+    <ul class="priority-list dashboard-task-list" aria-labelledby="task-heading">{% for task in dashboard_tasks %}{% include 'includes/task_row.html' %}{% endfor %}</ul>
+    <div class="dashboard-list-footer"><span>{% translate 'Tasks' %}: {{ dashboard_tasks|length }} / {{ total_tasks }}</span><a class="text-link" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create a task' %}</a></div>
+  </section>
   <aside class="deadline-section" aria-labelledby="due-heading">
-    <div class="section-toolbar"><h2 id="due-heading" tabindex="-1">{% translate 'Upcoming deadlines' %}</h2><svg class="icon muted" aria-hidden="true"><use href="#i-calendar"/></svg></div>
-    <p class="section-note">{% translate 'In the next 7 days' %}</p>
+    <header class="deadline-panel-heading">
+      <span class="deadline-panel-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar"/></svg></span>
+      <div><h2 id="due-heading" tabindex="-1">{% translate 'Upcoming deadlines' %}</h2><p class="section-note">{% translate 'In the next 7 days' %}</p></div>
+    </header>
     {% if due_soon %}
     <ul class="deadline-list">
-      {% for task in due_soon %}
+    {% for task in due_soon %}
       <li class="deadline">
-        <time class="deadline-date" datetime="{{ task.due_date|date:'Y-m-d' }}"><span>{{ task.due_date|date:'M' }}</span><strong>{{ task.due_date|date:'d' }}</strong></time>
-        <div class="deadline-copy"><a class="task-title" href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a><small>{{ task.due_date|date:'l' }}</small></div>
+        <time class="deadline-date" datetime="{{ task.due_date|date:'Y-m-d' }}" aria-label="{{ task.due_date|date:'l, j F Y' }}"><span>{{ task.due_date|date:'D' }}</span><strong>{{ task.due_date|date:'d' }}</strong></time>
+        <div class="deadline-copy">
+          <a class="task-title" href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a>
+          <p class="deadline-relative"><span class="sr-only">{% translate 'Due' %}: </span>{% if task.due_date == today %}{% translate 'Today' %}{% else %}{{ task.due_date|timeuntil:today }}{% endif %}</p>
+        </div>
       </li>
-      {% endfor %}
+    {% endfor %}
     </ul>
     {% else %}
     <p class="due-empty muted">{% translate 'No tasks due in the next 7 days.' %}</p>
     {% endif %}
   </aside>
 </div>
+{% else %}
+<section class="empty-state dashboard-empty" aria-labelledby="empty-heading">
+  <span class="empty-symbol"><svg class="icon" aria-hidden="true"><use href="#i-list-check"/></svg></span>
+  <h2 id="empty-heading">{% translate 'Start with one clear next step.' %}</h2>
+  <p>{% translate 'Your task list is ready for its first item.' %}</p>
+  <a class="btn" href="{% url 'tasks:task_create' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>{% translate 'Create a task' %}</a>
+</section>
+{% endif %}
+</div>
+{% endwith %}
 {% endblock %}

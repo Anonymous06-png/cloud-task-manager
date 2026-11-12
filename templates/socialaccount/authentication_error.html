@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate 'Google sign-in failed' %} | Flowspace{% endblock %}
+{% block breadcrumb %}{% translate 'Google sign-in failed' %}{% endblock %}
+{% block content %}
+<div class="workspace-login">
+  <section class="login-form-panel" aria-labelledby="social-error-title">
+    <div class="login-form-content">
+      <p class="login-welcome"><span class="login-welcome-mark"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg></span>{% translate 'Something went wrong' %}</p>
+      <h1 id="social-error-title">{% translate 'Google sign-in failed' %}</h1>
+      <p class="login-description">{% translate 'We could not complete the Google sign-in. Please try again or use your username and password.' %}</p>
+      <p class="login-register">
+        <a class="btn btn-google login-google" href="{% url 'tasks:login' %}">{% translate 'Back to log in' %}</a>
+      </p>
+    </div>
+    <a class="login-home" href="{% url 'tasks:home' %}"><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>{% translate 'Back to home' %}</a>
+  </section>
+</div>
+{% endblock %}

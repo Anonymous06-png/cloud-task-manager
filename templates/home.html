@@ -1,23 +1,51 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Workspace" %} | {{ project_name }}{% endblock %}
+{% block title %}{% translate "Flowspace — Tidy work today. A lighter head tomorrow." %} | Cloud Task Manager{% endblock %}
 
 {% block content %}
-    <section class="home-hero" aria-labelledby="home-title">
-        <div class="home-hero-copy">
-            <p class="home-hero-brand">
-                <span class="mark" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
-                {% translate "Workspace" %}
-            </p>
-            <h1 id="home-title">{% translate "Make room for the work that matters." %}</h1>
-            <p class="home-hero-lead">{% translate "Cloud Task Manager gives your next actions a clear home, so you can capture the details, keep momentum, and finish with confidence." %}</p>
-            <div class="hero-actions">
-                <a class="btn" href="{% url 'tasks:register' %}">{% translate "Create your workspace" %}</a>
-                <a class="btn secondary" href="{% url 'tasks:login' %}">{% translate "Log in" %}</a>
+<main class="fs-main" id="main">
+    <section class="hero page-width" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+            <h1 id="hero-title"><span>{% translate "Tidy work today." %}</span><span>{% translate "A lighter head tomorrow." %}</span></h1>
+            <p>{% translate "Create tasks, set deadlines, track progress. One tidy space for what matters." %}</p>
+            <div class="cta-row">
+                <a class="btn btn-primary" href="{% url 'tasks:register' %}">{% if current_language == "vi" %}Bắt đầu miễn phí{% else %}{% translate "Get started free" %}{% endif %}</a>
             </div>
         </div>
 
-        {% include "includes/workspace_preview.html" %}
+        <div class="dashboard-stage" id="demo">
+            {% include "includes/workspace_preview.html" %}
+        </div>
     </section>
+
+    <section class="features page-width" id="features" aria-labelledby="features-title">
+        <div class="feature-heading">
+            <h2 id="features-title">{% translate "Enough tools. Fewer distractions." %}</h2>
+            <p>{% translate "From today's small tasks to your next goal." %}</p>
+        </div>
+        <div class="feature-list">
+            <article>
+                <svg class="icon" aria-hidden="true"><use href="#i-list-todo"/></svg>
+                <h3>{% translate "Every task, one place" %}</h3>
+                <p>{% translate "Add, edit or delete tasks. Cross one off, move one step forward." %}</p>
+            </article>
+            <article>
+                <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
+                <h3>{% translate "Own your deadlines" %}</h3>
+                <p>{% translate "Set a due date for each task. Know what to prioritise next." %}</p>
+            </article>
+            <article>
+                <svg class="icon" aria-hidden="true"><use href="#i-list-filter"/></svg>
+                <h3>{% translate "See what needs doing" %}</h3>
+                <p>{% translate "Filter by status. Keep focus on the work that's left." %}</p>
+            </article>
+        </div>
+    </section>
+</main>
+<footer class="site-footer page-width" id="about">
+    <a class="brand" href="{% url 'tasks:home' %}"><svg class="brand-symbol" aria-hidden="true"><use href="#fold"/></svg>Flowspace</a>
+    <p>{% translate "A tidy space. For the work that matters." %}</p>
+    <a href="{% url 'tasks:login' %}">{% translate "Explore the demo" %}</a>
+</footer>
 {% endblock %}

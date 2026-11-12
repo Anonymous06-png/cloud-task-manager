@@ -1,0 +1,75 @@
+/* UI-09: motion only. Existing Direction C surfaces and focus rings remain authoritative. */
+@media (prefers-reduced-motion: no-preference) {
+  .flowspace-task-list { --list-motion-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+
+  .flowspace-task-list .task-row {
+    transition: background-color 140ms var(--list-motion-ease);
+  }
+
+  /* JS marks initially visible rows once; no hidden base state or forwards fill. */
+  .flowspace-task-list .task-row[data-list-enter] {
+    animation: flowspace-list-row-enter 260ms var(--list-motion-ease) backwards;
+  }
+  .flowspace-task-list .task-row[data-list-enter="1"] { animation-delay: 35ms; }
+  .flowspace-task-list .task-row[data-list-enter="2"] { animation-delay: 70ms; }
+
+  .flowspace-task-list .btn,
+  .flowspace-task-list .icon-button,
+  .flowspace-task-list .check-button,
+  .flowspace-task-list .tabs a {
+    transition: transform 160ms var(--list-motion-ease),
+      background-color 160ms var(--list-motion-ease),
+      border-color 160ms var(--list-motion-ease),
+      color 160ms var(--list-motion-ease),
+      filter 160ms var(--list-motion-ease);
+  }
+
+  .flowspace-task-list .task-title,
+  .flowspace-task-list .text-link,
+  .flowspace-task-list .task-menu-pop a,
+  .flowspace-task-list .check-box {
+    transition: background-color 140ms var(--list-motion-ease),
+      border-color 140ms var(--list-motion-ease),
+      color 140ms var(--list-motion-ease);
+  }
+  .flowspace-task-list .check-box .icon { transition: opacity 140ms var(--list-motion-ease); }
+
+  /* Preserve the existing focus-within color, width and offset; fade only its color. */
+  .flowspace-task-list .search-form { transition: outline-color 160ms var(--list-motion-ease); }
+  .flowspace-task-list .search-form:not(:focus-within) { outline: 2px solid transparent; outline-offset: 2px; }
+
+  .flowspace-task-list .tabs a:focus-visible { transform: translateY(-1px); }
+  @media (hover: hover) and (pointer: fine) {
+    .flowspace-task-list .btn:hover,
+    .flowspace-task-list .icon-button:hover,
+    .flowspace-task-list .check-button:hover,
+    .flowspace-task-list .tabs a:hover { transform: translateY(-1px); }
+  }
+  .flowspace-task-list .btn:active,
+  .flowspace-task-list .icon-button:active,
+  .flowspace-task-list .check-button:active,
+  .flowspace-task-list .tabs a:active { transform: translateY(1px); }
+}
+
+@keyframes flowspace-list-row-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowspace-task-list .task-row,
+  .flowspace-task-list .btn,
+  .flowspace-task-list .icon-button,
+  .flowspace-task-list .check-button,
+  .flowspace-task-list .tabs a,
+  .flowspace-task-list .task-title,
+  .flowspace-task-list .text-link,
+  .flowspace-task-list .task-menu-pop a,
+  .flowspace-task-list .check-box,
+  .flowspace-task-list .check-box .icon,
+  .flowspace-task-list .search-form {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}

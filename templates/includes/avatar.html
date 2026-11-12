@@ -1,0 +1,1 @@
+{% if user.profile.avatar %}<img class="{{ avatar_class }} avatar-image" src="{% url 'tasks:profile_avatar_image' %}" alt="" width="{{ avatar_size }}" height="{{ avatar_size }}">{% else %}<span class="{{ avatar_class }}" aria-hidden="true">{{ user.username|slice:':2'|upper }}</span>{% endif %}

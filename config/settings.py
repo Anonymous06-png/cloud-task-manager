@@ -46,6 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # django-allauth: session-based authentication support for Google sign-in.
+    # The core apps are always installed so the "Continue with Google" button
+    # gate and the /accounts/ URLs behave consistently in every environment;
+    # the Google provider itself is only registered when OAuth credentials
+    # are present (see GOOGLE_OAUTH_ENABLED below).
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'tasks',
 ]
 
@@ -62,7 +70,18 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    # Required by django-allauth (raises ImproperlyConfigured otherwise).
+    # Must come after AuthenticationMiddleware.
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# Authentication backends. The ModelBackend keeps the existing
+# username/password flow (and its task ownership) untouched; allauth's
+# backend only authenticates through the social login flow.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -78,6 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'tasks.context_processors.google_oauth',
             ],
         },
     },
@@ -132,6 +152,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 # Django 5.1 removed STATICFILES_STORAGE / DEFAULT_FILE_STORAGE in favour of
@@ -167,6 +189,46 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+
+# django-allauth configuration.
+# Credentials are provided exclusively through environment variables; they
+# are never written to source code, fixtures or documentation.
+_GOOGLE_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')
+_GOOGLE_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')
+GOOGLE_OAUTH_ENABLED = bool(_GOOGLE_CLIENT_ID.strip() and _GOOGLE_CLIENT_SECRET.strip())
+
+# Account behaviour. Username/password login and signup keep working exactly
+# as before (they still run through the ModelBackend and the tasks app
+# views); allauth only adds the Google social login path.
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+# Safe-linking guards. By default django-allauth never logs an existing user
+# in just because a social account carries the same email address. Both
+# settings are pinned explicitly here so that a future dependency or
+# deployment change cannot silently re-enable matching-by-email, which would
+# let anyone with a Google account of an email address take over an existing
+# workspace. Instead, Google sign-in with an unknown (provider, email) pair
+# always goes through the explicit social-signup confirmation form.
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = False
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = False
+# Do not pre-fill/login existing users by email, and do not auto-link.
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_STORE_TOKENS = True
+
+if GOOGLE_OAUTH_ENABLED:
+    INSTALLED_APPS.append('allauth.socialaccount.providers.google')
+    # Settings-based app configuration: no SocialApp database rows are
+    # required, so no data migration is needed for Google sign-in.
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            'APPS': [
+                {
+                    'client_id': _GOOGLE_CLIENT_ID,
+                    'secret': _GOOGLE_CLIENT_SECRET,
+                },
+            ],
+        },
+    }
 
 # Login URLs
 LOGIN_URL = '/login/'
